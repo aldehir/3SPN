@@ -85,6 +85,7 @@ simulated event NewNet_ClientStartFire(int Mode)
             if(t == none)
                 foreach DynamicActors(class'NewNet_TimeStamp_Pawn', t)
                   break;
+                  
             NewNet_ServerStartFire(byte(Mode), t.ClientTimeStamp, t.DT);
         }
     }
