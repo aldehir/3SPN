@@ -26,7 +26,7 @@ struct ReplicatedVector
     var float Z;
 };
 
-var NewNet_TimeStamp t;
+var NewNet_TimeStamp_Pawn t;
 var TAM_Mutator M;
 var Rotator RandSeed[9];
 var int RandIndex;
@@ -124,21 +124,20 @@ simulated event NewNet_ClientStartFire(int Mode)
                 if(t == none)
                 {
                     // End:0xA5
-                    foreach DynamicActors(class'NewNet_TimeStamp', t)
+                    foreach DynamicActors(class'NewNet_TimeStamp_Pawn', t)
                     {
                         // End:0xA5
                         break;                        
                     }                    
                 }
-                stamp = t.ClientTimeStamp;
-                NewNet_OldServerStartFire(byte(Mode), stamp);
-                return;
+                Stamp = T.TimeStamp;
+                NewNet_OldServerStartFire(Mode,Stamp, T.dt);
             }
             // End:0xEE
             if(t == none)
             {
                 // End:0xED
-                foreach DynamicActors(class'NewNet_TimeStamp', t)
+                foreach DynamicActors(class'NewNet_TimeStamp_Pawn', t)
                 {
                     // End:0xED
                     break;                    
@@ -164,7 +163,7 @@ simulated event NewNet_ClientStartFire(int Mode)
             V.X = Start.X;
             V.Y = Start.Y;
             V.Z = Start.Z;
-            NewNet_ServerStartFire(byte(Mode), t.ClientTimeStamp, R, V);
+            NewNet_ServerStartFire(mode, T.TimeStamp, T.Dt, R, V);
         }
     }
     // End:0x24A
@@ -205,7 +204,7 @@ simulated function bool AltReadyToFire(int Mode)
     //return;    
 }
 
-function NewNet_ServerStartFire(byte Mode, float ClientTimeStamp, ReplicatedRotator R, ReplicatedVector V)
+function NewNet_ServerStartFire(byte Mode, float ClientTimeStamp, float dt, ReplicatedRotator R, ReplicatedVector V)
 {
     // End:0x20
     if(M == none)
@@ -240,7 +239,7 @@ function NewNet_ServerStartFire(byte Mode, float ClientTimeStamp, ReplicatedRota
     // End:0x17E
     if(NewNet_FlakFire(FireMode[Mode]) != none)
     {
-        NewNet_FlakFire(FireMode[Mode]).PingDT = FMin((M.ClientTimeStamp - ClientTimeStamp) + (1.750 * M.AverDT), 0.0750);
+        NewNet_FlakFire(FireMode[Mode]).PingDT = FMin(M.ClientTimeStamp - M.GetStamp(ClientTimeStamp)-DT + 0.5*M.AverDT, MAX_PROJECTILE_FUDGE_ALT);
         NewNet_FlakFire(FireMode[Mode]).bUseEnhancedNetCode = true;
     }
     // End:0x203
@@ -249,7 +248,7 @@ function NewNet_ServerStartFire(byte Mode, float ClientTimeStamp, ReplicatedRota
         // End:0x203
         if(NewNet_FlakAltFire(FireMode[Mode]) != none)
         {
-            NewNet_FlakAltFire(FireMode[Mode]).PingDT = FMin((M.ClientTimeStamp - ClientTimeStamp) + (1.750 * M.AverDT), 0.0750);
+            NewNet_FlakAltFire(FireMode[Mode]).PingDT = FMin(M.ClientTimeStamp - M.GetStamp(ClientTimeStamp)-DT + 0.5*M.AverDT, MAX_PROJECTILE_FUDGE);
             NewNet_FlakAltFire(FireMode[Mode]).bUseEnhancedNetCode = true;
         }
     }
@@ -312,7 +311,7 @@ function bool IsReasonable(Vector V)
     }
     LocDiff = V - (Pawn(Owner).Location + Pawn(Owner).EyePosition());
     clErr = LocDiff Dot LocDiff;
-    return clErr < 750.0;
+    return clErr < 1250.0;
     //return;    
 }
 
@@ -359,7 +358,7 @@ simulated event PostNetBeginPlay()
     //return;    
 }
 
-function NewNet_OldServerStartFire(byte Mode, float ClientTimeStamp)
+function NewNet_OldServerStartFire(byte Mode, float ClientTimeStamp, float dt)
 {
     // End:0x20
     if(M == none)
@@ -374,7 +373,7 @@ function NewNet_OldServerStartFire(byte Mode, float ClientTimeStamp)
     // End:0xA8
     if(NewNet_FlakFire(FireMode[Mode]) != none)
     {
-        NewNet_FlakFire(FireMode[Mode]).PingDT = FMin((M.ClientTimeStamp - ClientTimeStamp) + (1.750 * M.AverDT), 0.0750);
+        NewNet_FlakFire(FireMode[Mode]).PingDT = FMin(M.ClientTimeStamp - M.GetStamp(ClientTimeStamp)-DT + 0.5*M.AverDT, MAX_PROJECTILE_FUDGE_ALT);
         NewNet_FlakFire(FireMode[Mode]).bUseEnhancedNetCode = true;
     }
     // End:0x12D
@@ -383,7 +382,7 @@ function NewNet_OldServerStartFire(byte Mode, float ClientTimeStamp)
         // End:0x12D
         if(NewNet_FlakAltFire(FireMode[Mode]) != none)
         {
-            NewNet_FlakAltFire(FireMode[Mode]).PingDT = FMin((M.ClientTimeStamp - ClientTimeStamp) + (1.750 * M.AverDT), 0.0750);
+       NewNet_FlakAltFire(FireMode[Mode]).PingDT = FMin(M.ClientTimeStamp - M.GetStamp(ClientTimeStamp)-DT + 0.5*M.AverDT, MAX_PROJECTILE_FUDGE);
             NewNet_FlakAltFire(FireMode[Mode]).bUseEnhancedNetCode = true;
         }
     }

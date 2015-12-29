@@ -23,7 +23,7 @@ struct ReplicatedVector
     var float Z;
 };
 
-var NewNet_TimeStamp t;
+var NewNet_TimeStamp_Pawn t;
 var TAM_Mutator M;
 
 replication
@@ -96,8 +96,11 @@ simulated event NewNet_ClientStartFire(int Mode)
 {
     local ReplicatedRotator R;
     local ReplicatedVector V;
-    local Vector Start;
-    local float stamp;
+    local vector Start;
+    local byte stamp;
+    local bool b;
+    local actor A;
+    local vector HN,HL;
 
     // End:0x48
     if(Pawn(Owner).Controller.IsInState('GameEnded') || Pawn(Owner).Controller.IsInState('RoundEnded'))
@@ -117,14 +120,14 @@ simulated event NewNet_ClientStartFire(int Mode)
                 if(t == none)
                 {
                     // End:0xA5
-                    foreach DynamicActors(class'NewNet_TimeStamp', t)
+                    foreach DynamicActors(class'NewNet_TimeStamp_Pawn', t)
                     {
                         // End:0xA5
                         break;                        
                     }                    
                 }
-                stamp = t.ClientTimeStamp;
-                NewNet_OldServerStartFire(byte(Mode), stamp);
+                 Stamp = T.TimeStamp;
+                NewNet_OldServerStartFire(Mode,Stamp, T.DT);
                 return;
             }
             R.Pitch = Pawn(Owner).Controller.Rotation.Pitch;
@@ -137,15 +140,21 @@ simulated event NewNet_ClientStartFire(int Mode)
             if(t == none)
             {
                 // End:0x1B3
-                foreach DynamicActors(class'NewNet_TimeStamp', t)
+                foreach DynamicActors(class'NewNet_TimeStamp_Pawn', t)
                 {
                     // End:0x1B3
                     break;                    
                 }                
             }
-            stamp = t.ClientTimeStamp;
+            Stamp = T.TimeStamp;
             NewNet_ShockBeamFire(FireMode[Mode]).DoInstantFireEffect();
-            NewNet_ServerStartFire(byte(Mode), stamp, R, V);
+            A = Trace(HN,HL,Start+Vector(Pawn(Owner).Controller.Rotation)*40000.0,Start,true);
+           
+             if(A!=None && (A.IsA('xPawn') || A.IsA('Vehicle')))
+            {
+                    b=true;
+            }
+           NewNet_ServerStartFire(Mode, stamp, T.DT, R, V,b,A);
         }
     }
     // End:0x20C
@@ -186,7 +195,55 @@ simulated function bool AltReadyToFire(int Mode)
     //return;    
 }
 
-function NewNet_ServerStartFire(byte Mode, float ClientTimeStamp, ReplicatedRotator R, ReplicatedVector V)
+simulated function WeaponTick(float deltatime)
+{
+   lastDT = deltatime;
+   Super.tick(deltatime);
+}
+//// client & server ////
+simulated function bool StartFire(int Mode)
+{
+    local int alt;
+    if ( bWaitForCombo && (Bot(Instigator.Controller) != None) )
+	{
+		if ( (ComboTarget == None) || ComboTarget.bDeleteMe )
+			bWaitForCombo = false;
+		else
+			return false;
+	}
+
+    if (!ReadyToFire(Mode))
+        return false;
+
+    if (Mode == 0)
+        alt = 1;
+    else
+        alt = 0;
+
+    FireMode[Mode].bIsFiring = true;
+
+    FireMode[Mode].NextFireTime = Level.TimeSeconds-LastDT*0.5 + FireMode[Mode].PreFireTime;
+
+    if (FireMode[alt].bModeExclusive)
+    {
+        // prevents rapidly alternating fire modes
+        FireMode[Mode].NextFireTime = FMax(FireMode[Mode].NextFireTime, FireMode[alt].NextFireTime);
+    }
+
+    if (Instigator.IsLocallyControlled())
+    {
+        if (FireMode[Mode].PreFireTime > 0.0 || FireMode[Mode].bFireOnRelease)
+        {
+            FireMode[Mode].PlayPreFire();
+        }
+        FireMode[Mode].FireCount = 0;
+    }
+
+    return true;
+}
+
+function NewNet_ServerStartFire(byte Mode, byte ClientTimeStamp, float dt, ReplicatedRotator R, ReplicatedVector V)
+
 {
     // End:0x64
     if((Instigator != none) && Instigator.Weapon != self)
@@ -218,8 +275,18 @@ function NewNet_ServerStartFire(byte Mode, float ClientTimeStamp, ReplicatedRota
     {
         Misc_Player(Instigator.Controller).NotifyServerStartFire(ClientTimeStamp, M.ClientTimeStamp, M.AverDT);
     }
-    NewNet_ShockBeamFire(FireMode[Mode]).PingDT = (M.ClientTimeStamp - ClientTimeStamp) + (1.750 * M.AverDT);
+    NewNet_ShockBeamFire(FireMode[Mode]).PingDT = M.ClientTimeStamp - M.GetStamp(ClientTimeStamp)-DT + 0.5*M.AverDT;
     NewNet_ShockBeamFire(FireMode[Mode]).bUseEnhancedNetCode = true;
+    NewNet_ShockBeamFire(FireMode[Mode]).AverDT = M.AverDT;
+    if(bBelievesHit)
+    {
+        NewNet_ShockBeamFire(FireMode[Mode]).bBelievesHit=true;
+        NewNet_ShockBeamFire(FireMode[Mode]).BelievedHitActor=A;
+    }
+    else
+    {
+        NewNet_ShockBeamFire(FireMode[Mode]).bBelievesHit=false;
+    }
     // End:0x305
     if((FireMode[Mode].NextFireTime <= (Level.TimeSeconds + FireMode[Mode].PreFireTime)) && StartFire(Mode))
     {
@@ -249,7 +316,7 @@ function NewNet_ServerStartFire(byte Mode, float ClientTimeStamp, ReplicatedRota
     //return;    
 }
 
-function NewNet_OldServerStartFire(byte Mode, float ClientTimeStamp)
+function NewNet_OldServerStartFire(byte Mode, float ClientTimeStamp, float dt)
 {
     // End:0x20
     if(M == none)
@@ -261,7 +328,7 @@ function NewNet_OldServerStartFire(byte Mode, float ClientTimeStamp)
             break;            
         }        
     }
-    NewNet_ShockBeamFire(FireMode[Mode]).PingDT = (M.ClientTimeStamp - ClientTimeStamp) + (1.750 * M.AverDT);
+    NewNet_ShockBeamFire(FireMode[Mode]).PingDT = M.ClientTimeStamp - M.GetStamp(ClientTimeStamp)-DT + 0.5*M.AverDT;
     NewNet_ShockBeamFire(FireMode[Mode]).bUseEnhancedNetCode = true;
     ServerStartFire(Mode);
     //return;    
@@ -279,7 +346,7 @@ function bool IsReasonable(Vector V)
     }
     LocDiff = V - (Pawn(Owner).Location + Pawn(Owner).EyePosition());
     clErr = LocDiff Dot LocDiff;
-    return clErr < 750.0;
+    return clErr < 1250.0;
     //return;    
 }
 

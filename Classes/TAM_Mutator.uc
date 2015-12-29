@@ -50,6 +50,10 @@ var float LastReplicatedAverDT;
 var class<Weapon> WeaponClasses[9];
 var class<Weapon> NewNetWeaponClasses[9];
 var string NewNetWeaponNames[9];
+var float StampArray[256];
+var float counter;
+var controller countercontroller;
+var pawn counterpawn;
 
 replication
 {
@@ -149,8 +153,11 @@ simulated function Tick(float DeltaTime)
             StampInfo = UnresolvedNativeFunction_97(class'NewNet_TimeStamp');
         }
         ClientTimeStamp += DeltaTime;
+        counter+=1;
+        StampArray[counter%256] = ClientTimeStamp;
         AverDT = ((9.0 * AverDT) + DeltaTime) / 10.0;
-        StampInfo.ReplicatetimeStamp(ClientTimeStamp);
+        //StampInfo.ReplicatetimeStamp(ClientTimeStamp);
+        SetPawnStamp();
         // End:0x105
         if(ClientTimeStamp > (LastReplicatedAverDT + 4.0))
         {
@@ -170,7 +177,31 @@ simulated function Tick(float DeltaTime)
     }
     //return;    
 }
+function SetPawnStamp()
+{
+   local rotator R;
+   local int i;
 
+   if(counterpawn==none)
+   {
+       if(countercontroller==none)
+           countercontroller = spawn(class'NewNet_TimeStamp_Controller');
+       if(countercontroller.pawn!=None)
+           counterpawn=countercontroller.pawn;
+       return;
+   }
+
+   R.Yaw = (counter%256)*256;
+   i=counter/256;
+   R.Pitch = i*256;
+
+   counterpawn.SetRotation(R);
+}
+
+simulated function float GetStamp(int stamp)
+{
+   return StampArray[stamp%256];
+}
 function InitWeapons(int AssaultAmmo, int AssaultGrenades, int BioAmmo, int ShockAmmo, int LinkAmmo, int MiniAmmo, int FlakAmmo, int RocketAmmo, int LightningAmmo)
 {
     local int i;

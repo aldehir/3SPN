@@ -27,10 +27,11 @@ struct ReplicatedVector
     var float Z;
 };
 
-var NewNet_TimeStamp t;
+var NewNet_TimeStamp_Pawn t;
 var TAM_Mutator M;
 var float PingDT;
 var bool bUseEnhancedNetCode;
+var float lastDT;
 
 replication
 {
@@ -79,6 +80,11 @@ simulated function bool PutDown()
     }
     return super(Weapon).PutDown();
     //return;    
+}
+
+simulated function Weapontick(float deltatime)
+{
+   lastDT = deltatime;
 }
 
 simulated event ClientStartFire(int Mode)
@@ -159,7 +165,7 @@ simulated function NewNet_AltClientStartFire(int Mode)
             if(t == none)
             {
                 // End:0x85
-                foreach DynamicActors(class'NewNet_TimeStamp', t)
+                foreach DynamicActors(class'NewNet_TimeStamp_Pawn', t)
                 {
                     // End:0x85
                     break;                    
@@ -176,7 +182,7 @@ simulated function NewNet_AltClientStartFire(int Mode)
             V.X = Start.X;
             V.Y = Start.Y;
             V.Z = Start.Z;
-            NewNet_ServerStartFire(byte(Mode), t.ClientTimeStamp, R, V);
+            NewNet_ServerStartFire(mode, T.TimeStamp,T.DT, R, V);
         }
     }
     // End:0x1AF
@@ -217,7 +223,7 @@ simulated function bool AltReadyToFire(int Mode)
     //return;    
 }
 
-function NewNet_ServerStartFire(byte Mode, float ClientTimeStamp, ReplicatedRotator R, ReplicatedVector V)
+function NewNet_ServerStartFire(byte Mode, byte ClientTimeStamp, float dt, ReplicatedRotator R, ReplicatedVector V)
 {
     // End:0x20
     if(M == none)
@@ -249,7 +255,7 @@ function NewNet_ServerStartFire(byte Mode, float ClientTimeStamp, ReplicatedRota
         }
         return;
     }
-    PingDT = FMin((M.ClientTimeStamp - ClientTimeStamp) + (1.750 * M.AverDT), 0.0750);
+     PingDT = FMin(M.ClientTimeStamp - M.GetStamp(ClientTimeStamp)-DT + 0.5*M.AverDT, MAX_PROJECTILE_FUDGE);
     bUseEnhancedNetCode = true;
     // End:0x170
     if(NewNet_RocketFire(FireMode[Mode]) != none)
@@ -297,7 +303,46 @@ function NewNet_ServerStartFire(byte Mode, float ClientTimeStamp, ReplicatedRota
     }
     //return;    
 }
+//// client & server ////
+simulated function bool StartFire(int Mode)
+{
+    local int alt;
+    local int OtherMode;
 
+	if ( Mode == 0 )
+		OtherMode = 1;
+	else
+		OtherMode = 0;
+	if ( FireMode[OtherMode].bIsFiring || (FireMode[OtherMode].NextFireTime > Level.TimeSeconds) )
+		return false;
+
+    if (!ReadyToFire(Mode))
+        return false;
+
+    if (Mode == 0)
+        alt = 1;
+    else
+        alt = 0;
+
+    FireMode[Mode].bIsFiring = true;
+
+    FireMode[Mode].NextFireTime = Level.TimeSeconds-LastDT*0.5 + FireMode[Mode].PreFireTime;
+
+    if (FireMode[alt].bModeExclusive)
+    {
+        // prevents rapidly alternating fire modes
+        FireMode[Mode].NextFireTime = FMax(FireMode[Mode].NextFireTime, FireMode[alt].NextFireTime);
+    }
+    if (Instigator.IsLocallyControlled())
+    {
+        if (FireMode[Mode].PreFireTime > 0.0 || FireMode[Mode].bFireOnRelease)
+        {
+            FireMode[Mode].PlayPreFire();
+        }
+        FireMode[Mode].FireCount = 0;
+    }
+    return true;
+}
 function bool IsReasonable(Vector V)
 {
     local Vector LocDiff;
@@ -310,7 +355,7 @@ function bool IsReasonable(Vector V)
     }
     LocDiff = V - (Pawn(Owner).Location + Pawn(Owner).EyePosition());
     clErr = LocDiff Dot LocDiff;
-    return clErr < 750.0;
+    return clErr < 1250.0;
     //return;    
 }
 

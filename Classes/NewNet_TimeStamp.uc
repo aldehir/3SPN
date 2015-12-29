@@ -8,33 +8,36 @@
 class NewNet_TimeStamp extends ReplicationInfo
     hidecategories(Movement,Collision,Lighting,LightColor,Karma,Force);
 
-var float ClientTimeStamp;
+//var float ClientTimeStamp;
 var float AverDT;
 
 replication
 {
-    // Pos:0x000
-    reliable if(Role == ROLE_Authority)
-        AverDT, ClientTimeStamp
+   unreliable if(Role == Role_Authority)
+       /*ClientTimeStamp,*/ averDT;
 }
 
-simulated function Tick(float DeltaTime)
+simulated function PostBeginPlay()
 {
-    ClientTimeStamp += DeltaTime;
-    default.AverDT = AverDT;
-    //return;    
+    class'ShieldFire'.default.AutoFireTestFreq=0.05;
+    Super.PostBeginPlay();
 }
 
-function ReplicatetimeStamp(float F)
+simulated function tick(float DeltaTime)
 {
-    ClientTimeStamp = F;
-    //return;    
+   // ClientTimeStamp+=deltatime;
+    //Log(ClientTimeStamp);
+    default.AverDT = Averdt;
 }
 
-function ReplicatedAverDT(float F)
+function ReplicatetimeStamp(float f)
 {
-    AverDT = F;
-    //return;    
+ //   ClientTimeStamp=f;
+}
+
+function REplicatedAverDT(float f)
+{
+    AverDT = f;
 }
 
 defaultproperties

@@ -14,7 +14,7 @@ class NewNet_AssaultRifle extends AssaultRifle
 
 const MAX_PROJECTILE_FUDGE = 0.075;
 
-var NewNet_TimeStamp t;
+var NewNet_TimeStamp_Pawn t;
 var TAM_Mutator M;
 
 replication
@@ -102,13 +102,13 @@ simulated event NewNet_ClientStartFire(int Mode)
             if(t == none)
             {
                 // End:0x85
-                foreach DynamicActors(class'NewNet_TimeStamp', t)
+                foreach DynamicActors(class'NewNet_TimeStamp_Pawn', t)
                 {
                     // End:0x85
                     break;                    
                 }                
             }
-            NewNet_ServerStartFire(byte(Mode), t.ClientTimeStamp);
+            NewNet_ServerStartFire(byte(Mode), t.ClientTimeStamp, t.DT);
         }
     }
     // End:0xAF
@@ -119,7 +119,7 @@ simulated event NewNet_ClientStartFire(int Mode)
     //return;    
 }
 
-function NewNet_ServerStartFire(byte Mode, float ClientTimeStamp)
+function NewNet_ServerStartFire(byte Mode, float ClientTimeStamp, float dt)
 {
     // End:0x20
     if(M == none)
@@ -139,8 +139,8 @@ function NewNet_ServerStartFire(byte Mode, float ClientTimeStamp)
     // End:0x113
     if(NewNet_AssaultFire(FireMode[Mode]) != none)
     {
-        NewNet_AssaultFire(FireMode[Mode]).PingDT = (M.ClientTimeStamp - ClientTimeStamp) + (1.750 * M.AverDT);
-        NewNet_AssaultFire(FireMode[Mode]).bUseEnhancedNetCode = true;
+       NewNet_AssaultFire(FireMode[Mode]).PingDT = M.ClientTimeStamp - M.GetStamp(ClientTimeStamp)-DT + 0.5*M.AverDT;
+       NewNet_AssaultFire(FireMode[Mode]).bUseEnhancedNetCode = true;
     }
     // End:0x198
     else
@@ -148,7 +148,7 @@ function NewNet_ServerStartFire(byte Mode, float ClientTimeStamp)
         // End:0x198
         if(NewNet_AssaultGrenade(FireMode[Mode]) != none)
         {
-            NewNet_AssaultGrenade(FireMode[Mode]).PingDT = FMin((M.ClientTimeStamp - ClientTimeStamp) + (1.750 * M.AverDT), 0.0750);
+            NewNet_AssaultGrenade(FireMode[Mode]).PingDT = FMin(M.ClientTimeStamp - M.GetStamp(ClientTimeStamp)-DT + 0.5*M.AverDT, MAX_PROJECTILE_FUDGE);
             NewNet_AssaultGrenade(FireMode[Mode]).bUseEnhancedNetCode = true;
         }
     }

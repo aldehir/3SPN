@@ -12,7 +12,7 @@ class NewNet_MiniGun extends Minigun
     hidedropdown
     cacheexempt;
 
-var NewNet_TimeStamp t;
+var NewNet_TimeStamp_Pawn t;
 var TAM_Mutator M;
 
 replication
@@ -96,13 +96,13 @@ simulated event NewNet_ClientStartFire(int Mode)
             if(t == none)
             {
                 // End:0x85
-                foreach DynamicActors(class'NewNet_TimeStamp', t)
+                foreach DynamicActors(class'NewNet_TimeStamp_Pawn', t)
                 {
                     // End:0x85
                     break;                    
                 }                
             }
-            NewNet_ServerStartFire(byte(Mode), t.ClientTimeStamp);
+               NewNet_ServerStartFire(mode, T.TimeStamp, T.dt);
         }
     }
     // End:0xAF
@@ -113,7 +113,7 @@ simulated event NewNet_ClientStartFire(int Mode)
     //return;    
 }
 
-function NewNet_ServerStartFire(byte Mode, float ClientTimeStamp)
+function NewNet_ServerStartFire(byte Mode, float ClientTimeStamp, float dt)
 {
     // End:0x20
     if(M == none)
@@ -133,8 +133,8 @@ function NewNet_ServerStartFire(byte Mode, float ClientTimeStamp)
     // End:0x113
     if(NewNet_MiniGunFire(FireMode[Mode]) != none)
     {
-        NewNet_MiniGunFire(FireMode[Mode]).PingDT = (M.ClientTimeStamp - ClientTimeStamp) + (1.750 * M.AverDT);
-        NewNet_MiniGunFire(FireMode[Mode]).bUseEnhancedNetCode = true;
+         NewNet_MiniGunFire(FireMode[Mode]).PingDT = M.ClientTimeStamp - M.GetStamp(ClientTimeStamp)-DT + 0.5*M.AverDT;
+          NewNet_MiniGunFire(FireMode[Mode]).bUseEnhancedNetCode = true;
     }
     // End:0x191
     else
@@ -142,8 +142,8 @@ function NewNet_ServerStartFire(byte Mode, float ClientTimeStamp)
         // End:0x191
         if(NewNet_MiniGunAltFire(FireMode[Mode]) != none)
         {
-            NewNet_MiniGunAltFire(FireMode[Mode]).PingDT = (M.ClientTimeStamp - ClientTimeStamp) + (1.750 * M.AverDT);
-            NewNet_MiniGunAltFire(FireMode[Mode]).bUseEnhancedNetCode = true;
+          NewNet_MiniGunAltFire(FireMode[Mode]).PingDT = M.ClientTimeStamp - M.GetStamp(ClientTimeStamp)-DT + 0.5*M.AverDT;
+          NewNet_MiniGunAltFire(FireMode[Mode]).bUseEnhancedNetCode = true;
         }
     }
     ServerStartFire(Mode);

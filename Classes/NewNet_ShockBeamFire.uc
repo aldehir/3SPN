@@ -15,6 +15,11 @@ var Vector savedVec;
 var float PingDT;
 var bool bSkipNextEffect;
 var bool bUseEnhancedNetCode;
+var bool bBelievesHit;
+var Actor BelievedHitActor;
+var vector BelievedHitLocation;
+var float averdt;
+var bool bFirstGo;
 
 function PlayFiring()
 {
@@ -66,102 +71,156 @@ function DoTrace(Vector Start, Rotator Dir)
     }
     MaxRange();
     ReflectNum = 0;
-    J0x2A:
-    // End:0x3EA [Loop If]
-    if(true)
+   
+    while (true)
     {
-        TimeTravel(PingDT);
+        TimeTravel(pingDT);
         bDoReflect = false;
-        X = vector(Dir);
-        End = Start + (TraceRange * X);
-        // End:0xA0
-        if(PingDT <= 0.0)
-        {
-            Other = Weapon.Trace(HitLocation, HitNormal, End, Start, true);
-        }
-        // End:0xC0
+        X = Vector(Dir);
+        End = Start + TraceRange * X;
+
+        if(PingDT <=0.0)
+            Other = Weapon.Trace(HitLocation,HitNormal,End,Start,true);
         else
-        {
             Other = DoTimeTravelTrace(HitLocation, HitNormal, End, Start);
-        }
-        // End:0x136
-        if((Other != none) && Other.UnresolvedNativeFunction_97('NewNet_PawnCollisionCopy'))
+
+        if(Other!=None && Other.IsA('PawnCollisionCopy'))
         {
-            PawnHitLocation = (HitLocation + NewNet_PawnCollisionCopy(Other).CopiedPawn.Location) - Other.Location;
-            Other = NewNet_PawnCollisionCopy(Other).CopiedPawn;
+             PawnHitLocation = HitLocation + PawnCollisionCopy(Other).CopiedPawn.Location - Other.Location;
+             Other=PawnCollisionCopy(Other).CopiedPawn;
         }
-        // End:0x141
         else
         {
             PawnHitLocation = HitLocation;
         }
-        UnTimeTravel();
-        // End:0x347
-        if((Other != none) && (Other != Instigator) || ReflectNum > 0)
+
+        if(bFirstGo && bBelievesHit && !(Other == BelievedHitActor))
         {
-            // End:0x1E0
-            if((bReflective && Other.UnresolvedNativeFunction_97('xPawn')) && xPawn(Other).CheckReflect(PawnHitLocation, RefNormal, int(float(DamageMin) * 0.250)))
+
+            if(ReflectNum==0)
             {
-                bDoReflect = true;
-                HitNormal = vect(0.0, 0.0, 0.0);
-            }
-            // End:0x344
-            else
-            {
-                // End:0x2FF
-                if(!Other.bWorldGeometry)
+                f = 0.02;
+                while(abs(f) < (0.04 + 2.0*AverDT))
                 {
-                    Damage = DamageMin;
-                    // End:0x234
-                    if((DamageMin != DamageMax) && FRand() > 0.50)
+
+                    TimeTravel(PingDT-f);
+                    if((PingDT-f) <=0.0)
+                          AltOther = Weapon.Trace(AltHitLocation,AltHitNormal,End,Start,true);
+                    else
+                          AltOther = DoTimeTravelTrace(AltHitLocation, AltHitNormal, End, Start);
+
+                    if(AltOther!=None && AltOther.IsA('PawnCollisionCopy'))
                     {
-                        Damage += Rand((1 + DamageMax) - DamageMin);
+                         AltPawnHitLocation = AltHitLocation + PawnCollisionCopy(AltOther).CopiedPawn.Location - AltOther.Location;
+                         AltOther=PawnCollisionCopy(AltOther).CopiedPawn;
                     }
-                    Damage = int(float(Damage) * DamageAtten);
-                    // End:0x2BA
-                    if(Other.UnresolvedNativeFunction_97('Vehicle') || !Other.UnresolvedNativeFunction_97('Pawn') && !Other.UnresolvedNativeFunction_97('HitScanBlockingVolume'))
+                    else
+                         AltPawnHitLocation=AltHitLocation;
+
+                    if(altOther == BelievedHitACtor)
                     {
-                        WeaponAttachment(Weapon.ThirdPersonActor).UpdateHit(Other, PawnHitLocation, HitNormal);
+                    //   Log("Fixed At"@f@"with max"@(0.04 + 2.0*AverDT));
+                       Other=altOther;
+                       PawnHitLocation=AltPawnHitLocation;
+                       HitLocation=AltHitLocation;
+                       f=10.0;
                     }
-                    Other.TakeDamage(Damage, Instigator, PawnHitLocation, Momentum * X, DamageType);
-                    HitNormal = vect(0.0, 0.0, 0.0);
+                    if(f > 0.00)
+                        f = -1.0*f;
+                    else
+                        f = -1.0*f+0.02;
                 }
-                // End:0x344
-                else
-                {
-                    // End:0x344
-                    if(WeaponAttachment(Weapon.ThirdPersonActor) != none)
-                    {
-                        WeaponAttachment(Weapon.ThirdPersonActor).UpdateHit(Other, PawnHitLocation, HitNormal);
-                    }
-                }
+              //  if(abs(f)<9.0)
+                //   log("Failed to fix");
             }
         }
-        // End:0x391
+        else if(bFirstGo && !bBelievesHit && Other!=None && (Other.IsA('xpawn') || Other.IsA('Vehicle')))
+        {
+            if(ReflectNum==0)
+            {
+                f = 0.02;
+                while(abs(f) < (0.04 + 2.0*AverDT))
+                {
+                    AltOther=None;
+                    TimeTravel(PingDT-f);
+                    if((PingDT-f) <=0.0)
+                          AltOther = Weapon.Trace(AltHitLocation,AltHitNormal,End,Start,true);
+                    else
+                          AltOther = DoTimeTravelTrace(AltHitLocation, AltHitNormal, End, Start);
+
+                    if(AltOther!=None && AltOther.IsA('PawnCollisionCopy'))
+                    {
+                         AltPawnHitLocation = AltHitLocation + PawnCollisionCopy(AltOther).CopiedPawn.Location - AltOther.Location;
+                         AltOther=PawnCollisionCopy(AltOther).CopiedPawn;
+                    }
+                    else
+                         AltPawnHitLocation=AltHitLocation;
+
+                    if(altOther == None || !(altOther.IsA('xpawn') || altOther.IsA('Vehicle')))
+                    {
+                     //  Log("Reverse Fixed At"@f);
+                       Other=altOther;
+                       PawnHitLocation=AltPawnHitLocation;
+                       HitLocation=altHitLocation;
+                       f=10.0;
+                    }
+                    if(f > 0.00)
+                        f = -1.0*f;
+                    else
+                        f = -1.0*f+0.02;
+                }
+                //if(abs(f)<9.0)
+                //   log("Failed to reverse fix");
+            }
+        }
+        bFirstGo=false;
+        UnTimeTravel();
+
+        if ( Other != None && (Other != Instigator || ReflectNum > 0) )
+        {
+            if (bReflective && Other.IsA('xPawn') && xPawn(Other).CheckReflect(PawnHitLocation, RefNormal, DamageMin*0.25))
+            {
+                bDoReflect = true;
+                HitNormal = Vect(0,0,0);
+            }
+            else if ( !Other.bWorldGeometry )
+            {
+				Damage = DamageMin;
+				if ( (DamageMin != DamageMax) && (FRand() > 0.5) )
+					Damage += Rand(1 + DamageMax - DamageMin);
+                Damage = Damage * DamageAtten;
+
+				// Update hit effect except for pawns (blood) other than vehicles.
+               	if ( Other.IsA('Vehicle') || (!Other.IsA('Pawn') && !Other.IsA('HitScanBlockingVolume')) )
+					WeaponAttachment(Weapon.ThirdPersonActor).UpdateHit(Other, PawnHitLocation, HitNormal);
+
+               	Other.TakeDamage(Damage, Instigator, PawnHitLocation, Momentum*X, DamageType);
+                HitNormal = Vect(0,0,0);
+            }
+            else if ( WeaponAttachment(Weapon.ThirdPersonActor) != None )
+				WeaponAttachment(Weapon.ThirdPersonActor).UpdateHit(Other,PawnHitLocation,HitNormal);
+        }
         else
         {
             HitLocation = End;
-            HitNormal = vect(0.0, 0.0, 0.0);
-            WeaponAttachment(Weapon.ThirdPersonActor).UpdateHit(Other, PawnHitLocation, HitNormal);
+            HitNormal = Vect(0,0,0);
+			WeaponAttachment(Weapon.ThirdPersonActor).UpdateHit(Other,PawnHitLocation,HitNormal);
         }
+
         SpawnBeamEffect(Start, Dir, HitLocation, HitNormal, ReflectNum);
-        // End:0x3E4
-        if(bDoReflect && ++ ReflectNum < 4)
+
+        if (bDoReflect && ++ReflectNum < 4)
         {
+            //Log("reflecting off"@Other@Start@HitLocation);
             Start = HitLocation;
-            Dir = rotator(RefNormal);
+            Dir = Rotator(RefNormal); //Rotator( X - 2.0*RefNormal*(X dot RefNormal) );
         }
-        // End:0x3E7
         else
         {
-            // [Explicit Break]
-            goto J0x3EA;
+            break;
         }
-        J0x3EA:
-        // [Loop Continue]
-        goto J0x2A;
     }
-    //return;    
+
 }
 
 function DoInstantFireEffect()
