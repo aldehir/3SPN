@@ -38,7 +38,7 @@ struct WeaponData
 var WeaponData  WeaponInfo[9];
 var WeaponData  WeaponDefaults[9];
 /* weapons */
-	
+
 /* newnet */
 var bool EnableNewNet;
 var NewNet_PawnCollisionCopy PCC;
@@ -52,16 +52,21 @@ var float LastReplicatedAverDT;
 var class<Weapon> WeaponClasses[9];
 var class<weapon> NewNetWeaponClasses[9];
 var string NewNetWeaponNames[9];
+var float StampArray[256];
+var float counter;
+var controller countercontroller;
+var pawn counterpawn;
 /* newnet */
+
 
 replication
 {
 	reliable if(bNetInitial && Role == ROLE_Authority)
 		EnableNewNet;
 }
-	
+
 /*function PreBeginPlay()
-{		
+{
     StaticSaveConfig();
     super.PreBeginPlay();
 }*/
@@ -98,7 +103,7 @@ function ModifyPlayer(Pawn Other)
 		SpawnCollisionCopy(Other);
 		RemoveOldPawns();
 	}
-	
+
     Super.ModifyPlayer(Other);
 }
 
@@ -128,11 +133,11 @@ function RemoveOldPawns()
 {
     PCC = PCC.RemoveOldPawns();
 }
-	
+
 simulated function Tick(float DeltaTime)
 {
 	if(Level.Pauser!=None)
-	{	
+	{
 		if(Level.NetMode==NM_DedicatedServer)
 			Team_GameBase(Level.Game).UpdateTimeOut(DeltaTime);
 		return;
@@ -140,31 +145,58 @@ simulated function Tick(float DeltaTime)
 
 	if(!EnableNewNet)
 		return;
-		
+
     if(Level.NetMode==NM_DedicatedServer)
     {
-		if(StampInfo == none)
-		   StampInfo = Spawn(Class'NewNet_TimeStamp');
-	
-		ClientTimeStamp+=DeltaTime;
-		AverDT = (9.0*AverDT + DeltaTime) / 10.0;
-		StampInfo.ReplicatetimeStamp(ClientTimeStamp);
-		if(ClientTimeStamp > LastReplicatedAverDT + AVERDT_SEND_PERIOD)
-		{
-			StampInfo.ReplicatedAverDT(AverDT);
-			LastReplicatedAverDT = ClientTimeStamp;
-		}
+        if(StampInfo == none)
+        {
+            StampInfo = Spawn(class'NewNet_TimeStamp');
+        }
+        ClientTimeStamp += DeltaTime;
+        counter+=1;
+        StampArray[counter%256] = ClientTimeStamp;
+        AverDT = ((9.0 * AverDT) + DeltaTime) / 10.0;
+        SetPawnStamp();
+        if(ClientTimeStamp > (LastReplicatedAverDT + 4.0))
+        {
+            StampInfo.ReplicatedAverDT(AverDT);
+            LastReplicatedAverDT = ClientTimeStamp;
+        }
         return;
     }
-	
+
 	if(Level.NetMode==NM_Client)
 	{
 		if(FPM==None)
 			FPM = Spawn(Class'NewNet_FakeProjectileManager');
 	}
 }
+function SetPawnStamp()
+{
+   local rotator R;
+   local int i;
 
-function InitWeapons(int AssaultAmmo,int AssaultGrenades,int BioAmmo,int ShockAmmo,int LinkAmmo,int MiniAmmo,int FlakAmmo,int RocketAmmo,int LightningAmmo)
+   if(counterpawn==none)
+   {
+       if(countercontroller==none)
+           countercontroller = spawn(class'NewNet_TimeStamp_Controller');
+       if(countercontroller.pawn!=None)
+           counterpawn=countercontroller.pawn;
+       return;
+   }
+
+   R.Yaw = (counter%256)*256;
+   i=counter/256;
+   R.Pitch = i*256;
+   counterpawn.SetRotation(R);
+}
+
+simulated function float GetStamp(int stamp)
+{
+   return StampArray[stamp%256];
+}
+
+function InitWeapons(int AssaultAmmo, int AssaultGrenades, int BioAmmo, int ShockAmmo, int LinkAmmo, int MiniAmmo, int FlakAmmo, int RocketAmmo, int LightningAmmo)
 {
     local int i;
     local class<Weapon> WeaponClass;
@@ -210,7 +242,7 @@ function InitWeapons(int AssaultAmmo,int AssaultGrenades,int BioAmmo,int ShockAm
             WeaponDefaults[i].MaxAmmo[0] = Class'XWeapons.Translauncher'.default.AmmoChargeRate;
             WeaponDefaults[i].MaxAmmo[1] = Class'XWeapons.Translauncher'.default.AmmoChargeF;
             WeaponDefaults[i].Ammo[0] = Class'XWeapons.Translauncher'.default.AmmoChargeMax;
-            class'XWeapons.Translauncher'.default.AmmoChargeRate = 0.000000; 
+            class'XWeapons.Translauncher'.default.AmmoChargeRate = 0.000000;
 		    class'XWeapons.Translauncher'.default.AmmoChargeMax = WeaponInfo[i].Ammo[0];
 		    class'XWeapons.Translauncher'.default.AmmoChargeF = WeaponInfo[i].Ammo[0];
         }
@@ -235,17 +267,17 @@ function InitWeapons(int AssaultAmmo,int AssaultGrenades,int BioAmmo,int ShockAm
 				WeaponClass.default.FireModeClass[1].default.AmmoClass.default.MaxAmmo = Min(999, WeaponInfo[i].Ammo[1] * WeaponInfo[i].MaxAmmo[0]);
 			}
 		}
-		
+
 		class'Freon_Pawn'.default.RequiredEquipment[i + 1] = WeaponInfo[i].WeaponName;
 		class'Misc_Pawn'.default.RequiredEquipment[i + 1] = WeaponInfo[i].WeaponName;
     }
-	
+
     class'BioGlob'.default.MyDamageType = class'DamType_BioGlob';
     class'FlakChunk'.default.MyDamageType = class'DamType_FlakChunk';
     class'FlakShell'.default.MyDamageType = class'DamType_FlakShell';
 	class'RocketProj'.default.MyDamageType = class'DamType_Rocket';
 	class'SeekingRocketProj'.default.MyDamageType = class'DamType_RocketHoming';
-	
+
 	if(EnableNewNet)
 	{
 		class'NewNet_BioGlob'.default.MyDamageType = class'DamType_BioGlob';
@@ -253,7 +285,7 @@ function InitWeapons(int AssaultAmmo,int AssaultGrenades,int BioAmmo,int ShockAm
 		class'NewNet_FlakShell'.default.MyDamageType = class'DamType_FlakShell';
 		class'NewNet_RocketProj'.default.MyDamageType = class'DamType_Rocket';
 		class'NewNet_SeekingRocketProj'.default.MyDamageType = class'DamType_RocketHoming';
-		
+
         class'DamTypeShieldImpact'.default.WeaponClass = class'NewNet_ShieldGun';
 		class'DamTypeAssaultBullet'.default.WeaponClass = class'NewNet_AssaultRifle';
 		class'DamTypeAssaultGrenade'.default.WeaponClass = class'NewNet_AssaultRifle';
@@ -273,7 +305,7 @@ function InitWeapons(int AssaultAmmo,int AssaultGrenades,int BioAmmo,int ShockAm
 		class'DamTypeSniperShot'.default.WeaponClass = class'NewNet_SniperRifle';
 	}
 }
-	
+
 function ResetWeaponsToDefaults(bool bModifyShieldGun)
 {
     local int i;
@@ -292,7 +324,7 @@ function ResetWeaponsToDefaults(bool bModifyShieldGun)
         // reset defaults
         if(class<Translauncher>(WeaponClass) != None && WeaponDefaults[i].Ammo[0] > 0)
         {
-            Class'XWeapons.Translauncher'.default.AmmoChargeRate = WeaponDefaults[i].MaxAmmo[0]; 
+            Class'XWeapons.Translauncher'.default.AmmoChargeRate = WeaponDefaults[i].MaxAmmo[0];
 		    Class'XWeapons.Translauncher'.default.AmmoChargeMax = WeaponDefaults[i].Ammo[0];
 		    Class'XWeapons.Translauncher'.default.AmmoChargeF = WeaponDefaults[i].MaxAmmo[1];
             continue;
@@ -300,7 +332,7 @@ function ResetWeaponsToDefaults(bool bModifyShieldGun)
 
 		if(class<ShieldGun>(WeaponClass) != None)
             continue;
-        
+
         if(WeaponClass.default.FireModeClass[0].default.AmmoClass != None)
         {
             WeaponClass.default.FireModeClass[0].default.AmmoClass.default.InitialAmount = WeaponDefaults[i].Ammo[0];
@@ -319,7 +351,7 @@ function ResetWeaponsToDefaults(bool bModifyShieldGun)
 		Class'XWeapons.ShieldFire'.default.SelfForceScale = 1;
 		Class'XWeapons.ShieldFire'.default.SelfDamageScale = 0.3;
 		Class'XWeapons.ShieldFire'.default.MinSelfDamage = 8;
-        
+
         class'WeaponFire_Shield'.default.SelfForceScale = 1;
         class'WeaponFire_Shield'.default.SelfDamageScale = 0.3;
         class'WeaponFire_Shield'.default.MinSelfDamage = 8;
@@ -355,7 +387,7 @@ function ResetWeaponsToDefaults(bool bModifyShieldGun)
 		class'UTClassic.ClassicSniperRifle'.default.FireModeClass[0]= Class'UTClassic.ClassicSniperFire';
 		class'xWeapons.SuperShockRifle'.default.FireModeClass[0]=class'xWeapons.SuperShockBeamFire';
 		class'xWeapons.SuperShockRifle'.default.FireModeClass[1]=class'xWeapons.SuperShockBeamFire';
-		
+
         class'DamTypeShieldImpact'.default.WeaponClass = class'xWeapons.ShieldGun';
 		class'DamTypeAssaultBullet'.default.WeaponClass = class'xWeapons.AssaultRifle';
 		class'DamTypeAssaultGrenade'.default.WeaponClass = class'xWeapons.AssaultRifle';
@@ -372,10 +404,10 @@ function ResetWeaponsToDefaults(bool bModifyShieldGun)
 		class'DamTypeShockBeam'.default.WeaponClass = class'xWeapons.ShockRifle';
 		class'DamType_ShockCombo'.default.WeaponClass = class'xWeapons.ShockRifle';
 		class'DamTypeSniperHeadShot'.default.WeaponClass = class'xWeapons.SniperRifle';
-		class'DamTypeSniperShot'.default.WeaponClass = class'xWeapons.SniperRifle';		
+		class'DamTypeSniperShot'.default.WeaponClass = class'xWeapons.SniperRifle';
 	}
 }
-	
+
 function bool CheckReplacement(Actor Other, out byte bSuperRelevant)
 {
     local LinkedReplicationInfo lPRI;
@@ -402,7 +434,7 @@ function bool CheckReplacement(Actor Other, out byte bSuperRelevant)
 						L.Weapons[i].WeaponClass = NewNetWeaponClasses[x];
 			return true;
 		}
-		
+
 		if (PlayerReplicationInfo(Other)!=None)
 		{
 			if(PlayerReplicationInfo(Other).CustomReplicationInfo!=None)
@@ -470,13 +502,13 @@ function bool CheckReplacement(Actor Other, out byte bSuperRelevant)
 			}
 		}
 	}
-	
+
     if(Other.IsA('Pickup') && !Other.IsA('Misc_PickupHealth') && !Other.IsA('Misc_PickupShield') && !(Other.IsA('Misc_PickupAdren')))
         return false;
-		
+
     if(Other.IsA('xPickupBase') && !Other.IsA('Misc_PickupBase'))
         Other.bHidden = true;
-		
+
     return true;
 }
 
@@ -519,7 +551,7 @@ function bool ReplaceWith(actor Other, string aClassName)
 function string GetInventoryClassOverride(string InventoryClassName)
 {
     local int x;
-	
+
 	if(EnableNewNet)
 	{
 		for(x=0; x<ArrayCount(WeaponInfo); x++)
@@ -528,7 +560,7 @@ function string GetInventoryClassOverride(string InventoryClassName)
 				return NewNetWeaponNames[x];
 		}
 	}
-	
+
     if ( NextMutator != None )
 		return NextMutator.GetInventoryClassOverride(InventoryClassName);
 	return InventoryClassName;
@@ -542,12 +574,12 @@ function GiveWeapons(Pawn P)
 	xP = Misc_Pawn(P);
 	if(xP==None)
 		return;
-		
+
     for(i = 0; i < ArrayCount(WeaponInfo); i++)
     {
         if(WeaponClasses[i]==None || (WeaponInfo[i].Ammo[0]<=0 && WeaponInfo[i].Ammo[1]<=0))
             continue;
-			
+
 		xP.GiveWeaponClass(WeaponClasses[i]);
     }
 }
@@ -561,7 +593,7 @@ function GiveAmmo(Pawn P)
 	{
 		if(WeaponInfo[i].WeaponName == "" || (WeaponInfo[i].Ammo[0] <= 0 && WeaponInfo[i].Ammo[1] <= 0))
 			continue;
-			
+
 		W = Weapon(P.FindInventoryType(WeaponClasses[i]));
 		if(W == None)
 			continue;
@@ -580,7 +612,7 @@ function ServerTraveling(string URL, bool bItems)
         Team_GameBase(Level.Game).ResetDefaults();
     else if(ArenaMaster(Level.Game) != None)
         ArenaMaster(Level.Game).ResetDefaults();
-		
+
     Super.ServerTraveling(URL, bItems);
 }
 

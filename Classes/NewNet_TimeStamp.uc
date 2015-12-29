@@ -1,6 +1,6 @@
 /*
 UTComp - UT2004 Mutator
-Copyright (C) 2004-2005 Aaron Everitt & Joël Moffatt
+Copyright (C) 2004-2005 Aaron Everitt & Joï¿½l Moffatt
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -16,38 +16,43 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-//-----------------------------------------------------------
-//
-//-----------------------------------------------------------
-class NewNet_TimeStamp extends ReplicationInfo;
 
-var float ClientTimeStamp;
+class TimeStamp extends ReplicationInfo;
+
+//var float ClientTimeStamp;
 var float AverDT;
 
 replication
 {
    unreliable if(Role == Role_Authority)
-       ClientTimeStamp, AverDT;
+       /*ClientTimeStamp,*/ averDT;
 }
 
-simulated function Tick(float DeltaTime)
+simulated function PostBeginPlay()
 {
-    ClientTimeStamp+=deltatime;
+    class'ShieldFire'.default.AutoFireTestFreq=0.05;
+    Super.PostBeginPlay();
+}
+
+simulated function tick(float DeltaTime)
+{
+   // ClientTimeStamp+=deltatime;
+    //Log(ClientTimeStamp);
     default.AverDT = Averdt;
 }
 
 function ReplicatetimeStamp(float f)
 {
-    ClientTimeStamp=f;
+ //   ClientTimeStamp=f;
 }
 
-function ReplicatedAverDT(float f)
+function REplicatedAverDT(float f)
 {
     AverDT = f;
 }
 
 defaultproperties
 {
-     NetUpdateFrequency=100.000000
-     NetPriority=5.000000
+    NetUpdateFrequency=100.0
+    NetPriority=5.0
 }

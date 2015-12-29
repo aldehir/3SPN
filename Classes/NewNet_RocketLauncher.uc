@@ -1,6 +1,6 @@
 /*
 UTComp - UT2004 Mutator
-Copyright (C) 2004-2005 Aaron Everitt & Joël Moffatt
+Copyright (C) 2004-2005 Aaron Everitt & Joï¿½l Moffatt
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -40,11 +40,13 @@ struct ReplicatedVector
     var float Z;
 };
 
-var NewNet_TimeStamp T;
+
+var NewNet_TimeStamp_Pawn t;
 var TAM_Mutator M;
 
 var float PingDT;
 var bool bUseEnhancedNetCode;
+var float lastDT;
 
 
 replication
@@ -82,6 +84,11 @@ simulated function bool PutDown()
 	if(Instigator==None)
 		return false;
 	return Super.PutDown();
+}
+
+simulated function Weapontick(float deltatime)
+{
+   lastDT = deltatime;
 }
 
 //// client only ////
@@ -132,12 +139,14 @@ simulated function NewNet_AltClientStartFire(int mode)
     {
         if (StartFire(Mode))
         {
-            if(T==None)
-                foreach DynamicActors(Class'NewNet_TimeStamp', T)
-                     break;
-         /*   if(NewNet_RocketMultiFire(FireMode[Mode])!=None)
-                NewNet_RocketMultiFire(FireMode[Mode]).DoInstantFireEffect();
-            else*/ if(NewNet_RocketFire(FireMode[Mode])!=None)
+            if(t == none)
+            {
+                foreach DynamicActors(class'NewNet_TimeStamp_Pawn', t)
+                {
+                    break;
+                }
+            }
+            if(NewNet_RocketFire(FireMode[Mode]) != none)
                 NewNet_RocketFire(FireMode[Mode]).DoInstantFireEffect();
             R.Pitch = Pawn(Owner).Controller.Rotation.Pitch;
             R.Yaw = Pawn(Owner).Controller.Rotation.Yaw;
@@ -147,7 +156,7 @@ simulated function NewNet_AltClientStartFire(int mode)
             V.Y = Start.Y;
             V.Z = Start.Z;
 
-            NewNet_ServerStartFire(mode, T.ClientTimeStamp, R, V);
+            NewNet_ServerStartFire(mode, T.TimeStamp,T.DT, R, V);
         }
     }
     else
@@ -185,35 +194,38 @@ simulated function bool AltReadyToFire(int Mode)
 	return true;
 }
 
-function NewNet_ServerStartFire(byte Mode, float ClientTimeStamp, ReplicatedRotator R, ReplicatedVector V)
+function NewNet_ServerStartFire(byte Mode, byte ClientTimeStamp, float dt, ReplicatedRotator R, ReplicatedVector V)
 {
     if(M==None)
         foreach DynamicActors(class'TAM_Mutator', M)
-	        break;
-
-    if(Team_GameBase(Level.Game)!=None && Misc_Player(Instigator.Controller)!=None)
-      Misc_Player(Instigator.Controller).NotifyServerStartFire(ClientTimeStamp, M.ClientTimeStamp, M.AverDT);
-          
-    if ( (Instigator != None) && (Instigator.Weapon != self) )
-	{
-		if ( Instigator.Weapon == None )
-			Instigator.ServerChangedWeapon(None,self);
-		else
-			Instigator.Weapon.SynchronizeWeapon(self);
-		return;
-	}
-
-
-    PingDT = FMin(M.ClientTimeStamp - ClientTimeStamp + 1.75*M.AverDT, MAX_PROJECTILE_FUDGE);
-    bUseEnhancedNetCode=true;
-    if(NewNet_RocketFire(FireMode[Mode])!=None)
+        {
+            break;
+        }
+    }
+    if((Team_GameBase(Level.Game) != none) && Misc_Player(Instigator.Controller) != none)
     {
-       // NewNet_RocketFire(FireMode[Mode]).PingDT = FMin(M.ClientTimeStamp - ClientTimeStamp + 1.75*M.AverDT, MAX_PROJECTILE_FUDGE_ALT);
+        Misc_Player(Instigator.Controller).NotifyServerStartFire(ClientTimeStamp, M.ClientTimeStamp, M.AverDT);
+    }
+    if((Instigator != none) && Instigator.Weapon != self)
+    {
+        if(Instigator.Weapon == none)
+        {
+            Instigator.ServerChangedWeapon(none, self);
+        }
+        else
+        {
+            Instigator.Weapon.SynchronizeWeapon(self);
+        }
+        return;
+    }
+    PingDT = FMin(M.ClientTimeStamp - M.GetStamp(ClientTimeStamp)-DT + 0.5*M.AverDT, MAX_PROJECTILE_FUDGE);
+    bUseEnhancedNetCode = true;
+    if(NewNet_RocketFire(FireMode[Mode]) != none)
+    {
         NewNet_RocketFire(FireMode[Mode]).bUseEnhancedNetCode = true;
     }
     else if(NewNet_RocketMultiFire(FireMode[Mode])!=None)
     {
-     //   NewNet_RocketMultiFire(FireMode[Mode]).PingDT = FMin(M.ClientTimeStamp - ClientTimeStamp + 1.75*M.AverDT, MAX_PROJECTILE_FUDGE);
         NewNet_RocketMultiFire(FireMode[Mode]).bUseEnhancedNetCode = true;
     }
 
@@ -241,7 +253,46 @@ function NewNet_ServerStartFire(byte Mode, float ClientTimeStamp, ReplicatedRota
 	else
 		ClientForceAmmoUpdate(Mode, AmmoAmount(Mode));
 }
+//// client & server ////
+simulated function bool StartFire(int Mode)
+{
+    local int alt;
+    local int OtherMode;
 
+	if ( Mode == 0 )
+		OtherMode = 1;
+	else
+		OtherMode = 0;
+	if ( FireMode[OtherMode].bIsFiring || (FireMode[OtherMode].NextFireTime > Level.TimeSeconds) )
+		return false;
+
+    if (!ReadyToFire(Mode))
+        return false;
+
+    if (Mode == 0)
+        alt = 1;
+    else
+        alt = 0;
+
+    FireMode[Mode].bIsFiring = true;
+
+    FireMode[Mode].NextFireTime = Level.TimeSeconds-LastDT*0.5 + FireMode[Mode].PreFireTime;
+
+    if (FireMode[alt].bModeExclusive)
+    {
+        // prevents rapidly alternating fire modes
+        FireMode[Mode].NextFireTime = FMax(FireMode[Mode].NextFireTime, FireMode[alt].NextFireTime);
+    }
+    if (Instigator.IsLocallyControlled())
+    {
+        if (FireMode[Mode].PreFireTime > 0.0 || FireMode[Mode].bFireOnRelease)
+        {
+            FireMode[Mode].PlayPreFire();
+        }
+        FireMode[Mode].FireCount = 0;
+    }
+    return true;
+}
 function bool IsReasonable(Vector V)
 {
     local vector LocDiff;
@@ -252,7 +303,7 @@ function bool IsReasonable(Vector V)
 
     LocDiff = V - (Pawn(Owner).Location + Pawn(Owner).EyePosition());
     clErr = (LocDiff dot LocDiff);
-    return clErr < 750.0;
+    return clErr < 1250.0;
 }
 
 function Projectile SpawnProjectile(Vector Start, Rotator Dir)

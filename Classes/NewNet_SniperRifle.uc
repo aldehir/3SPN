@@ -1,6 +1,6 @@
 /*
 UTComp - UT2004 Mutator
-Copyright (C) 2004-2005 Aaron Everitt & Joël Moffatt
+Copyright (C) 2004-2005 Aaron Everitt & Joï¿½l Moffatt
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -36,7 +36,7 @@ struct ReplicatedVector
     var float Z;
 };
 
-var NewNet_TimeStamp T;
+var NewNet_TimeStamp_Pawn t;
 var TAM_Mutator M;
 
 replication
@@ -111,14 +111,15 @@ simulated function NewNet_ClientStartFire(int mode)
 {
     local ReplicatedRotator R;
     local ReplicatedVector V;
-    local vector Start;
-    local float stamp;
- //   local bool b;
- //   local actor A;
- //   local vector HN,HL;
- //   local ReplicatedVector V2;
+    local Vector Start;
+    //local float stamp;
+  	local byte stamp;
+  	local bool b;
+  	local actor A;
+  	local vector HN,HL;
 
-    if ( Pawn(Owner).Controller.IsInState('GameEnded') || Pawn(Owner).Controller.IsInState('RoundEnded') )
+
+    if(Pawn(Owner).Controller.IsInState('GameEnded') || Pawn(Owner).Controller.IsInState('RoundEnded'))
         return;
     if (Role < ROLE_Authority)
     {
@@ -135,19 +136,16 @@ simulated function NewNet_ClientStartFire(int mode)
             if(T==None)
                 foreach DynamicActors(Class'NewNet_TimeStamp', T)
                      break;
-            Stamp = T.ClientTimeStamp;
+            stamp = t.TimeStamp;
+            NewNet_SniperFire(FireMode[Mode]).DoInstantFireEffect();
+            A = Trace(HN,HL,Start+Vector(Pawn(Owner).Controller.Rotation)*40000.0,Start,true);
 
-            NewNet_SniperFire(FireMode[mode]).DoInstantFireEffect();
-     /*       A = Trace(HN,HL,Start+Vector(Pawn(Owner).Controller.Rotation)*10000.0,Start,true);
-            if(A!=None && A.IsA('xPawn'))
+            if(A !=None && (A.IsA('xPawn')  || A.IsA('Vehicle')) )
             {
                 b=true;
-                V2.X = A.Location.X;
-                V2.Y = A.Location.Y;
-                V2.Z = A.Location.Z;
-            }           */
+            }
 
-            NewNet_ServerStartFire(Mode, stamp, R, V/*, b, V2, A,HN,HL*/);
+            NewNet_ServerStartFire(Mode, stamp, t.dt, R, V, b, A);
         }
     }
     else
@@ -185,7 +183,7 @@ simulated function bool AltReadyToFire(int Mode)
 	return true;
 }
 
-function NewNet_ServerStartFire(byte Mode, float ClientTimeStamp, ReplicatedRotator R, ReplicatedVector V/*, bool bBelievesHit, ReplicatedVector BelievedHLDelta, Actor A, vector HN, vector HL*/)
+function NewNet_ServerStartFire(byte Mode, byte ClientTimeStamp, float DT,  ReplicatedRotator R, ReplicatedVector V, bool bBelievesHit, optional actor A)
 {
 	if ( (Instigator != None) && (Instigator.Weapon != self) )
 	{
@@ -195,18 +193,27 @@ function NewNet_ServerStartFire(byte Mode, float ClientTimeStamp, ReplicatedRota
 			Instigator.Weapon.SynchronizeWeapon(self);
 		return;
 	}
-
 	if(M==None)
         foreach DynamicActors(class'TAM_Mutator', M)
-	        break;
-
-    if(Team_GameBase(Level.Game)!=None && Misc_Player(Instigator.Controller)!=None)
-      Misc_Player(Instigator.Controller).NotifyServerStartFire(ClientTimeStamp, M.ClientTimeStamp, M.AverDT);
-          
-    NewNet_SniperFire(FireMode[Mode]).PingDT = M.ClientTimeStamp - ClientTimeStamp + 1.75*M.AverDT;
+            break;
+    if((Team_GameBase(Level.Game) != none) && Misc_Player(Instigator.Controller) != none)
+    {
+        Misc_Player(Instigator.Controller).NotifyServerStartFire(ClientTimeStamp, M.ClientTimeStamp, M.AverDT);
+    }
+    NewNet_SniperFire(FireMode[Mode]).PingDT = M.ClientTimeStamp - M.GetStamp(ClientTimeStamp)-DT + 0.5*M.AverDT;
+    NewNet_SniperFire(FireMode[Mode]).AverDT = M.AverDT;
+    if(bBelievesHit)
+    {
+        NewNet_SniperFire(FireMode[Mode]).bBelievesHit=true;
+        NewNet_SniperFire(FireMode[Mode]).BelievedHitActor=A;
+    }
+    else
+    {
+        NewNet_SniperFire(FireMode[Mode]).bBelievesHit=false;
+    }
     NewNet_SniperFire(FireMode[Mode]).bUseEnhancedNetCode = true;
-    if ( (FireMode[Mode].NextFireTime <= Level.TimeSeconds + FireMode[Mode].PreFireTime)
-		&& StartFire(Mode) )
+    NewNet_SniperFire(FireMode[Mode]).bFirstGo = true;
+   if((FireMode[Mode].NextFireTime <= (Level.TimeSeconds + FireMode[Mode].PreFireTime)) && StartFire(Mode))
     {
         FireMode[Mode].ServerStartFireTime = Level.TimeSeconds;
         FireMode[Mode].bServerDelayStartFire = false;
@@ -216,14 +223,6 @@ function NewNet_ServerStartFire(byte Mode, float ClientTimeStamp, ReplicatedRota
         NewNet_SniperFire(FireMode[Mode]).SavedRot.Yaw = R.Yaw;
         NewNet_SniperFire(FireMode[Mode]).SavedRot.Pitch = R.Pitch;
         NewNet_SniperFire(FireMode[Mode]).bUseReplicatedInfo=IsReasonable(NewNet_SniperFire(FireMode[Mode]).SavedVec);
-   //     NewNet_SniperFire(FireMode[Mode]).bBelievesHit=bBelievesHit;
-   //     NewNet_SniperFire(FireMode[Mode]).bCount=true;
-   /*     NewNet_SniperFire(FireMode[Mode]).BelievedHLDelta.X = BelievedHLDelta.X;
-        NewNet_SniperFire(FireMode[Mode]).BelievedHLDelta.Y = BelievedHLDelta.Y;
-        NewNet_SniperFire(FireMode[Mode]).BelievedHLDelta.Z = BelievedHLDelta.Z;
-        NewNet_SniperFire(FireMode[Mode]).SavedVec = Pawn(Owner).Location;
-        NewNet_SniperFire(FireMode[Mode]).SavedRot = Pawn(Owner).Controller.Rotation;
-    */
     }
     else if ( FireMode[Mode].AllowFire() )
     {
@@ -243,11 +242,50 @@ function bool IsReasonable(Vector V)
 
     LocDiff = V - (Pawn(Owner).Location + Pawn(Owner).EyePosition());
     clErr = (LocDiff dot LocDiff);
-
 //    if(clErr > 500.0*M.AverDT)
 //    PlayerController(Pawn(Owner).Controller).ClientMessage("Exceeded error"@clErr);
 //    Log(ClErr@(Pawn(Owner).Velocity dot Pawn(Owner).Velocity));
-    return clErr < 750.0;
+    return clErr < 1250.0;
+}
+
+simulated function Weapontick(float deltatime)
+{
+   lastDT = deltatime;
+}
+
+//// client & server ////
+simulated function bool StartFire(int Mode)
+{
+    local int alt;
+
+    if (!ReadyToFire(Mode))
+        return false;
+
+    if (Mode == 0)
+        alt = 1;
+    else
+        alt = 0;
+
+    FireMode[Mode].bIsFiring = true;
+
+    FireMode[Mode].NextFireTime = Level.TimeSeconds-LastDT*0.5 + FireMode[Mode].PreFireTime;
+
+    if (FireMode[alt].bModeExclusive)
+    {
+        // prevents rapidly alternating fire modes
+        FireMode[Mode].NextFireTime = FMax(FireMode[Mode].NextFireTime, FireMode[alt].NextFireTime);
+    }
+
+    if (Instigator.IsLocallyControlled())
+    {
+        if (FireMode[Mode].PreFireTime > 0.0 || FireMode[Mode].bFireOnRelease)
+        {
+            FireMode[Mode].PlayPreFire();
+        }
+        FireMode[Mode].FireCount = 0;
+    }
+
+    return true;
 }
 
 defaultproperties

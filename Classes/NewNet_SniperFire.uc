@@ -1,6 +1,6 @@
 /*
 UTComp - UT2004 Mutator
-Copyright (C) 2004-2005 Aaron Everitt & Joël Moffatt
+Copyright (C) 2004-2005 Aaron Everitt & Joï¿½l Moffatt
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -27,11 +27,11 @@ var vector savedVec;
 
 var float PingDT;
 var bool bSkipNextEffect;
-//var bool bBelievesHit;
-//var float Correct, Wrong;
-//var bool bCount;
-var bool bUseEnhancedNetCode;
-//var vector BelievedHLDelta;
+var bool bBelievesHit;
+var Actor BelievedHitActor;
+var vector BelievedHitLocation;
+var float averdt;
+var bool bFirstGo;
 
 function PlayFiring()
 {
@@ -39,7 +39,7 @@ function PlayFiring()
 
    if(Level.NetMode != NM_Client || !class'Misc_Player'.static.UseNewNet())
        return;
-	
+
    if(!bSkipNextEffect)
        CheckFireEffect();
    else
@@ -185,7 +185,7 @@ function DoFireEffect()
         super.DoFireEffect();
         return;
     }
-	
+
     Instigator.MakeNoise(1.0);
 
     if(bUseReplicatedInfo)
@@ -227,7 +227,7 @@ function DoTrace(Vector Start, Rotator Dir)
         super.DoTrace(Start,Dir);
         return;
     }
-	
+
     if ( class'PlayerController'.Default.bSmallWeapons )
 		EffectOffset = Weapon.SmallEffectOffset;
 	else
@@ -260,9 +260,7 @@ function DoTrace(Vector Start, Rotator Dir)
     tmpTraceRange = TraceRange;
 
     ReflectNum = 0;
-
-    TimeTravel(pingDT);
-
+    TimeTravel(PingDT);
     while (true)
     {
         bDoReflect = false;
@@ -274,23 +272,107 @@ function DoTrace(Vector Start, Rotator Dir)
         else
             Other = DoTimeTravelTrace(HitLocation, HitNormal, End, Start);
 
-        if(Other!=None && Other.IsA('NewNet_PawnCollisionCopy'))
+        if(Other!=None && Other.IsA('PawnCollisionCopy'))
         {
             //Maintain the same ray, but move to the real pawn
             //ToDo: handle crouching differences
-            PawnHitLocation = HitLocation + NewNet_PawnCollisionCopy(Other).CopiedPawn.Location - Other.Location;
+            PawnHitLocation = HitLocation + PawnCollisionCopy(Other).CopiedPawn.Location - Other.Location;
     /*        if(ArcsRemaining == NumArcs && bCount && bBelievesHit)
             {
                  PlayerController(Pawn(Weapon.Owner).Controller).ClientMessage(BelievedHLDelta - Other.Location);
                  bCount=false;
             }    */
-            Other=NewNet_PawnCollisionCopy(Other).CopiedPawn;
+            Other=PawnCollisionCopy(Other).CopiedPawn;
 
         }
         else
         {
             PawnHitLocation = HitLocation;
         }
+
+        if(bFirstGo && bBelievesHit && !(Other == BelievedHitActor))
+        {
+            if(ArcsRemaining == NumArcs)
+            {
+                f = 0.02;
+                while(abs(f) < (0.04 + 2.0*AverDT))
+                {
+
+                    TimeTravel(PingDT-f);
+                    if((PingDT-f) <=0.0)
+                          AltOther = Weapon.Trace(AltHitLocation,AltHitNormal,End,Start,true);
+                    else
+                          AltOther = DoTimeTravelTrace(AltHitLocation, AltHitNormal, End, Start);
+
+                    if(AltOther!=None && AltOther.IsA('PawnCollisionCopy'))
+                    {
+                         AltPawnHitLocation = AltHitLocation + PawnCollisionCopy(AltOther).CopiedPawn.Location - AltOther.Location;
+                         AltOther=PawnCollisionCopy(AltOther).CopiedPawn;
+                    }
+                    else
+                    {
+                        AltPawnHitLocation=AltHitLocation;
+                    }
+
+                    if(altOther == BelievedHitACtor)
+                    {
+                    //   Log("Fixed At"@f@"with max"@(0.04 + 2.0*AverDT));
+                       Other=altOther;
+                       PawnHitLocation=AltPawnHitLocation;
+                       HitLocation=AltHitLocation;
+                       f=10.0;
+                    }
+                    if(f > 0.00)
+                        f = -1.0*f;
+                    else
+                        f = -1.0*f+0.02;
+                }
+            //    if(abs(f)<9.0)
+            //       log("Failed to fix");
+            }
+        }
+        else if(bFirstGo && !bBelievesHit && Other!=None &&(Other.IsA('xpawn') || Other.IsA('Vehicle')))
+        {
+            if(ArcsRemaining == NumArcs)
+            {
+                f = 0.02;
+                while(abs(f) < (0.04 + 2.0*AverDT))
+                {
+                    AltOther=None;
+                    TimeTravel(PingDT-f);
+                    if((PingDT-f) <=0.0)
+                          AltOther = Weapon.Trace(AltHitLocation,AltHitNormal,End,Start,true);
+                    else
+                          AltOther = DoTimeTravelTrace(AltHitLocation, AltHitNormal, End, Start);
+
+                    if(AltOther!=None && AltOther.IsA('PawnCollisionCopy'))
+                    {
+                         AltPawnHitLocation = AltHitLocation + PawnCollisionCopy(AltOther).CopiedPawn.Location - AltOther.Location;
+                         AltOther=PawnCollisionCopy(AltOther).CopiedPawn;
+                    }
+                    else
+                    {
+                         AltPAwnHitLocation=AltHitLocation;
+                    }
+
+                    if(altOther == None || !(altOther.IsA('xpawn') || altOther.IsA('Vehicle')))
+                    {
+                    //   Log("Reverse Fixed At"@f);
+                       Other=altOther;
+                       PawnHitLocation=AltPawnHitLocation;
+                       HitLocation=AltHitLocation;
+                       f=10.0;
+                    }
+                    if(f > 0.00)
+                        f = -1.0*f;
+                    else
+                        f = -1.0*f+0.02;
+                }
+              //  if(abs(f)<9.0)
+              //     log("Failed to reverse fix");
+            }
+        }
+        bFirstGo=false;
        /* if(bCount && ArcsRemaining == NumArcs && Other.IsA('ShockProjectile'))
             bCount=false;
 
@@ -307,12 +389,12 @@ function DoTrace(Vector Start, Rotator Dir)
                {
                   TimeTravel(f);
                   Other = DoTimeTravelTrace(HitLocation, HitNormal, End, Start);
-                  if(Other!=None && Other.IsA('NewNet_PawnCollisionCopy'))
+                  if(Other!=None && Other.IsA('PawnCollisionCopy'))
                   {
                         //Maintain the same ray, but move to the real pawn
                         //ToDo: handle crouching differences
-                         PawnHitLocation = HitLocation + NewNet_PawnCollisionCopy(Other).CopiedPawn.Location - Other.Location;
-                         Other=NewNet_PawnCollisionCopy(Other).CopiedPawn;
+                         PawnHitLocation = HitLocation + PawnCollisionCopy(Other).CopiedPawn.Location - Other.Location;
+                         Other=PawnCollisionCopy(Other).CopiedPawn;
                   }
                   if((bBelievesHit && Other.IsA('Xpawn')) || (!bBelievesHit && (Other==None || !Other.IsA('xPawn'))) )
                   {
@@ -345,18 +427,18 @@ function DoTrace(Vector Start, Rotator Dir)
 
                     if (HeadShotPawn != None)
                         HeadShotPawn.TakeDamage(Damage * HeadShotDamageMult, Instigator, PawnHitLocation, Momentum*X, DamageTypeHeadShot);
-					else if ( (Pawn(Other) != None) && (arcsRemaining == NumArcs)
-						&& Pawn(Other).IsHeadShot(PawnHitLocation, X, 1.0) )
+          else if ( (Pawn(Other) != None) && (arcsRemaining == NumArcs)
+            && Pawn(Other).IsHeadShot(PawnHitLocation, X, 1.0) )
                         Other.TakeDamage(Damage * HeadShotDamageMult, Instigator, PawnHitLocation, Momentum*X, DamageTypeHeadShot);
                     else
                     {
-						if ( arcsRemaining < NumArcs )
-							Damage *= SecDamageMult;
+            if ( arcsRemaining < NumArcs )
+              Damage *= SecDamageMult;
                         Other.TakeDamage(Damage, Instigator, PawnHitLocation, Momentum*X, DamageType);
-					}
+          }
                 }
                 else
-					HitLocation = HitLocation + 2.0 * HitNormal;
+          HitLocation = HitLocation + 2.0 * HitNormal;
             }
         }
         else
@@ -365,13 +447,13 @@ function DoTrace(Vector Start, Rotator Dir)
             HitNormal = Normal(Start - End);
         }
         if ( Weapon == None )
-			return;
+      return;
         hitEmitter = xEmitter(Weapon.Spawn(tmpHitEmitClass,,, arcEnd, Rotator(HitNormal)));
         if ( hitEmitter != None )
-			hitEmitter.mSpawnVecA = HitLocation;
-		if ( HitScanBlockingVolume(Other) != None )
-		{
-        	UnTimeTravel();
+      hitEmitter.mSpawnVecA = HitLocation;
+    if ( HitScanBlockingVolume(Other) != None )
+    {
+          UnTimeTravel();
             return;
         }
 
@@ -395,7 +477,7 @@ function DoTrace(Vector Start, Rotator Dir)
             // done parent arc, now move trace point to arc trace hit location and try child arcs from there
             Start = mainArcHit;
             Dir = Rotator(VRand());
-            tmpHitEmitClass = Class'NewNet_ChildLightningBolt';//SecHitEmitterClass;
+            tmpHitEmitClass = class'NewNet_ChildLightningBolt';//SecHitEmitterClass;
             tmpTraceRange = SecTraceDist;
             arcEnd = mainArcHit;
         }

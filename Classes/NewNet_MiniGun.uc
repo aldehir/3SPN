@@ -1,6 +1,6 @@
 /*
 UTComp - UT2004 Mutator
-Copyright (C) 2004-2005 Aaron Everitt & Joël Moffatt
+Copyright (C) 2004-2005 Aaron Everitt & Joï¿½l Moffatt
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -23,7 +23,7 @@ class NewNet_MiniGun extends MiniGun
 	HideDropDown
 	CacheExempt;
 
-var NewNet_TimeStamp T;
+var NewNet_TimeStamp_Pawn T;
 var TAM_Mutator M;
 
 replication
@@ -78,11 +78,14 @@ simulated event NewNet_ClientStartFire(int Mode)
     {
         if (StartFire(Mode))
         {
-            if(T==None)
-                foreach DynamicActors(Class'NewNet_TimeStamp', T)
-                     break;
-
-            NewNet_ServerStartFire(mode, T.ClientTimeStamp);
+            if(t == none)
+            {
+                foreach DynamicActors(class'NewNet_TimeStamp_Pawn', t)
+                {
+                    break;
+                }
+            }
+               NewNet_ServerStartFire(mode, T.TimeStamp, T.dt);
         }
     }
     else
@@ -91,7 +94,7 @@ simulated event NewNet_ClientStartFire(int Mode)
     }
 }
 
-function NewNet_ServerStartFire(byte Mode, float ClientTimeStamp)
+function NewNet_ServerStartFire(byte Mode, float ClientTimeStamp, float dt)
 {
     if(M==None)
         foreach DynamicActors(class'TAM_Mutator', M)
@@ -99,18 +102,17 @@ function NewNet_ServerStartFire(byte Mode, float ClientTimeStamp)
 
     if(Team_GameBase(Level.Game)!=None && Misc_Player(Instigator.Controller)!=None)
       Misc_Player(Instigator.Controller).NotifyServerStartFire(ClientTimeStamp, M.ClientTimeStamp, M.AverDT);
-          
+
     if(NewNet_MiniGunFire(FireMode[Mode])!=None)
     {
-        NewNet_MiniGunFire(FireMode[Mode]).PingDT = M.ClientTimeStamp - ClientTimeStamp + 1.75*M.AverDT;
+         NewNet_MiniGunFire(FireMode[Mode]).PingDT = M.ClientTimeStamp - M.GetStamp(ClientTimeStamp)-DT + 0.5*M.AverDT;
         NewNet_MiniGunFire(FireMode[Mode]).bUseEnhancedNetCode = true;
     }
     else if(NewNet_MiniGunAltFire(FireMode[Mode])!=None)
     {
-        NewNet_MiniGunAltFire(FireMode[Mode]).PingDT = M.ClientTimeStamp - ClientTimeStamp + 1.75*M.AverDT;
-        NewNet_MiniGunAltFire(FireMode[Mode]).bUseEnhancedNetCode = true;
+      NewNet_MiniGunAltFire(FireMode[Mode]).PingDT = M.ClientTimeStamp - M.GetStamp(ClientTimeStamp)-DT + 0.5*M.AverDT;
+      NewNet_MiniGunAltFire(FireMode[Mode]).bUseEnhancedNetCode = true;
     }
-
     ServerStartFire(Mode);
 }
 

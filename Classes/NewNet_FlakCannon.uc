@@ -1,6 +1,6 @@
 /*
 UTComp - UT2004 Mutator
-Copyright (C) 2004-2005 Aaron Everitt & Joël Moffatt
+Copyright (C) 2004-2005 Aaron Everitt & Joï¿½l Moffatt
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -39,7 +39,8 @@ struct ReplicatedVector
     var float Z;
 };
 
-var NewNet_TimeStamp T;
+
+var NewNet_TimeStamp_Pawn t;
 var TAM_Mutator M;
 
 var rotator RandSeed[9];
@@ -107,17 +108,24 @@ simulated event NewNet_ClientStartFire(int Mode)
         {
             if(!ReadyToFire(Mode))
             {
-                if(T==None)
-                    foreach DynamicActors(Class'NewNet_TimeStamp', T)
-                         break;
-                Stamp = T.ClientTimeStamp;
-                NewNet_OldServerStartFire(Mode,Stamp);
-                return;
+                if(t == none)
+                {
+                    foreach DynamicActors(class'NewNet_TimeStamp_Pawn', t)
+                    {
+                        break;
+                    }
+                }
+                Stamp = T.TimeStamp;
+                NewNet_OldServerStartFire(Mode,Stamp, T.dt);
             }
-            if(T==None)
-                foreach DynamicActors(Class'NewNet_TimeStamp', T)
-                     break;
-            if(NewNet_FlakAltFire(FireMode[Mode])!=None)
+            if(t == none)
+            {
+                foreach DynamicActors(class'NewNet_TimeStamp_Pawn', t)
+                {
+                    break;
+                }
+            }
+            if(NewNet_FlakAltFire(FireMode[Mode]) != none)
                 NewNet_FlakAltFire(FireMode[Mode]).DoInstantFireEffect();
             else if(NewNet_FlakFire(FireMode[Mode])!=None)
                 NewNet_FlakFire(FireMode[Mode]).DoInstantFireEffect();
@@ -128,8 +136,7 @@ simulated event NewNet_ClientStartFire(int Mode)
             V.X = Start.X;
             V.Y = Start.Y;
             V.Z = Start.Z;
-
-            NewNet_ServerStartFire(mode, T.ClientTimeStamp, R, V);
+            NewNet_ServerStartFire(mode, T.TimeStamp, T.Dt, R, V);
         }
     }
     else
@@ -167,7 +174,7 @@ simulated function bool AltReadyToFire(int Mode)
 	return true;
 }
 
-function NewNet_ServerStartFire(byte Mode, float ClientTimeStamp, ReplicatedRotator R, ReplicatedVector V)
+function NewNet_ServerStartFire(byte Mode, float ClientTimeStamp, float dt, ReplicatedRotator R, ReplicatedVector V)
 {
     if(M==None)
         foreach DynamicActors(class'TAM_Mutator', M)
@@ -175,7 +182,7 @@ function NewNet_ServerStartFire(byte Mode, float ClientTimeStamp, ReplicatedRota
 
     if(Team_GameBase(Level.Game)!=None && Misc_Player(Instigator.Controller)!=None)
       Misc_Player(Instigator.Controller).NotifyServerStartFire(ClientTimeStamp, M.ClientTimeStamp, M.AverDT);
-          
+
     if ( (Instigator != None) && (Instigator.Weapon != self) )
 	{
 		if ( Instigator.Weapon == None )
@@ -188,13 +195,13 @@ function NewNet_ServerStartFire(byte Mode, float ClientTimeStamp, ReplicatedRota
 
     if(NewNet_FlakFire(FireMode[Mode])!=None)
     {
-        NewNet_FlakFire(FireMode[Mode]).PingDT = FMin(M.ClientTimeStamp - ClientTimeStamp + 1.75*M.AverDT, MAX_PROJECTILE_FUDGE_ALT);
+        NewNet_FlakFire(FireMode[Mode]).PingDT = FMin(M.ClientTimeStamp - M.GetStamp(ClientTimeStamp)-DT + 0.5*M.AverDT, MAX_PROJECTILE_FUDGE_ALT);
         NewNet_FlakFire(FireMode[Mode]).bUseEnhancedNetCode = true;
     }
     else if(NewNet_FlakAltFire(FireMode[Mode])!=None)
     {
-        NewNet_FlakAltFire(FireMode[Mode]).PingDT = FMin(M.ClientTimeStamp - ClientTimeStamp + 1.75*M.AverDT, MAX_PROJECTILE_FUDGE);
-        NewNet_FlakAltFire(FireMode[Mode]).bUseEnhancedNetCode = true;
+      NewNet_FlakAltFire(FireMode[Mode]).PingDT = FMin(M.ClientTimeStamp - M.GetStamp(ClientTimeStamp)-DT + 0.5*M.AverDT, MAX_PROJECTILE_FUDGE);
+      NewNet_FlakAltFire(FireMode[Mode]).bUseEnhancedNetCode = true;
     }
 
     if ( (FireMode[Mode].NextFireTime <= Level.TimeSeconds + FireMode[Mode].PreFireTime)
@@ -239,8 +246,7 @@ function bool IsReasonable(Vector V)
         return true;
 
     LocDiff = V - (Pawn(Owner).Location + Pawn(Owner).EyePosition());
-    clErr = (LocDiff dot LocDiff);
-    return clErr < 750.0;
+    return clErr < 1250.0;
 }
 
 function SendNewRandSeed()
@@ -276,7 +282,7 @@ simulated event PostNetBeginPlay()
     SendNewRandSeed();
 }
 
-function NewNet_OldServerStartFire(byte Mode, float ClientTimeStamp)
+function NewNet_OldServerStartFire(byte Mode, float ClientTimeStamp, float dt)
 {
     if(M==None)
         foreach DynamicActors(class'TAM_Mutator', M)
@@ -284,13 +290,13 @@ function NewNet_OldServerStartFire(byte Mode, float ClientTimeStamp)
 
     if(NewNet_FlakFire(FireMode[Mode])!=None)
     {
-        NewNet_FlakFire(FireMode[Mode]).PingDT = FMin(M.ClientTimeStamp - ClientTimeStamp + 1.75*M.AverDT, MAX_PROJECTILE_FUDGE_ALT);
+        NewNet_FlakFire(FireMode[Mode]).PingDT = FMin(M.ClientTimeStamp - M.GetStamp(ClientTimeStamp)-DT + 0.5*M.AverDT, MAX_PROJECTILE_FUDGE_ALT);
         NewNet_FlakFire(FireMode[Mode]).bUseEnhancedNetCode = true;
     }
     else if(NewNet_FlakAltFire(FireMode[Mode])!=None)
     {
-        NewNet_FlakAltFire(FireMode[Mode]).PingDT = FMin(M.ClientTimeStamp - ClientTimeStamp + 1.75*M.AverDT, MAX_PROJECTILE_FUDGE);
-        NewNet_FlakAltFire(FireMode[Mode]).bUseEnhancedNetCode = true;
+       NewNet_FlakAltFire(FireMode[Mode]).PingDT = FMin(M.ClientTimeStamp - M.GetStamp(ClientTimeStamp)-DT + 0.5*M.AverDT, MAX_PROJECTILE_FUDGE);
+       NewNet_FlakAltFire(FireMode[Mode]).bUseEnhancedNetCode = true;
     }
 
     ServerStartFire(mode);
