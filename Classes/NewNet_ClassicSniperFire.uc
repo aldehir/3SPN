@@ -51,7 +51,7 @@ function DoTrace(Vector Start, Rotator Dir)
         Other = DoTimeTravelTrace(HitLocation, HitNormal, End, Start);
     }
     // End:0x231
-    if((Other != none) && Other.UnresolvedNativeFunction_97('NewNet_PawnCollisionCopy'))
+    if((Other != none) && Other.IsA('NewNet_PawnCollisionCopy'))
     {
         PawnHitLocation = (HitLocation + NewNet_PawnCollisionCopy(Other).CopiedPawn.Location) - Other.Location;
         Other = NewNet_PawnCollisionCopy(Other).CopiedPawn;
@@ -65,7 +65,7 @@ function DoTrace(Vector Start, Rotator Dir)
     // End:0x2A0
     if((Level.NetMode != NM_Standalone) || PlayerController(Instigator.Controller) == none)
     {
-        Weapon.UnresolvedNativeFunction_97(class'TracerProjectile', Instigator.Controller,, Start, Dir);
+        Weapon.Spawn(class'TracerProjectile', Instigator.Controller,, Start, Dir);
     }
     // End:0x414
     if((Other != none) && Other != Instigator)
@@ -113,7 +113,7 @@ function DoTrace(Vector Start, Rotator Dir)
     // End:0x4A9
     if((HitNormal != vect(0.0, 0.0, 0.0)) && HitScanBlockingVolume(Other) == none)
     {
-        S = Weapon.UnresolvedNativeFunction_97(class'SniperWallHitEffect',,, HitLocation, rotator(float(-1) * HitNormal));
+        S = Weapon.Spawn(class'SniperWallHitEffect',,, HitLocation, rotator(float(-1) * HitNormal));
         // End:0x4A9
         if(S != none)
         {

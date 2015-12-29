@@ -30,7 +30,7 @@ function bool AllowOpen(string MenuClass)
 function InitComponent(GUIController MyController, GUIComponent MyOwner)
 {
     super(GUIPage).InitComponent(MyController, MyOwner);
-    bAdmin = (UnresolvedNativeFunction_99().PlayerReplicationInfo != none) && UnresolvedNativeFunction_99().PlayerReplicationInfo.bAdmin || UnresolvedNativeFunction_99().Level.NetMode == NM_Standalone;
+    bAdmin = (PlayerOwner().PlayerReplicationInfo != none) && PlayerOwner().PlayerReplicationInfo.bAdmin || PlayerOwner().Level.NetMode == NM_Standalone;
     GUITitleBar(Controls[1]).Caption = ("3SPN" @ class'Misc_BaseGRI'.default.Version) @ "Configuration";
     TabC = GUITabControl(Controls[2]);
     InfoTab = Menu_TabInfo(TabC.AddTab("Info", "3SPNv3210CW.Menu_TabInfo",, "General Information", DefaultToInfoTab));
@@ -41,37 +41,37 @@ function InitComponent(GUIController MyController, GUIComponent MyOwner)
     // End:0x2B5
     if(InfoTab == none)
     {
-        LogInternal("Count not open tab Menu_TabInfo", '3SPN');
+        Log("Count not open tab Menu_TabInfo", '3SPN');
     }
     // End:0x2E9
     if(StatsTab == none)
     {
-        LogInternal("Count not open tab Menu_TabRanks", '3SPN');
+        Log("Count not open tab Menu_TabRanks", '3SPN');
     }
     // End:0x31C
     if(MiscTab == none)
     {
-        LogInternal("Could not open tab Menu_TabMisc", '3SPN');
+        Log("Could not open tab Menu_TabMisc", '3SPN');
     }
     // End:0x356
     if(BSTab == none)
     {
-        LogInternal("Could not open tab Menu_TabBrightskins", '3SPN');
+        Log("Could not open tab Menu_TabBrightskins", '3SPN');
     }
     // End:0x38E
     if(NamesTab == none)
     {
-        LogInternal("Could not open tab Menu_ColoredNames", '3SPN');
+        Log("Could not open tab Menu_ColoredNames", '3SPN');
     }
     // End:0x561
     if(bAdmin)
     {
         TournamentAdminTab = Menu_TabTournamentAdmin(TabC.AddTab("Tournament Admin", "3SPNv3210CW.Menu_TabTournamentAdmin",, "Tournament", false));
         // End:0x4EF
-        if(UnresolvedNativeFunction_99().Level.GRI != none)
+        if(PlayerOwner().Level.GRI != none)
         {
             // End:0x493
-            if(UnresolvedNativeFunction_99().Level.GRI.bTeamGame)
+            if(PlayerOwner().Level.GRI.bTeamGame)
             {
                 AdminTab = Menu_TabTAMAdmin(TabC.AddTab("Admin", "3SPNv3210CW.Menu_TabTAMAdmin",, "Admin/Server configuration", false));
             }
@@ -84,12 +84,12 @@ function InitComponent(GUIController MyController, GUIComponent MyOwner)
         // End:0x523
         if(AdminTab == none)
         {
-            LogInternal("Could not open tab Menu_TabAdmin", '3SPN');
+            Log("Could not open tab Menu_TabAdmin", '3SPN');
         }
         // End:0x561
         if(TournamentAdminTab == none)
         {
-            LogInternal("Could not open the Menu_TabTournamentAdmin", '3SPN');
+            Log("Could not open the Menu_TabTournamentAdmin", '3SPN');
         }
     }
     //return;    
@@ -120,7 +120,7 @@ function InternalOnClose(optional bool bCanceled)
     // End:0xF8
     if(class'Misc_Player'.default.AutoSyncSettings && default.SettingsDirty)
     {
-        MP = Misc_Player(UnresolvedNativeFunction_99());
+        MP = Misc_Player(PlayerOwner());
         // End:0xF0
         if(MP != none)
         {

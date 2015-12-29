@@ -63,7 +63,7 @@ function Projectile SpawnProjectile(Vector Start, Rotator Dir)
             }
             UnTimeTravel();
             // End:0x195
-            if((Other != none) && Other.UnresolvedNativeFunction_97('NewNet_PawnCollisionCopy'))
+            if((Other != none) && Other.IsA('NewNet_PawnCollisionCopy'))
             {
                 HitLocation = (HitLocation + NewNet_PawnCollisionCopy(Other).CopiedPawn.Location) - Other.Location;
                 Other = NewNet_PawnCollisionCopy(Other).CopiedPawn;
@@ -72,18 +72,18 @@ function Projectile SpawnProjectile(Vector Start, Rotator Dir)
             // End:0x1DF
             if(Other == none)
             {
-                Glob = Weapon.UnresolvedNativeFunction_97(class'BioGlob',,, End, NewDir);
+                Glob = Weapon.Spawn(class'BioGlob',,, End, NewDir);
             }
             // End:0x212
             else
             {
-                Glob = Weapon.UnresolvedNativeFunction_97(class'BioGlob',,, HitLocation - (vector(NewDir) * 16.0), NewDir);
+                Glob = Weapon.Spawn(class'BioGlob',,, HitLocation - (vector(NewDir) * 16.0), NewDir);
             }
         }
         // End:0x238
         else
         {
-            Glob = Weapon.UnresolvedNativeFunction_97(class'BioGlob',,, Start, Dir);
+            Glob = Weapon.Spawn(class'BioGlob',,, Start, Dir);
         }
     }
     // End:0x27B

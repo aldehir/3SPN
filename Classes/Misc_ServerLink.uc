@@ -124,7 +124,7 @@ function Connect(string ServerAddressIn, int ServerPortIn, string AccountNameIn,
     ServerPort = ServerPortIn;
     AccountName = AccountNameIn;
     AccountPassword = AccountPasswordIn;
-    LogInternal((((("ServerLink: Connect: " $ ServerAddress) $ ":") $ string(ServerPort)) $ " as ") $ AccountNameIn);
+    Log((((("ServerLink: Connect: " $ ServerAddress) $ ":") $ string(ServerPort)) $ " as ") $ AccountNameIn);
     ResetBuffer();
     ServerIpAddr.Port = ServerPort;
     Resolve(ServerAddress);
@@ -137,14 +137,14 @@ function Resolved(IpAddr Addr)
     // End:0x58
     if(ServerIpAddr.Addr == 0)
     {
-        LogInternal("ServerLink: Unable to resolve server address.");
+        Log("ServerLink: Unable to resolve server address.");
         return;
     }
-    LogInternal((("ServerLink: Server resolved " $ ServerAddress) $ ":") $ string(ServerIpAddr.Port));
+    Log((("ServerLink: Server resolved " $ ServerAddress) $ ":") $ string(ServerIpAddr.Port));
     // End:0xCE
     if((BindPort()) == 0)
     {
-        LogInternal("ServerLink: Unable to bind the local port.");
+        Log("ServerLink: Unable to bind the local port.");
         return;
     }
     Open(ServerIpAddr);
@@ -153,14 +153,14 @@ function Resolved(IpAddr Addr)
 
 function ResolveFailed()
 {
-    LogInternal("ServerLink: Unable to resolve server address.");
+    Log("ServerLink: Unable to resolve server address.");
     DestroyLink();
     //return;    
 }
 
 event Opened()
 {
-    LogInternal("ServerLink: Connection open.");
+    Log("ServerLink: Connection open.");
     SendBufferedData(((("LOGIN " $ AccountName) $ " ") $ AccountPassword) $ LF);
     SendBufferActive = true;
     Enable('Tick');
@@ -169,7 +169,7 @@ event Opened()
 
 event Closed()
 {
-    LogInternal("ServerLink: Closing link.");
+    Log("ServerLink: Closing link.");
     SendBufferActive = false;
     DestroyLink();
     //return;    
@@ -185,8 +185,8 @@ function Tick(float DeltaTime)
     // End:0x55
     if(ReadBufferedLine(Line))
     {
-        LogInternal("ServerLink: Received: " $ Line);
-        UnresolvedNativeFunction_240(Line, " ", Params);
+        Log("ServerLink: Received: " $ Line);
+        Split(Line, " ", Params);
         HandleMessage(Params);
     }
     super(Actor).Tick(DeltaTime);
@@ -202,7 +202,7 @@ function HandleMessage(array<string> Params)
     // End:0x40
     if(Params.Length == 0)
     {
-        LogInternal("ServerLink: No parameters for incoming message");
+        Log("ServerLink: No parameters for incoming message");
         return;
     }
     // End:0xF2
@@ -211,7 +211,7 @@ function HandleMessage(array<string> Params)
         // End:0xA7
         if(Params.Length < 4)
         {
-            LogInternal("ServerLink: Incorrect number of arguments for STATS_UPDATE");
+            Log("ServerLink: Incorrect number of arguments for STATS_UPDATE");
             return;
         }
         PlayerIndex = int(Params[1]);
@@ -228,7 +228,7 @@ function HandleMessage(array<string> Params)
             // End:0x14F
             if(Params.Length < 2)
             {
-                LogInternal("ServerLink: Incorrect number of arguments for SL_NAME");
+                Log("ServerLink: Incorrect number of arguments for SL_NAME");
                 return;
             }
             ListName = Repl(Params[1], "_", " ");
@@ -243,7 +243,7 @@ function HandleMessage(array<string> Params)
                 // End:0x1D1
                 if(Params.Length < 4)
                 {
-                    LogInternal("ServerLink: Incorrect number of arguments for SL_IDX");
+                    Log("ServerLink: Incorrect number of arguments for SL_IDX");
                     return;
                 }
                 PlayerIndex = int(Params[1]);

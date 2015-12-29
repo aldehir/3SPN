@@ -292,7 +292,7 @@ simulated function SpawnBeamEffect(Vector HitLocation, Vector HitNormal, Vector 
     {
         Start.Z = Start.Z - 64.0;
     }
-    Beam = UnresolvedNativeFunction_97(class'NewNet_Client_ShockBeamEffect',,, Start, Dir);
+    Beam = Spawn(class'NewNet_Client_ShockBeamEffect',,, Start, Dir);
     // End:0x5A
     if(ReflectNum != 0)
     {

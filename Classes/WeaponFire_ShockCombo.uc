@@ -13,7 +13,7 @@ function SuperExplosion()
     local Vector HitLocation, HitNormal;
 
     HurtRadius(ComboDamage, ComboRadius, class'DamType_ShockCombo', ComboMomentumTransfer, Location);
-    UnresolvedNativeFunction_97(class'ShockCombo');
+    Spawn(class'ShockCombo');
     // End:0xA7
     if((Level.NetMode != NM_DedicatedServer) && EffectIsRelevant(Location, false))
     {
@@ -21,10 +21,10 @@ function SuperExplosion()
         // End:0xA7
         if(HitActor != none)
         {
-            UnresolvedNativeFunction_97(class'ComboDecal', self,, HitLocation, rotator(vect(0.0, 0.0, -1.0)));
+            Spawn(class'ComboDecal', self,, HitLocation, rotator(vect(0.0, 0.0, -1.0)));
         }
     }
-    UnresolvedNativeFunction_97(ComboSound, 0, 1.0,, 800.0);
+    PlaySound(ComboSound, 0, 1.0,, 800.0);
     DestroyTrails();
     Destroy();
     //return;    

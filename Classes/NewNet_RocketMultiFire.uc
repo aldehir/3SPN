@@ -388,7 +388,7 @@ simulated function Projectile SpawnFakeProjectile(Vector Start, Rotator Dir, int
     // End:0x6A
     if(FPM.AllowFakeProjectile(FakeProjectileClass, Index))
     {
-        P = Weapon.UnresolvedNativeFunction_97(FakeProjectileClass, Weapon.Owner,, Start, Dir);
+        P = Weapon.Spawn(FakeProjectileClass, Weapon.Owner,, Start, Dir);
     }
     // End:0x77
     if(P == none)
@@ -411,12 +411,12 @@ function Projectile AltSpawnProjectile(Vector Start, Rotator Dir, int Index)
         P.Damage *= DamageAtten;
     }
     // End:0x71
-    if(P.UnresolvedNativeFunction_97('NewNet_RocketProj'))
+    if(P.IsA('NewNet_RocketProj'))
     {
         NewNet_RocketProj(P).Index = Index;
     }
     // End:0x9E
-    if(P.UnresolvedNativeFunction_97('NewNet_SeekingRocketProj'))
+    if(P.IsA('NewNet_SeekingRocketProj'))
     {
         NewNet_SeekingRocketProj(P).Index = Index;
     }

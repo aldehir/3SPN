@@ -69,7 +69,7 @@ function Controller PickWhoToRes()
                     else
                     {
                         // End:0x15C
-                        if((!C.UnresolvedNativeFunction_97('PlayerController') && !C.PlayerReplicationInfo.bBot) || C.Pawn != none)
+                        if((!C.IsA('PlayerController') && !C.PlayerReplicationInfo.bBot) || C.Pawn != none)
                         {
                         }
                         // End:0x316
@@ -83,7 +83,7 @@ function Controller PickWhoToRes()
                             else
                             {
                                 // End:0x26F
-                                if((C.UnresolvedNativeFunction_97('Freon_Player') && Freon_Player(C).FrozenPawn != none) || C.UnresolvedNativeFunction_97('Freon_Bot') && Freon_Bot(C).FrozenPawn != none)
+                                if((C.IsA('Freon_Player') && Freon_Player(C).FrozenPawn != none) || C.IsA('Freon_Bot') && Freon_Bot(C).FrozenPawn != none)
                                 {
                                     // End:0x240
                                     if(Misc_Player(C) != none)
@@ -179,7 +179,7 @@ function Abort()
         PlayerController(Necromancer).ClientPlaySound(sound'ShortCircuit');
     }
     // End:0xD1
-    if(Level.Game.UnresolvedNativeFunction_97('Freon'))
+    if(Level.Game.IsA('Freon'))
     {
         // End:0xCE
         if(P != none)
@@ -271,7 +271,7 @@ function DoResurrection()
             }
         }
         xPawn.Thaw();
-        UnresolvedNativeFunction_97(sound'Thaw', 0, 300.0);
+        PlaySound(sound'Thaw', 0, 300.0);
         BroadcastLocalizedMessage(class'NecroMessages', 2, Necromancer.PlayerReplicationInfo, Resurrectee.PlayerReplicationInfo);
     }
     // End:0x36B
@@ -296,7 +296,7 @@ function DoResurrection()
         {
             Misc_Pawn(Resurrectee.Pawn).DeactivateSpawnProtection();
         }
-        UnresolvedNativeFunction_97(sound'Resurrection', 0, 300.0);
+        PlaySound(sound'Resurrection', 0, 300.0);
         BroadcastLocalizedMessage(class'NecroMessages', 0, Necromancer.PlayerReplicationInfo, Resurrectee.PlayerReplicationInfo);
     }
     ResurrecteeHealth = HealthOnResurrect;
@@ -318,7 +318,7 @@ function DoResurrection()
         // End:0x4C0
         if(P.FindInventoryType(class'NecroLeech') == none)
         {
-            LeechInv = UnresolvedNativeFunction_97(class'NecroLeech', P,,);
+            LeechInv = Spawn(class'NecroLeech', P,,);
             // End:0x4C0
             if(LeechInv != none)
             {
@@ -351,12 +351,12 @@ static function FillPlayInfo(PlayInfo PlayInfo)
     local int i;
 
     super(Info).FillPlayInfo(PlayInfo);
-    PlayInfo.UnresolvedNativeFunction_98("Necro Combo v3", "NecroScoreAward", default.PropsDisplayText[++ i], 0, 10, "Text");
-    PlayInfo.UnresolvedNativeFunction_98("Necro Combo v3", "HealthOnResurrect", default.PropsDisplayText[++ i], 0, 10, "Text");
-    PlayInfo.UnresolvedNativeFunction_98("Necro Combo v3", "ShieldOnResurrect", default.PropsDisplayText[++ i], 0, 10, "Text");
-    PlayInfo.UnresolvedNativeFunction_98("Necro Combo v3", "bSacrificeHealth", default.PropsDisplayText[++ i], 0, 10, "Check");
-    PlayInfo.UnresolvedNativeFunction_98("Necro Combo v3", "SacrificePercentage", default.PropsDisplayText[++ i], 0, 10, "Text");
-    PlayInfo.UnresolvedNativeFunction_98("Necro Combo v3", "bShareHealth", default.PropsDisplayText[++ i], 0, 10, "Check");
+    PlayInfo.AddSetting("Necro Combo v3", "NecroScoreAward", default.PropsDisplayText[++ i], 0, 10, "Text");
+    PlayInfo.AddSetting("Necro Combo v3", "HealthOnResurrect", default.PropsDisplayText[++ i], 0, 10, "Text");
+    PlayInfo.AddSetting("Necro Combo v3", "ShieldOnResurrect", default.PropsDisplayText[++ i], 0, 10, "Text");
+    PlayInfo.AddSetting("Necro Combo v3", "bSacrificeHealth", default.PropsDisplayText[++ i], 0, 10, "Check");
+    PlayInfo.AddSetting("Necro Combo v3", "SacrificePercentage", default.PropsDisplayText[++ i], 0, 10, "Text");
+    PlayInfo.AddSetting("Necro Combo v3", "bShareHealth", default.PropsDisplayText[++ i], 0, 10, "Check");
     //return;    
 }
 

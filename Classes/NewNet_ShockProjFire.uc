@@ -121,7 +121,7 @@ simulated function Projectile SpawnFakeProjectile(Vector Start, Rotator Dir)
     // End:0x58
     if(FPM.AllowFakeProjectile(FakeProjectileClass))
     {
-        P = Weapon.UnresolvedNativeFunction_97(FakeProjectileClass,,, Start, Dir);
+        P = Weapon.Spawn(FakeProjectileClass,,, Start, Dir);
     }
     // End:0x65
     if(P == none)

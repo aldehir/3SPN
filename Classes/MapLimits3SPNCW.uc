@@ -24,7 +24,7 @@ static function bool FindMap(string MapName, out int MinPlayers, out int MaxPlay
     if(j < default.MapLimits.Length)
     {
         MapLimitsEntry = default.MapLimits[j];
-        P = UnresolvedNativeFunction_240(MapLimitsEntry, "?", Parts);
+        P = Split(MapLimitsEntry, "?", Parts);
         // End:0x4B
         if(P < 1)
         {

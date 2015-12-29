@@ -50,7 +50,7 @@ function Misc_ServerLink GetServerLink()
     {
         return ServerLink;
     }
-    ServerLink = UnresolvedNativeFunction_97(class'Misc_ServerLink');
+    ServerLink = Spawn(class'Misc_ServerLink');
     // End:0x98
     if(ServerLink != none)
     {
@@ -70,12 +70,12 @@ function Misc_PlayerData PlayerJoined(Misc_Player P)
     local string StatsID;
     local int i;
 
-    LogInternal("PlayerJoined: " $ P.PlayerReplicationInfo.PlayerName);
+    Log("PlayerJoined: " $ P.PlayerReplicationInfo.PlayerName);
     StatsID = class'Misc_Util'.static.GetStatsID(P);
     // End:0x80
     if(StatsID == "")
     {
-        LogInternal("No stats ID for " $ P.PlayerReplicationInfo.PlayerName);
+        Log("No stats ID for " $ P.PlayerReplicationInfo.PlayerName);
         return none;
     }
     i = 0;
@@ -93,7 +93,7 @@ function Misc_PlayerData PlayerJoined(Misc_Player P)
         // End:0x13A
         if(PD.StatsID == StatsID)
         {
-            LogInternal("Existing player record found for " $ P.PlayerReplicationInfo.PlayerName);
+            Log("Existing player record found for " $ P.PlayerReplicationInfo.PlayerName);
             class'Misc_PlayerData'.static.AttachPlayerRecord(P, PD);
             P.LoadPlayerData();
             return PD;
@@ -115,7 +115,7 @@ function Misc_PlayerData PlayerJoined(Misc_Player P)
     // End:0x24C
     if(SL != none)
     {
-        LogInternal("Requesting stats for player " $ P.PlayerReplicationInfo.PlayerName);
+        Log("Requesting stats for player " $ P.PlayerReplicationInfo.PlayerName);
         SL.RequestStats(i, PD.StatsID);
     }
     return none;
@@ -124,7 +124,7 @@ function Misc_PlayerData PlayerJoined(Misc_Player P)
 
 function PlayerLeft(Misc_Player P)
 {
-    LogInternal("PlayerLeft: " $ P.PlayerReplicationInfo.PlayerName);
+    Log("PlayerLeft: " $ P.PlayerReplicationInfo.PlayerName);
     P.StorePlayerData();
     // End:0x69
     if(P.PlayerData != none)
@@ -138,7 +138,7 @@ function PlayerChangedName(Misc_Player P)
 {
     local string PlayerName;
 
-    LogInternal("PlayerChangedName: " $ P.PlayerReplicationInfo.PlayerName);
+    Log("PlayerChangedName: " $ P.PlayerReplicationInfo.PlayerName);
     PlayerName = class'Misc_Util'.static.StripColor(P.PlayerReplicationInfo.PlayerName);
     ReplaceText(PlayerName, " ", "_");
     ReplaceText(PlayerName, "]", "_");
@@ -216,12 +216,12 @@ function FinishMatch()
         }
         TeamScoreStr = (string(int(TGB.Teams[0].Score)) $ ",") $ string(int(TGB.Teams[1].Score));
     }
-    LogInternal("Registering match stats...");
+    Log("Registering match stats...");
     TimeString = class'Misc_Util'.static.GetTimeStringFromLevel(Level);
     // End:0x163
     if(TimeString == "")
     {
-        LogInternal("Error: Unable to get match time");
+        Log("Error: Unable to get match time");
         return;
     }
     PlayerCnt = 0;
@@ -257,11 +257,11 @@ function FinishMatch()
     // End:0x292
     if(PlayerCnt == 0)
     {
-        LogInternal("No active players in match");
+        Log("No active players in match");
         return;
     }
     MapName = class'Misc_Util'.static.GetMapName(Level);
-    LogInternal((((("Registering match with time: " $ TimeString) $ ", map: ") $ MapName) $ ", team scores: ") $ TeamScoreStr);
+    Log((((("Registering match with time: " $ TimeString) $ ", map: ") $ MapName) $ ", team scores: ") $ TeamScoreStr);
     SL.RegisterGame(TimeString, MapName, TeamScoreStr);
     i = 0;
     J0x325:
@@ -281,7 +281,7 @@ function FinishMatch()
             // [Explicit Continue]
             goto J0x4F0;
         }
-        LogInternal(((((("Sending results for " $ PD.OwnerID) $ " - ") $ PD.OwnerName) $ " (index:") $ string(PD.StatsIndex)) $ ")");
+        Log(((((("Sending results for " $ PD.OwnerID) $ " - ") $ PD.OwnerName) $ " (index:") $ string(PD.StatsIndex)) $ ")");
         SL.RegisterStats(TimeString, PD.OwnerName, PD.StatsID, PD.TeamIdx, PD.Current.Rounds, PD.Current.Score, PD.Current.Kills, PD.Current.Deaths, PD.Current.Thaws, PD.Current.Git);
         J0x4F0:
         ++ i;

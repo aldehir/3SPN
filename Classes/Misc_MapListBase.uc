@@ -17,7 +17,7 @@ function string UpdateMapNum(int NewMapNum)
     // End:0x4E
     if(Maps.Length == 0)
     {
-        WarnInternal("No maps configured for game maplist! Unable to change maps!");
+        Warn("No maps configured for game maplist! Unable to change maps!");
         return "";
     }
     // End:0x7C

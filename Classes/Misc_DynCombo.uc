@@ -65,12 +65,12 @@ function AddCombo(class<Combo> ComboClass)
     // End:0x15F
     if(Combos[i] == none)
     {
-        Combos[i] = UnresolvedNativeFunction_97(ComboClass, Pawn(Owner));
+        Combos[i] = Spawn(ComboClass, Pawn(Owner));
         Combos[i].AdrenalineCost = 0.0;
     }
     UnrealMPGameInfo(Level.Game).SpecialEvent(Pawn(Owner).PlayerReplicationInfo, "" $ string(ComboClass));
     // End:0x1BE
-    if(Combos[i].UnresolvedNativeFunction_97('ComboSpeed'))
+    if(Combos[i].IsA('ComboSpeed'))
     {
         i = 0;
     }
@@ -78,7 +78,7 @@ function AddCombo(class<Combo> ComboClass)
     else
     {
         // End:0x1E2
-        if(Combos[i].UnresolvedNativeFunction_97('ComboBerserk'))
+        if(Combos[i].IsA('ComboBerserk'))
         {
             i = 1;
         }
@@ -86,7 +86,7 @@ function AddCombo(class<Combo> ComboClass)
         else
         {
             // End:0x207
-            if(Combos[i].UnresolvedNativeFunction_97('ComboDefensive'))
+            if(Combos[i].IsA('ComboDefensive'))
             {
                 i = 2;
             }
@@ -94,7 +94,7 @@ function AddCombo(class<Combo> ComboClass)
             else
             {
                 // End:0x22C
-                if(Combos[i].UnresolvedNativeFunction_97('ComboInvis'))
+                if(Combos[i].IsA('ComboInvis'))
                 {
                     i = 3;
                 }

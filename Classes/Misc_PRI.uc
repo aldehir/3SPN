@@ -71,7 +71,7 @@ event PostBeginPlay()
     // End:0x56
     if(!bDeleteMe && Level.NetMode != NM_Client)
     {
-        PawnReplicationInfo = UnresolvedNativeFunction_97(PawnInfoClass, self,, vect(0.0, 0.0, 0.0), rot(0, 0, 0));
+        PawnReplicationInfo = Spawn(PawnInfoClass, self,, vect(0.0, 0.0, 0.0), rot(0, 0, 0));
     }
     //return;    
 }

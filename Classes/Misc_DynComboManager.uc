@@ -100,7 +100,7 @@ function PlayerSpawned(Controller C)
     {
         return;
     }
-    xPawn(C.Pawn).CurrentCombo = UnresolvedNativeFunction_97(class'Misc_DynCombo', xPawn(C.Pawn));
+    xPawn(C.Pawn).CurrentCombo = Spawn(class'Misc_DynCombo', xPawn(C.Pawn));
     // End:0xEE
     if(Misc_DynCombo(xPawn(C.Pawn).CurrentCombo) == none)
     {
@@ -222,7 +222,7 @@ function PlayerUsedCombo(Controller Player, class<Combo> ComboClass)
                 // End:0x2F5
                 if(xPawn(C.Pawn).CurrentCombo == none)
                 {
-                    xPawn(C.Pawn).CurrentCombo = UnresolvedNativeFunction_97(class'Misc_DynCombo', xPawn(C.Pawn));
+                    xPawn(C.Pawn).CurrentCombo = Spawn(class'Misc_DynCombo', xPawn(C.Pawn));
                     // End:0x2C9
                     if(Misc_DynCombo(xPawn(C.Pawn).CurrentCombo) == none)
                     {

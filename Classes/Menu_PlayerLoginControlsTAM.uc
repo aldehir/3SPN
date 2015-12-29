@@ -36,10 +36,10 @@ function bool InternalOnPreDraw(Canvas C)
                 sb_Blue.Caption = BlueTeam @ string(int(GRI.Teams[1].Score));
             }
             // End:0x165
-            if(UnresolvedNativeFunction_99().PlayerReplicationInfo.Team != none)
+            if(PlayerOwner().PlayerReplicationInfo.Team != none)
             {
                 // End:0x134
-                if(UnresolvedNativeFunction_99().PlayerReplicationInfo.Team.TeamIndex == 0)
+                if(PlayerOwner().PlayerReplicationInfo.Team.TeamIndex == 0)
                 {
                     sb_Red.HeaderBase = texture'Display95';
                     sb_Blue.HeaderBase = sb_Blue.default.HeaderBase;
@@ -55,7 +55,7 @@ function bool InternalOnPreDraw(Canvas C)
         SetButtonPositions(C);
         UpdatePlayerLists();
         // End:0x1E6
-        if(((UnresolvedNativeFunction_99().myHUD == none) || !UnresolvedNativeFunction_99().myHUD.IsInCinematic()) && (GRI.MaxLives <= 0) || !UnresolvedNativeFunction_99().PlayerReplicationInfo.bOnlySpectator)
+        if(((PlayerOwner().myHUD == none) || !PlayerOwner().myHUD.IsInCinematic()) && (GRI.MaxLives <= 0) || !PlayerOwner().PlayerReplicationInfo.bOnlySpectator)
         {
             EnableComponent(b_Spec);
         }

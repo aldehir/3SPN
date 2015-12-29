@@ -48,7 +48,7 @@ function DoTrace(Vector Start, Rotator Dir)
             Other = DoTimeTravelTrace(HitLocation, HitNormal, End, Start);
         }
         // End:0x136
-        if((Other != none) && Other.UnresolvedNativeFunction_97('NewNet_PawnCollisionCopy'))
+        if((Other != none) && Other.IsA('NewNet_PawnCollisionCopy'))
         {
             PawnHitLocation = (HitLocation + NewNet_PawnCollisionCopy(Other).CopiedPawn.Location) - Other.Location;
             Other = NewNet_PawnCollisionCopy(Other).CopiedPawn;
@@ -62,7 +62,7 @@ function DoTrace(Vector Start, Rotator Dir)
         if((Other != none) && (Other != Instigator) || ReflectNum > 0)
         {
             // End:0x1DA
-            if((bReflective && Other.UnresolvedNativeFunction_97('xPawn')) && xPawn(Other).CheckReflect(PawnHitLocation, RefNormal, int(float(DamageMin) * 0.250)))
+            if((bReflective && Other.IsA('xPawn')) && xPawn(Other).CheckReflect(PawnHitLocation, RefNormal, int(float(DamageMin) * 0.250)))
             {
                 bDoReflect = true;
                 HitNormal = vect(0.0, 0.0, 0.0);
@@ -81,7 +81,7 @@ function DoTrace(Vector Start, Rotator Dir)
                     }
                     Damage = int(float(Damage) * DamageAtten);
                     // End:0x2B4
-                    if(Other.UnresolvedNativeFunction_97('Vehicle') || !Other.UnresolvedNativeFunction_97('Pawn') && !Other.UnresolvedNativeFunction_97('HitScanBlockingVolume'))
+                    if(Other.IsA('Vehicle') || !Other.IsA('Pawn') && !Other.IsA('HitScanBlockingVolume'))
                     {
                         WeaponAttachment(Weapon.ThirdPersonActor).UpdateHit(Other, PawnHitLocation, HitNormal);
                     }

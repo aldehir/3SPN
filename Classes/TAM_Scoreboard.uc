@@ -42,7 +42,7 @@ simulated function DrawRank(Canvas C, int X, int Y, int W, int H, float Rank)
     C.DrawColor.A = BaseAlpha;
     i = int(FClamp(Rank, 0.0, 1.0) * float(30 - 1));
     C.SetPos(float(X), float(Y));
-    C.UnresolvedNativeFunction_97(RankTex[i], float(W), float(H), 0.0, 0.0, 64.0, 64.0);
+    C.DrawTile(RankTex[i], float(W), float(H), 0.0, 0.0, 64.0, 64.0);
     //return;    
 }
 
@@ -65,12 +65,12 @@ simulated function DrawHeader(Canvas C, int BarX, int BarY, int BarW, int BarH)
     C.DrawColor = HudClass.default.BlackColor;
     C.DrawColor.A = BaseAlpha;
     C.SetPos(float(BarX), float(BarY));
-    C.UnresolvedNativeFunction_97(Box, float(BarW), float(BarH), 0.0, 0.0, 16.0, 16.0);
-    C.DrawColor = UnresolvedNativeFunction_98(HudClass.default.WhiteColor, 0.70);
+    C.DrawTile(Box, float(BarW), float(BarH), 0.0, 0.0, 16.0, 16.0);
+    C.DrawColor = HudClass.default.WhiteColor * 0.70;
     Name = (GRI.GameName $ MapName) $ Level.Title;
-    C.UnresolvedNativeFunction_97(Name, XL, YL);
+    C.StrLen(Name, XL, YL);
     C.SetPos(float(BarX + TitleX), float(BarY + TitleY));
-    C.UnresolvedNativeFunction_97(Name);
+    C.DrawText(Name);
     // End:0x279
     if(UnrealPlayer(Owner).bDisplayLoser)
     {
@@ -100,16 +100,16 @@ simulated function DrawHeader(Canvas C, int BarX, int BarY, int BarW, int BarH)
             }
         }
     }
-    C.DrawColor = UnresolvedNativeFunction_98(HudClass.default.RedColor, 0.70);
+    C.DrawColor = HudClass.default.RedColor * 0.70;
     C.DrawColor.G = 130;
-    C.UnresolvedNativeFunction_97(Name, XL, YL);
+    C.StrLen(Name, XL, YL);
     C.SetPos(float(BarX + SubTitleX), float(BarY + SubTitleY));
-    C.UnresolvedNativeFunction_97(Name);
-    C.DrawColor = UnresolvedNativeFunction_98(HudClass.default.WhiteColor, 0.70);
+    C.DrawText(Name);
+    C.DrawColor = HudClass.default.WhiteColor * 0.70;
     Name = "www.combowhore.com";
-    C.UnresolvedNativeFunction_97(Name, XL, YL);
+    C.StrLen(Name, XL, YL);
     C.SetPos(float(BarX + URLX) - XL, float(BarY + URLY));
-    C.UnresolvedNativeFunction_97(Name);
+    C.DrawText(Name);
     Name = "";
     // End:0x48E
     if(Level.Month < 10)
@@ -141,11 +141,11 @@ simulated function DrawHeader(Canvas C, int BarX, int BarY, int BarW, int BarH)
         Name = Name $ "0";
     }
     Name = Name $ string(Level.Second);
-    C.DrawColor = UnresolvedNativeFunction_98(HudClass.default.RedColor, 0.70);
+    C.DrawColor = HudClass.default.RedColor * 0.70;
     C.DrawColor.G = 130;
-    C.UnresolvedNativeFunction_97(Name, XL, YL);
+    C.StrLen(Name, XL, YL);
     C.SetPos(float(BarX + DateTimeX) - XL, float(BarY + DateTimeY));
-    C.UnresolvedNativeFunction_97(Name);
+    C.DrawText(Name);
     //return;    
 }
 
@@ -159,12 +159,12 @@ simulated function DrawRoundTime(Canvas C, int BoxX, int BoxY)
     {
         return;
     }
-    C.DrawColor = UnresolvedNativeFunction_98(HudClass.default.WhiteColor, 0.70);
+    C.DrawColor = HudClass.default.WhiteColor * 0.70;
     C.Font = PlayerController(Owner).myHUD.GetFontSizeIndex(C, 0);
     Name = FormatTime(Misc_BaseGRI(GRI).RoundTime);
-    C.UnresolvedNativeFunction_97(Name, XL, YL);
+    C.StrLen(Name, XL, YL);
     C.SetPos(float(BoxX) - (XL * 0.50), float(BoxY) - (YL * 0.50));
-    C.UnresolvedNativeFunction_97(Name);
+    C.DrawText(Name);
     //return;    
 }
 
@@ -213,7 +213,7 @@ simulated function DrawTeamScores(Canvas C, int BoxX, int BoxY, int BoxW, int Bo
         W = float((BoxW * 100) / 512);
         H = float((BoxH * 127) / 512);
         C.SetPos(XL, YL);
-        C.UnresolvedNativeFunction_97(FlagTexture, W, H, 0.0, 0.0, 128.0, 128.0);
+        C.DrawTile(FlagTexture, W, H, 0.0, 0.0, 128.0, 128.0);
     }
     // End:0x2DA
     if(ShieldTexture == none)
@@ -230,7 +230,7 @@ simulated function DrawTeamScores(Canvas C, int BoxX, int BoxY, int BoxW, int Bo
         }
     }
     C.SetPos(float(BoxX), float(BoxY));
-    C.UnresolvedNativeFunction_97(ShieldTexture, float(BoxW), float(BoxH), 0.0, 0.0, 512.0, 512.0);
+    C.DrawTile(ShieldTexture, float(BoxW), float(BoxH), 0.0, 0.0, 512.0, 512.0);
     // End:0x47F
     if(Misc_BaseGRI(GRI).ShowServerName)
     {
@@ -238,15 +238,15 @@ simulated function DrawTeamScores(Canvas C, int BoxX, int BoxY, int BoxW, int Bo
         C.DrawColor = HudClass.default.WhiteColor;
         C.DrawColor.A = BaseAlpha;
         Name = GameName;
-        C.UnresolvedNativeFunction_97(Name, XL, YL);
+        C.StrLen(Name, XL, YL);
         // End:0x427
         if(XL > float(GameNameW))
         {
             Name = Left(Name, int((float(GameNameW) / XL) * float(Len(Name))));
-            C.UnresolvedNativeFunction_97(Name, XL, YL);
+            C.StrLen(Name, XL, YL);
         }
         C.SetPos(float(BoxX + GameNameX) - (XL * 0.50), float(BoxY + GameNameY) - (YL * 0.50));
-        C.UnresolvedNativeFunction_97(Name);
+        C.DrawText(Name);
     }
     // End:0x5D4
     if(Misc_BaseGRI(GRI).FlagTextureShowAcronym)
@@ -255,33 +255,33 @@ simulated function DrawTeamScores(Canvas C, int BoxX, int BoxY, int BoxW, int Bo
         C.DrawColor = HudClass.default.RedColor;
         C.DrawColor.A = BaseAlpha;
         Name = Acronym;
-        C.UnresolvedNativeFunction_97(Name, XL, YL);
+        C.StrLen(Name, XL, YL);
         // End:0x57C
         if(XL > float(AcronymW))
         {
             Name = Left(Name, int((float(AcronymW) / XL) * float(Len(Name))));
-            C.UnresolvedNativeFunction_97(Name, XL, YL);
+            C.StrLen(Name, XL, YL);
         }
         C.SetPos(float(BoxX + AcronymX) - (XL * 0.50), float(BoxY + AcronymY) - (YL * 0.50));
-        C.UnresolvedNativeFunction_97(Name);
+        C.DrawText(Name);
     }
     C.Font = PlayerController(Owner).myHUD.GetFontSizeIndex(C, -1);
     C.DrawColor = HudClass.default.WhiteColor;
     Name = "-";
-    C.UnresolvedNativeFunction_97(Name, XL, YL);
+    C.StrLen(Name, XL, YL);
     C.SetPos(float(BoxX + SeparatorX) - (XL * 0.50), float(BoxY + SeparatorY) - (YL * 0.50));
-    C.UnresolvedNativeFunction_97(Name);
+    C.DrawText(Name);
     C.Font = PlayerController(Owner).myHUD.GetFontSizeIndex(C, 1);
-    C.DrawColor = UnresolvedNativeFunction_98(HudClass.default.RedColor, 0.70);
+    C.DrawColor = HudClass.default.RedColor * 0.70;
     Name = string(RedScore);
-    C.UnresolvedNativeFunction_97(Name, XL, YL);
+    C.StrLen(Name, XL, YL);
     C.SetPos(float(BoxX + RedScoreX) - (XL * 0.50), float(BoxY + RedScoreY) - (YL * 0.50));
-    C.UnresolvedNativeFunction_97(Name);
-    C.DrawColor = UnresolvedNativeFunction_98(HudClass.default.TurqColor, 0.70);
+    C.DrawText(Name);
+    C.DrawColor = HudClass.default.TurqColor * 0.70;
     Name = string(BlueScore);
-    C.UnresolvedNativeFunction_97(Name, XL, YL);
+    C.StrLen(Name, XL, YL);
     C.SetPos(float(BoxX + BlueScoreX) - (XL * 0.50), float(BoxY + BlueScoreY) - (YL * 0.50));
-    C.UnresolvedNativeFunction_97(Name);
+    C.DrawText(Name);
     //return;    
 }
 
@@ -318,67 +318,67 @@ simulated function DrawLabelsBar(Canvas C, int BarX, int BarY, int BarW, int Bar
     C.DrawColor = BackgroundCol;
     C.DrawColor.A = BaseAlpha;
     C.SetPos(float(BarX), float(BarY));
-    C.UnresolvedNativeFunction_97(BaseTex, float(BarW), float(BarH), 17.0, 31.0, 751.0, 71.0);
+    C.DrawTile(BaseTex, float(BarW), float(BarH), 17.0, 31.0, 751.0, 71.0);
     C.Font = PlayerController(Owner).myHUD.GetFontSizeIndex(C, -2);
-    C.DrawColor = UnresolvedNativeFunction_98(HudClass.default.WhiteColor, 0.70);
+    C.DrawColor = HudClass.default.WhiteColor * 0.70;
     C.SetPos(float(BarX + NameX), float(BarY + NameY));
-    C.UnresolvedNativeFunction_97("Name", true);
-    C.DrawColor = UnresolvedNativeFunction_98(HudClass.default.RedColor, 0.70);
+    C.DrawText("Name", true);
+    C.DrawColor = HudClass.default.RedColor * 0.70;
     C.DrawColor.G = 130;
     Name = "Location";
     C.SetPos(float(BarX + StatX), float(BarY + StatY));
-    C.UnresolvedNativeFunction_97(Name, true);
+    C.DrawText(Name, true);
     C.Font = PlayerController(Owner).myHUD.GetFontSizeIndex(C, -2);
-    C.DrawColor = UnresolvedNativeFunction_98(HudClass.default.WhiteColor, 0.70);
+    C.DrawColor = HudClass.default.WhiteColor * 0.70;
     Name = "Rank";
-    C.UnresolvedNativeFunction_97(Name, XL, YL);
+    C.StrLen(Name, XL, YL);
     C.SetPos(float(BarX + RankX) - (XL * 0.50), float(BarY + RankY));
-    C.UnresolvedNativeFunction_97(Name, true);
+    C.DrawText(Name, true);
     C.Font = PlayerController(Owner).myHUD.GetFontSizeIndex(C, -3);
-    C.DrawColor = UnresolvedNativeFunction_98(HudClass.default.WhiteColor, 0.550);
+    C.DrawColor = HudClass.default.WhiteColor * 0.550;
     Name = "Avg PPR";
-    C.UnresolvedNativeFunction_97(Name, XL, YL);
+    C.StrLen(Name, XL, YL);
     C.SetPos(float(BarX + AvgPPRX) - (XL * 0.50), float(BarY + AvgPPRY));
-    C.UnresolvedNativeFunction_97(Name, true);
+    C.DrawText(Name, true);
     C.Font = PlayerController(Owner).myHUD.GetFontSizeIndex(C, -2);
-    C.DrawColor = UnresolvedNativeFunction_98(HudClass.default.WhiteColor, 0.70);
+    C.DrawColor = HudClass.default.WhiteColor * 0.70;
     Name = "Score";
-    C.UnresolvedNativeFunction_97(Name, XL, YL);
+    C.StrLen(Name, XL, YL);
     C.SetPos(float(BarX + ScoreX) - (XL * 0.50), float(BarY + ScoreY));
-    C.UnresolvedNativeFunction_97(Name, true);
+    C.DrawText(Name, true);
     C.Font = PlayerController(Owner).myHUD.GetFontSizeIndex(C, -3);
-    C.DrawColor = UnresolvedNativeFunction_98(HudClass.default.WhiteColor, 0.550);
+    C.DrawColor = HudClass.default.WhiteColor * 0.550;
     Name = "PPR";
-    C.UnresolvedNativeFunction_97(Name, XL, YL);
+    C.StrLen(Name, XL, YL);
     C.SetPos(float(BarX + PointsPerX) - (XL * 0.50), float(BarY + PointsPerY));
-    C.UnresolvedNativeFunction_97(Name, true);
+    C.DrawText(Name, true);
     C.Font = PlayerController(Owner).myHUD.GetFontSizeIndex(C, -2);
-    C.DrawColor = UnresolvedNativeFunction_98(HudClass.default.WhiteColor, 0.70);
+    C.DrawColor = HudClass.default.WhiteColor * 0.70;
     Name = "Kills";
-    C.UnresolvedNativeFunction_97(Name, XL, YL);
+    C.StrLen(Name, XL, YL);
     C.SetPos(float(BarX + KillsX) - (XL * 0.50), float(BarY + KillsY));
-    C.UnresolvedNativeFunction_97(Name, true);
+    C.DrawText(Name, true);
     C.Font = PlayerController(Owner).myHUD.GetFontSizeIndex(C, -3);
     C.DrawColor.R = 170;
     C.DrawColor.G = 20;
     C.DrawColor.B = 20;
     Name = "Deaths";
-    C.UnresolvedNativeFunction_97(Name, XL, YL);
+    C.StrLen(Name, XL, YL);
     C.SetPos(float(BarX + DeathsX) - (XL * 0.50), float(BarY + DeathsY));
-    C.UnresolvedNativeFunction_97(Name, true);
+    C.DrawText(Name, true);
     C.Font = PlayerController(Owner).myHUD.GetFontSizeIndex(C, -2);
-    C.DrawColor = UnresolvedNativeFunction_98(HudClass.default.CyanColor, 0.50);
+    C.DrawColor = HudClass.default.CyanColor * 0.50;
     C.DrawColor.B = 150;
     C.DrawColor.R = 20;
     Name = "Ping";
-    C.UnresolvedNativeFunction_97(Name, XL, YL);
+    C.StrLen(Name, XL, YL);
     C.SetPos(float(BarX + PingX) - (XL * 0.50), float(BarY + PingY));
-    C.UnresolvedNativeFunction_97(Name, true);
+    C.DrawText(Name, true);
     C.Font = PlayerController(Owner).myHUD.GetFontSizeIndex(C, -3);
     Name = "P/L";
-    C.UnresolvedNativeFunction_97(Name, XL, YL);
+    C.StrLen(Name, XL, YL);
     C.SetPos(float(BarX + PLX) - (XL * 0.50), float(BarY + PLY));
-    C.UnresolvedNativeFunction_97(Name, true);
+    C.DrawText(Name, true);
     //return;    
 }
 
@@ -430,13 +430,13 @@ simulated function DrawPlayerBar(Canvas C, int BarX, int BarY, int BarW, int Bar
     RankW = int((C.ClipX * 32.0) / 1920.0);
     RankH = int((C.ClipY * 32.0) / 1080.0);
     C.SetPos(float(BarX), float(BarY));
-    C.UnresolvedNativeFunction_97(BaseTex, float(BarW), float(BarH), 18.0, 107.0, 745.0, 81.0);
+    C.DrawTile(BaseTex, float(BarW), float(BarH), 18.0, 107.0, 745.0, 81.0);
     C.Font = PlayerController(Owner).myHUD.GetFontSizeIndex(C, -2);
     // End:0x38A
     if(PRI.bOutOfLives)
     {
         Name = PRI.PlayerName;
-        C.DrawColor = UnresolvedNativeFunction_98(HudClass.default.WhiteColor, 0.40);
+        C.DrawColor = HudClass.default.WhiteColor * 0.40;
     }
     // End:0x418
     else
@@ -451,7 +451,7 @@ simulated function DrawPlayerBar(Canvas C, int BarX, int BarY, int BarW, int Bar
         {
             Name = PRI.PlayerName;
         }
-        C.DrawColor = UnresolvedNativeFunction_98(HudClass.default.WhiteColor, 0.70);
+        C.DrawColor = HudClass.default.WhiteColor * 0.70;
     }
     C.SetPos(float(BarX + NameX), float(BarY + NameY));
     class'Misc_Util'.static.DrawTextClipped(C, Name, float(NameW));
@@ -480,7 +480,7 @@ simulated function DrawPlayerBar(Canvas C, int BarX, int BarY, int BarW, int Bar
         // End:0x580
         else
         {
-            C.DrawColor = UnresolvedNativeFunction_98(HudClass.default.RedColor, 0.70);
+            C.DrawColor = HudClass.default.RedColor * 0.70;
             C.DrawColor.G = 130;
         }
     }
@@ -493,7 +493,7 @@ simulated function DrawPlayerBar(Canvas C, int BarX, int BarY, int BarW, int Bar
             // End:0x677
             if(!PRI.bOutOfLives)
             {
-                C.DrawColor = UnresolvedNativeFunction_98(HudClass.default.RedColor, 0.70);
+                C.DrawColor = HudClass.default.RedColor * 0.70;
                 C.DrawColor.G = 130;
                 // End:0x660
                 if((PRI.Team.TeamIndex == OwnerTeam) || OwnerPRI.bOnlySpectator)
@@ -543,33 +543,33 @@ simulated function DrawPlayerBar(Canvas C, int BarX, int BarY, int BarW, int Bar
             Name = "Admin";
         }
     }
-    C.UnresolvedNativeFunction_97(Name, XL, YL);
+    C.StrLen(Name, XL, YL);
     // End:0x7FD
     if(XL > float(NameW))
     {
         Name = Left(Name, int((float(NameW) / XL) * float(Len(Name))));
     }
     C.SetPos(float(BarX + StatX), float(BarY + StatY));
-    C.UnresolvedNativeFunction_97(Name);
+    C.DrawText(Name);
     DrawRank(C, (BarX + RankX) - (RankW / 2), BarY + RankY, RankW, RankH, Misc_PRI(PRI).Rank);
     // End:0x987
     if(Misc_PRI(PRI).AvgPPR != float(0))
     {
         C.Font = PlayerController(Owner).myHUD.GetFontSizeIndex(C, -4);
-        C.DrawColor = UnresolvedNativeFunction_98(HudClass.default.WhiteColor, 0.550);
+        C.DrawColor = HudClass.default.WhiteColor * 0.550;
         Name = class'Misc_PRI'.static.GetFormattedPPR(Misc_PRI(PRI).AvgPPR);
-        C.UnresolvedNativeFunction_97(Name, XL, YL);
+        C.StrLen(Name, XL, YL);
         C.SetPos(float(BarX + AvgPPRX) - (XL * 0.50), float(BarY + AvgPPRY));
-        C.UnresolvedNativeFunction_97(Name);
+        C.DrawText(Name);
     }
     C.Font = PlayerController(Owner).myHUD.GetFontSizeIndex(C, -2);
-    C.DrawColor = UnresolvedNativeFunction_98(HudClass.default.WhiteColor, 0.70);
+    C.DrawColor = HudClass.default.WhiteColor * 0.70;
     Name = string(int(PRI.Score));
-    C.UnresolvedNativeFunction_97(Name, XL, YL);
+    C.StrLen(Name, XL, YL);
     C.SetPos(float(BarX + ScoreX) - (XL * 0.50), float(BarY + ScoreY));
-    C.UnresolvedNativeFunction_97(Name);
+    C.DrawText(Name);
     C.Font = PlayerController(Owner).myHUD.GetFontSizeIndex(C, -4);
-    C.DrawColor = UnresolvedNativeFunction_98(HudClass.default.WhiteColor, 0.550);
+    C.DrawColor = HudClass.default.WhiteColor * 0.550;
     // End:0xB01
     if(Misc_PRI(PRI).PlayedRounds > 0)
     {
@@ -581,39 +581,39 @@ simulated function DrawPlayerBar(Canvas C, int BarX, int BarY, int BarW, int Bar
         XL = PRI.Score;
     }
     Name = class'Misc_PRI'.static.GetFormattedPPR(XL);
-    C.UnresolvedNativeFunction_97(Name, XL, YL);
+    C.StrLen(Name, XL, YL);
     C.SetPos(float(BarX + PointsPerX) - (XL * 0.50), float(BarY + PointsPerY));
-    C.UnresolvedNativeFunction_97(Name);
+    C.DrawText(Name);
     C.Font = PlayerController(Owner).myHUD.GetFontSizeIndex(C, -2);
-    C.DrawColor = UnresolvedNativeFunction_98(HudClass.default.WhiteColor, 0.70);
+    C.DrawColor = HudClass.default.WhiteColor * 0.70;
     Name = string(PRI.Kills);
-    C.UnresolvedNativeFunction_97(Name, XL, YL);
+    C.StrLen(Name, XL, YL);
     C.SetPos(float(BarX + KillsX) - (XL * 0.50), float(BarY + KillsY));
-    C.UnresolvedNativeFunction_97(Name);
+    C.DrawText(Name);
     C.Font = PlayerController(Owner).myHUD.GetFontSizeIndex(C, -4);
     C.DrawColor.R = 170;
     C.DrawColor.G = 20;
     C.DrawColor.B = 20;
     Name = string(int(PRI.Deaths));
-    C.UnresolvedNativeFunction_97(Name, XL, YL);
+    C.StrLen(Name, XL, YL);
     C.SetPos(float(BarX + DeathsX) - (XL * 0.50), float(BarY + DeathsY));
-    C.UnresolvedNativeFunction_97(Name);
+    C.DrawText(Name);
     C.Font = PlayerController(Owner).myHUD.GetFontSizeIndex(C, -2);
-    C.DrawColor = UnresolvedNativeFunction_98(HudClass.default.CyanColor, 0.50);
+    C.DrawColor = HudClass.default.CyanColor * 0.50;
     C.DrawColor.B = 150;
     C.DrawColor.R = 20;
     Name = string(Min(999, PRI.Ping * 4));
-    C.UnresolvedNativeFunction_97(Name, XL, YL);
+    C.StrLen(Name, XL, YL);
     C.SetPos(float(BarX + PingX) - (XL * 0.50), float(BarY + PingY));
-    C.UnresolvedNativeFunction_97(Name);
+    C.DrawText(Name);
     C.Font = PlayerController(Owner).myHUD.GetFontSizeIndex(C, -4);
-    C.DrawColor = UnresolvedNativeFunction_98(HudClass.default.CyanColor, 0.50);
+    C.DrawColor = HudClass.default.CyanColor * 0.50;
     C.DrawColor.B = 150;
     C.DrawColor.R = 20;
     Name = string(PRI.PacketLoss);
-    C.UnresolvedNativeFunction_97(Name, XL, YL);
+    C.StrLen(Name, XL, YL);
     C.SetPos(float(BarX + PLX) - (XL * 0.50), float(BarY + PLY));
-    C.UnresolvedNativeFunction_97(Name);
+    C.DrawText(Name);
     //return;    
 }
 
@@ -638,35 +638,35 @@ simulated function DrawPlayerTotalsBar(Canvas C, int BarX, int BarY, int BarW, i
     C.DrawColor = BackgroundCol;
     C.DrawColor.A = 200;
     C.SetPos(float(BarX), float(BarY));
-    C.UnresolvedNativeFunction_97(BaseTex, float(BarW), float(BarH), 18.0, 107.0, 745.0, 81.0);
+    C.DrawTile(BaseTex, float(BarW), float(BarH), 18.0, 107.0, 745.0, 81.0);
     C.Font = PlayerController(Owner).myHUD.GetFontSizeIndex(C, -2);
-    C.DrawColor = UnresolvedNativeFunction_98(HudClass.default.WhiteColor, 0.70);
+    C.DrawColor = HudClass.default.WhiteColor * 0.70;
     C.SetPos(float(BarX + NameX), float(BarY + NameY));
-    C.UnresolvedNativeFunction_97(TeamName);
+    C.DrawText(TeamName);
     Name = string(Score);
-    C.UnresolvedNativeFunction_97(Name, XL, YL);
+    C.StrLen(Name, XL, YL);
     C.SetPos(float(BarX + ScoreX) - (XL * 0.50), float(BarY + ScoreY));
-    C.UnresolvedNativeFunction_97(Name);
+    C.DrawText(Name);
     Name = string(Kills);
-    C.UnresolvedNativeFunction_97(Name, XL, YL);
+    C.StrLen(Name, XL, YL);
     C.SetPos(float(BarX + KillsX) - (XL * 0.50), float(BarY + KillsY));
-    C.UnresolvedNativeFunction_97(Name);
-    C.DrawColor = UnresolvedNativeFunction_98(HudClass.default.CyanColor, 0.50);
+    C.DrawText(Name);
+    C.DrawColor = HudClass.default.CyanColor * 0.50;
     C.DrawColor.B = 150;
     C.DrawColor.R = 20;
     Name = string(Min(999, Ping * 4));
-    C.UnresolvedNativeFunction_97(Name, XL, YL);
+    C.StrLen(Name, XL, YL);
     C.SetPos(float(BarX + PingX) - (XL * 0.50), float(BarY + PingY));
-    C.UnresolvedNativeFunction_97(Name);
+    C.DrawText(Name);
     // End:0x4AA
     if(PPR != float(0))
     {
         C.Font = PlayerController(Owner).myHUD.GetFontSizeIndex(C, -4);
-        C.DrawColor = UnresolvedNativeFunction_98(HudClass.default.WhiteColor, 0.550);
+        C.DrawColor = HudClass.default.WhiteColor * 0.550;
         Name = string(PPR);
-        C.UnresolvedNativeFunction_97(Name, XL, YL);
+        C.StrLen(Name, XL, YL);
         C.SetPos(float(BarX + PPRX) - (XL * 0.50), float(BarY + PPRY) + (YL * 0.250));
-        C.UnresolvedNativeFunction_97(Name);
+        C.DrawText(Name);
     }
     //return;    
 }
@@ -691,24 +691,24 @@ simulated function DrawSpecList(Canvas C, int BoxX, int BoxY, int BoxW, array<Pl
     EndSeparatorH = int(C.ClipY * 0.0050);
     C.Font = PlayerController(Owner).myHUD.GetFontSizeIndex(C, -5);
     Name = "Spectator";
-    C.UnresolvedNativeFunction_97(Name, XL, YL);
+    C.StrLen(Name, XL, YL);
     BoxH = int((((YL * float(Min(MaxSpectators, Specs.Length) + 1)) + float(TitleY)) + float(TitleSeparatorH * 2)) + float(EndSeparatorH));
     BoxY -= BoxH;
     C.DrawColor = HudClass.default.WhiteColor;
     C.DrawColor.A = BaseAlpha;
     C.SetPos(float(BoxX), float(BoxY));
-    C.UnresolvedNativeFunction_97(BaseTex, float(BoxW), (float(TitleY) + YL) + float(TitleSeparatorH), 17.0, 31.0, 751.0, 71.0);
+    C.DrawTile(BaseTex, float(BoxW), (float(TitleY) + YL) + float(TitleSeparatorH), 17.0, 31.0, 751.0, 71.0);
     C.DrawColor = HudClass.default.BlackColor;
     C.DrawColor.A = byte(float(BaseAlpha) * 0.50);
     C.SetPos(float(BoxX), (float(BoxY + TitleY) + YL) + float(TitleSeparatorH));
-    C.UnresolvedNativeFunction_97(Box, float(BoxW), float(BoxH) - ((float(TitleY) + YL) + float(TitleSeparatorH)), 0.0, 0.0, 16.0, 16.0);
-    C.DrawColor = UnresolvedNativeFunction_98(HudClass.default.WhiteColor, 0.70);
+    C.DrawTile(Box, float(BoxW), float(BoxH) - ((float(TitleY) + YL) + float(TitleSeparatorH)), 0.0, 0.0, 16.0, 16.0);
+    C.DrawColor = HudClass.default.WhiteColor * 0.70;
     C.SetPos(float(BoxX + TitleX), float(BoxY + TitleY));
-    C.UnresolvedNativeFunction_97(Name);
+    C.DrawText(Name);
     Name = "Ping";
-    C.UnresolvedNativeFunction_97(Name, XL, YL2);
+    C.StrLen(Name, XL, YL2);
     C.SetPos(float(BoxX + PingX) - (XL * 0.50), float(BoxY + PingY));
-    C.UnresolvedNativeFunction_97(Name);
+    C.DrawText(Name);
     NameColor = class'DMStatsScreen'.static.MakeColorCode(class'Canvas'.static.MakeColor(178, 130, 0));
     PingColor = class'DMStatsScreen'.static.MakeColorCode(class'Canvas'.static.MakeColor(20, 127, 150));
     NameY = int((float(TitleY) + YL) + float(TitleSeparatorH * 2));
@@ -731,9 +731,9 @@ simulated function DrawSpecList(Canvas C, int BoxX, int BoxY, int BoxW, array<Pl
         C.SetPos(float(BoxX + NameX), float(BoxY + NameY));
         class'Misc_Util'.static.DrawTextClipped(C, Name, float((PingX - (BoxW - PingX)) - NameX));
         Name = ((PingColor $ "[") $ string(PRI.Ping * 4)) $ "]";
-        C.UnresolvedNativeFunction_97(Name, XL, YL2);
+        C.StrLen(Name, XL, YL2);
         C.SetPos(float(BoxX + PingX) - (XL * 0.50), float(BoxY + NameY));
-        C.UnresolvedNativeFunction_97(Name);
+        C.DrawText(Name);
         NameY += int(YL);
         ++ i;
         // [Loop Continue]

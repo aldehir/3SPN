@@ -13,7 +13,7 @@ function PostBeginPlay()
     // End:0x55
     if(Level.NetMode != NM_Client)
     {
-        WarnInternal("Server should never spawn the client lightningbolt");
+        Warn("Server should never spawn the client lightningbolt");
     }
     //return;    
 }

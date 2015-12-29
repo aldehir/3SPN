@@ -28,8 +28,8 @@ function PostBeginPlay()
     // End:0x73
     if((TeamArenaMaster(Level.Game) != none) && !TeamArenaMaster(Level.Game).bDisableTeamCombos)
     {
-        ComboManager = UnresolvedNativeFunction_97(class'Misc_DynComboManager');
-        ComboRI = UnresolvedNativeFunction_97(class'Misc_DynComboReplicationInfo');
+        ComboManager = Spawn(class'Misc_DynComboManager');
+        ComboRI = Spawn(class'Misc_DynComboReplicationInfo');
         ComboManager.ComboRI = ComboRI;
     }
     //return;    

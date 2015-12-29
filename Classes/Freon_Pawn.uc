@@ -59,7 +59,7 @@ function PossessedBy(Controller C)
     // End:0x30
     if(MyTrigger == none)
     {
-        MyTrigger = UnresolvedNativeFunction_97(class'Freon_Trigger', self,, Location, Rotation);
+        MyTrigger = Spawn(class'Freon_Trigger', self,, Location, Rotation);
     }
     //return;    
 }
@@ -83,14 +83,14 @@ function TakeDamage(int Damage, Pawn instigatedBy, Vector HitLocation, Vector Mo
         // End:0x9B
         if(instigatedBy != none)
         {
-            WarnInternal((("No DamageType for damage by " $ string(instigatedBy)) $ " with weapon ") $ string(instigatedBy.Weapon));
+            Warn((("No DamageType for damage by " $ string(instigatedBy)) $ " with weapon ") $ string(instigatedBy.Weapon));
         }
         DamageType = class'DamageType';
     }
     // End:0xEE
     if(Role < ROLE_Authority)
     {
-        LogInternal((((string(self) $ " client DamageType ") $ string(DamageType)) $ " by ") $ string(instigatedBy));
+        Log((((string(self) $ " client DamageType ") $ string(DamageType)) $ " by ") $ string(instigatedBy));
         return;
     }
     // End:0xFB
@@ -392,7 +392,7 @@ function PlayFreezingHit()
     // End:0x39
     if(PhysicsVolume.bDestructive && PhysicsVolume.ExitActor != none)
     {
-        UnresolvedNativeFunction_97(PhysicsVolume.ExitActor);
+        Spawn(PhysicsVolume.ExitActor);
     }
     //return;    
 }
@@ -647,7 +647,7 @@ state Frozen
         Velocity = vect(0.0, 0.0, 0.0);
         SetPhysics(1);
         LastHitBy = none;
-        UnresolvedNativeFunction_97(default.ImpactSounds[Rand(6)], 2, 1.50 * TransientSoundVolume);
+        PlaySound(default.ImpactSounds[Rand(6)], 2, 1.50 * TransientSoundVolume);
         //return;        
     }
 
@@ -670,14 +670,14 @@ state Frozen
             // End:0x62
             if(instigatedBy != none)
             {
-                WarnInternal((("No DamageType for damage by " $ string(instigatedBy)) $ " with weapon ") $ string(instigatedBy.Weapon));
+                Warn((("No DamageType for damage by " $ string(instigatedBy)) $ " with weapon ") $ string(instigatedBy.Weapon));
             }
             DamageType = class'DamageType';
         }
         // End:0xB5
         if(Role < ROLE_Authority)
         {
-            LogInternal((((string(self) $ " client DamageType ") $ string(DamageType)) $ " by ") $ string(instigatedBy));
+            Log((((string(self) $ " client DamageType ") $ string(DamageType)) $ " by ") $ string(instigatedBy));
             return;
         }
         // End:0xD7

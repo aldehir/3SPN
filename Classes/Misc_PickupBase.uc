@@ -21,7 +21,7 @@ function SpawnPickup()
     {
         return;
     }
-    myPickUp = UnresolvedNativeFunction_97(PowerUp,,, Location + (SpawnHeight * vect(0.0, 0.0, 1.0)), rot(0, 0, 0));
+    myPickUp = Spawn(PowerUp,,, Location + (SpawnHeight * vect(0.0, 0.0, 1.0)), rot(0, 0, 0));
     // End:0x74
     if(myPickUp != none)
     {

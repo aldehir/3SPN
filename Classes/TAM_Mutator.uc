@@ -61,12 +61,12 @@ replication
 static function bool IsPredicted(Actor A)
 {
     // End:0x23
-    if((A == none) || A.UnresolvedNativeFunction_97('xPawn'))
+    if((A == none) || A.IsA('xPawn'))
     {
         return true;
     }
     // End:0x54
-    if(A.UnresolvedNativeFunction_97('Vehicle') && Vehicle(A).Driver != none)
+    if(A.IsA('Vehicle') && Vehicle(A).Driver != none)
     {
         return true;
     }
@@ -106,7 +106,7 @@ function SpawnCollisionCopy(Pawn Other)
     // End:0x30
     if(PCC == none)
     {
-        PCC = UnresolvedNativeFunction_97(class'NewNet_PawnCollisionCopy');
+        PCC = Spawn(class'NewNet_PawnCollisionCopy');
         PCC.SetPawn(Other);
     }
     // End:0x44
@@ -146,7 +146,7 @@ simulated function Tick(float DeltaTime)
         // End:0x90
         if(StampInfo == none)
         {
-            StampInfo = UnresolvedNativeFunction_97(class'NewNet_TimeStamp');
+            StampInfo = Spawn(class'NewNet_TimeStamp');
         }
         ClientTimeStamp += DeltaTime;
         AverDT = ((9.0 * AverDT) + DeltaTime) / 10.0;
@@ -165,7 +165,7 @@ simulated function Tick(float DeltaTime)
         // End:0x139
         if(FPM == none)
         {
-            FPM = UnresolvedNativeFunction_97(class'NewNet_FakeProjectileManager');
+            FPM = Spawn(class'NewNet_FakeProjectileManager');
         }
     }
     //return;    
@@ -260,7 +260,7 @@ function InitWeapons(int AssaultAmmo, int AssaultGrenades, int BioAmmo, int Shoc
         // End:0x2CE
         if(WeaponClass == none)
         {
-            LogInternal("Could not find weapon:" @ WeaponInfo[i].WeaponName, '3SPN');
+            Log("Could not find weapon:" @ WeaponInfo[i].WeaponName, '3SPN');
             // [Explicit Continue]
             goto J0x6AD;
         }
@@ -536,12 +536,12 @@ function bool CheckReplacement(Actor Other, out byte bSuperRelevant)
                     // [Loop Continue]
                     goto J0x17E;
                 }
-                lPRI.NextReplicationInfo = UnresolvedNativeFunction_97(class'NewNet_PRI', Other.Owner);
+                lPRI.NextReplicationInfo = Spawn(class'NewNet_PRI', Other.Owner);
             }
             // End:0x1FB
             else
             {
-                PlayerReplicationInfo(Other).CustomReplicationInfo = UnresolvedNativeFunction_97(class'NewNet_PRI', Other.Owner);
+                PlayerReplicationInfo(Other).CustomReplicationInfo = Spawn(class'NewNet_PRI', Other.Owner);
             }
             return true;
         }
@@ -550,10 +550,10 @@ function bool CheckReplacement(Actor Other, out byte bSuperRelevant)
     else
     {
         // End:0x4A8
-        if(Other.UnresolvedNativeFunction_97('Weapon'))
+        if(Other.IsA('Weapon'))
         {
             // End:0x246
-            if(Other.UnresolvedNativeFunction_97('ShieldGun'))
+            if(Other.IsA('ShieldGun'))
             {
                 ShieldGun(Other).FireModeClass[0] = class'WeaponFire_Shield';
             }
@@ -561,7 +561,7 @@ function bool CheckReplacement(Actor Other, out byte bSuperRelevant)
             else
             {
                 // End:0x293
-                if(Other.UnresolvedNativeFunction_97('AssaultRifle'))
+                if(Other.IsA('AssaultRifle'))
                 {
                     AssaultRifle(Other).FireModeClass[0] = class'WeaponFire_Assault';
                     AssaultRifle(Other).FireModeClass[1] = class'WeaponFire_AssaultAlt';
@@ -570,7 +570,7 @@ function bool CheckReplacement(Actor Other, out byte bSuperRelevant)
                 else
                 {
                     // End:0x2E0
-                    if(Other.UnresolvedNativeFunction_97('BioRifle'))
+                    if(Other.IsA('BioRifle'))
                     {
                         BioRifle(Other).FireModeClass[0] = class'WeaponFire_Bio';
                         BioRifle(Other).FireModeClass[1] = class'WeaponFire_BioAlt';
@@ -579,7 +579,7 @@ function bool CheckReplacement(Actor Other, out byte bSuperRelevant)
                     else
                     {
                         // End:0x345
-                        if(Other.UnresolvedNativeFunction_97('ShockRifle') && !Other.UnresolvedNativeFunction_97('SuperShockRifle'))
+                        if(Other.IsA('ShockRifle') && !Other.IsA('SuperShockRifle'))
                         {
                             ShockRifle(Other).FireModeClass[0] = class'WeaponFire_Shock';
                             ShockRifle(Other).FireModeClass[1] = class'WeaponFire_ShockAlt';
@@ -588,7 +588,7 @@ function bool CheckReplacement(Actor Other, out byte bSuperRelevant)
                         else
                         {
                             // End:0x392
-                            if(Other.UnresolvedNativeFunction_97('LinkGun'))
+                            if(Other.IsA('LinkGun'))
                             {
                                 LinkGun(Other).FireModeClass[0] = class'WeaponFire_LinkAlt';
                                 LinkGun(Other).FireModeClass[1] = class'WeaponFire_Link';
@@ -597,7 +597,7 @@ function bool CheckReplacement(Actor Other, out byte bSuperRelevant)
                             else
                             {
                                 // End:0x3DF
-                                if(Other.UnresolvedNativeFunction_97('Minigun'))
+                                if(Other.IsA('Minigun'))
                                 {
                                     Minigun(Other).FireModeClass[0] = class'WeaponFire_Mini';
                                     Minigun(Other).FireModeClass[1] = class'WeaponFire_MiniAlt';
@@ -606,7 +606,7 @@ function bool CheckReplacement(Actor Other, out byte bSuperRelevant)
                                 else
                                 {
                                     // End:0x42C
-                                    if(Other.UnresolvedNativeFunction_97('FlakCannon'))
+                                    if(Other.IsA('FlakCannon'))
                                     {
                                         FlakCannon(Other).FireModeClass[0] = class'WeaponFire_Flak';
                                         FlakCannon(Other).FireModeClass[1] = class'WeaponFire_FlakAlt';
@@ -615,7 +615,7 @@ function bool CheckReplacement(Actor Other, out byte bSuperRelevant)
                                     else
                                     {
                                         // End:0x479
-                                        if(Other.UnresolvedNativeFunction_97('RocketLauncher'))
+                                        if(Other.IsA('RocketLauncher'))
                                         {
                                             RocketLauncher(Other).FireModeClass[0] = class'WeaponFire_Rocket';
                                             RocketLauncher(Other).FireModeClass[1] = class'WeaponFire_RocketAlt';
@@ -624,7 +624,7 @@ function bool CheckReplacement(Actor Other, out byte bSuperRelevant)
                                         else
                                         {
                                             // End:0x4A8
-                                            if(Other.UnresolvedNativeFunction_97('SniperRifle'))
+                                            if(Other.IsA('SniperRifle'))
                                             {
                                                 SniperRifle(Other).FireModeClass[0] = class'WeaponFire_Lightning';
                                             }
@@ -639,12 +639,12 @@ function bool CheckReplacement(Actor Other, out byte bSuperRelevant)
         }
     }
     // End:0x506
-    if(((Other.UnresolvedNativeFunction_97('Pickup') && !Other.UnresolvedNativeFunction_97('Misc_PickupHealth')) && !Other.UnresolvedNativeFunction_97('Misc_PickupShield')) && !Other.UnresolvedNativeFunction_97('Misc_PickupAdren'))
+    if(((Other.IsA('Pickup') && !Other.IsA('Misc_PickupHealth')) && !Other.IsA('Misc_PickupShield')) && !Other.IsA('Misc_PickupAdren'))
     {
         return false;
     }
     // End:0x543
-    if(Other.UnresolvedNativeFunction_97('xPickUpBase') && !Other.UnresolvedNativeFunction_97('Misc_PickupBase'))
+    if(Other.IsA('xPickUpBase') && !Other.IsA('Misc_PickupBase'))
     {
         Other.bHidden = true;
     }
@@ -666,10 +666,10 @@ function bool ReplaceWith(Actor Other, string aClassName)
     // End:0x7A
     if(aClass != none)
     {
-        A = UnresolvedNativeFunction_97(aClass, Other.Owner, Other.Tag, Other.Location, Other.Rotation);
+        A = Spawn(aClass, Other.Owner, Other.Tag, Other.Location, Other.Rotation);
     }
     // End:0x1AB
-    if(Other.UnresolvedNativeFunction_97('Pickup'))
+    if(Other.IsA('Pickup'))
     {
         // End:0x166
         if(Pickup(Other).myMarker != none)
@@ -687,7 +687,7 @@ function bool ReplaceWith(Actor Other, string aClassName)
         else
         {
             // End:0x1AB
-            if(A.UnresolvedNativeFunction_97('Pickup') && !A.UnresolvedNativeFunction_97('WeaponPickup'))
+            if(A.IsA('Pickup') && !A.IsA('WeaponPickup'))
             {
                 Pickup(A).RespawnTime = 0.0;
             }

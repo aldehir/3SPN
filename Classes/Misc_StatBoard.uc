@@ -57,7 +57,7 @@ simulated function DrawBars(Canvas C, int Num, int X, int Y, int W, int H)
     C.SetPos(float(X), float(Y));
     C.DrawColor = CurrentColor;
     C.DrawRect(Box, float(W), float(H * Num));
-    C.DrawColor = UnresolvedNativeFunction_98(HudClass.default.WhiteColor, 0.40);
+    C.DrawColor = HudClass.default.WhiteColor * 0.40;
     C.SetPos(float(X), float(Y));
     C.DrawRect(Box, float(W), 1.0);
     C.SetPos(float(X), float(Y));
@@ -77,20 +77,20 @@ simulated function DrawHitStat(Canvas C, int Fired, int Hit, int Dam, int killsw
     DrawBars(C, 1, X, Y, W, H);
     acc = int(GetPercentage(float(Fired), float(Hit)));
     C.SetPos(float(X + TextX), float(Y + TextY));
-    C.DrawColor = UnresolvedNativeFunction_98(HudClass.default.WhiteColor, 0.70);
-    C.UnresolvedNativeFunction_97(WeaponName, true);
-    C.UnresolvedNativeFunction_97(string(killsw), XL, YL);
+    C.DrawColor = HudClass.default.WhiteColor * 0.70;
+    C.DrawText(WeaponName, true);
+    C.StrLen(string(killsw), XL, YL);
     C.SetPos(float(X + KillsX) - XL, float(Y + TextY));
-    C.UnresolvedNativeFunction_97(string(killsw), true);
-    C.UnresolvedNativeFunction_97(string(Fired) @ ":", XL, YL);
+    C.DrawText(string(killsw), true);
+    C.StrLen(string(Fired) @ ":", XL, YL);
     C.SetPos(float(X + FiredX) - XL, float(Y + TextY));
-    C.UnresolvedNativeFunction_97(string(Fired) @ ":", true);
-    C.UnresolvedNativeFunction_97(string(acc), XL, YL);
+    C.DrawText(string(Fired) @ ":", true);
+    C.StrLen(string(acc), XL, YL);
     C.SetPos(float(X + AccX) - XL, float(Y + TextY));
-    C.UnresolvedNativeFunction_97(string(acc) $ "%", true);
-    C.UnresolvedNativeFunction_97(string(Dam), XL, YL);
+    C.DrawText(string(acc) $ "%", true);
+    C.StrLen(string(Dam), XL, YL);
     C.SetPos(float(X + DamageX) - XL, float(Y + TextY));
-    C.UnresolvedNativeFunction_97(string(Dam), true);
+    C.DrawText(string(Dam), true);
     //return;    
 }
 
@@ -120,50 +120,50 @@ simulated function DrawHitStats(Canvas C, HitStats Stats, string WeaponName, int
     PriDam = Stats.primary.Damage;
     AltDam = Stats.Secondary.Damage;
     Dam = PriDam + AltDam;
-    C.DrawColor = UnresolvedNativeFunction_98(HudClass.default.WhiteColor, 0.70);
+    C.DrawColor = HudClass.default.WhiteColor * 0.70;
     C.SetPos(float(X + TextX), float(Y + TextY));
-    C.UnresolvedNativeFunction_97(WeaponName, true);
+    C.DrawText(WeaponName, true);
     // End:0x1F7
     if(class<FlakCannon>(WeaponClass) != none)
     {
         Fired = (PriFired / 9) + AltFired;
     }
-    C.UnresolvedNativeFunction_97(string(Fired) @ ":", XL, YL);
+    C.StrLen(string(Fired) @ ":", XL, YL);
     C.SetPos(float(X + FiredX) - XL, float(Y + TextY));
-    C.UnresolvedNativeFunction_97(string(Fired) @ ":", true);
-    C.UnresolvedNativeFunction_97(string(acc), XL, YL);
+    C.DrawText(string(Fired) @ ":", true);
+    C.StrLen(string(acc), XL, YL);
     C.SetPos(float(X + AccX) - XL, float(Y + TextY));
-    C.UnresolvedNativeFunction_97(string(acc) $ "%", true);
-    C.UnresolvedNativeFunction_97(string(Dam), XL, YL);
+    C.DrawText(string(acc) $ "%", true);
+    C.StrLen(string(Dam), XL, YL);
     C.SetPos(float(X + DamageX) - XL, float(Y + TextY));
-    C.UnresolvedNativeFunction_97(string(Dam), true);
-    C.UnresolvedNativeFunction_97(string(killsw), XL, YL);
+    C.DrawText(string(Dam), true);
+    C.StrLen(string(killsw), XL, YL);
     C.SetPos(float(X + KillsX) - XL, float(Y + TextY));
-    C.UnresolvedNativeFunction_97(string(killsw), true);
+    C.DrawText(string(killsw), true);
     Y += H;
     C.SetPos(float((X + TextX) + TextX), float(Y + TextY));
-    C.UnresolvedNativeFunction_97("Pri:", true);
-    C.UnresolvedNativeFunction_97(string(PriFired) @ ":", XL, YL);
+    C.DrawText("Pri:", true);
+    C.StrLen(string(PriFired) @ ":", XL, YL);
     C.SetPos(float(X + FiredX) - XL, float(Y + TextY));
-    C.UnresolvedNativeFunction_97(string(PriFired) @ ":", true);
-    C.UnresolvedNativeFunction_97(string(PriAcc), XL, YL);
+    C.DrawText(string(PriFired) @ ":", true);
+    C.StrLen(string(PriAcc), XL, YL);
     C.SetPos(float(X + AccX) - XL, float(Y + TextY));
-    C.UnresolvedNativeFunction_97(string(PriAcc) $ "%", true);
-    C.UnresolvedNativeFunction_97(string(PriDam), XL, YL);
+    C.DrawText(string(PriAcc) $ "%", true);
+    C.StrLen(string(PriDam), XL, YL);
     C.SetPos(float(X + DamageX) - XL, float(Y + TextY));
-    C.UnresolvedNativeFunction_97(string(PriDam), true);
+    C.DrawText(string(PriDam), true);
     Y += H;
     C.SetPos(float((X + TextX) + TextX), float(Y + TextY));
-    C.UnresolvedNativeFunction_97("Alt:", true);
-    C.UnresolvedNativeFunction_97(string(AltFired) @ ":", XL, YL);
+    C.DrawText("Alt:", true);
+    C.StrLen(string(AltFired) @ ":", XL, YL);
     C.SetPos(float(X + FiredX) - XL, float(Y + TextY));
-    C.UnresolvedNativeFunction_97(string(AltFired) @ ":", true);
-    C.UnresolvedNativeFunction_97(string(AltAcc), XL, YL);
+    C.DrawText(string(AltFired) @ ":", true);
+    C.StrLen(string(AltAcc), XL, YL);
     C.SetPos(float(X + AccX) - XL, float(Y + TextY));
-    C.UnresolvedNativeFunction_97(string(AltAcc) $ "%", true);
-    C.UnresolvedNativeFunction_97(string(AltDam), XL, YL);
+    C.DrawText(string(AltAcc) $ "%", true);
+    C.StrLen(string(AltDam), XL, YL);
     C.SetPos(float(X + DamageX) - XL, float(Y + TextY));
-    C.UnresolvedNativeFunction_97(string(AltDam), true);
+    C.DrawText(string(AltDam), true);
     //return;    
 }
 
@@ -309,62 +309,62 @@ simulated event DrawScoreboard(Canvas C)
     MiscY = int(C.ClipY * 0.10);
     MiscH = int(C.ClipY * 0.11830);
     C.SetPos(float(MiscX), float(MiscY));
-    C.UnresolvedNativeFunction_97(BaseTex, float(MiscW), float(MiscH), 126.0, 126.0, 772.0, 137.0);
+    C.DrawTile(BaseTex, float(MiscW), float(MiscH), 126.0, 126.0, 772.0, 137.0);
     MiscX = int(C.ClipX * 0.510);
     C.SetPos(float(MiscX), float(MiscY));
-    C.UnresolvedNativeFunction_97(BaseTex, float(MiscW), float(MiscH), 126.0, 125.0, 772.0, 137.0);
+    C.DrawTile(BaseTex, float(MiscW), float(MiscH), 126.0, 125.0, 772.0, 137.0);
     MiscX = int(C.ClipX * 0.010);
     MiscY = MiscY + MiscH;
     MiscH = int(C.ClipY * 0.03660);
     MiscW = int(C.ClipX * 0.00750);
     C.SetPos(float(MiscX), float(MiscY));
-    C.UnresolvedNativeFunction_97(BaseTex, float(MiscW), float(MiscH), 126.0, 263.0, 10.0, 10.0);
+    C.DrawTile(BaseTex, float(MiscW), float(MiscH), 126.0, 263.0, 10.0, 10.0);
     MiscX = int(C.ClipX * 0.510);
     C.SetPos(float(MiscX), float(MiscY));
-    C.UnresolvedNativeFunction_97(BaseTex, float(MiscW), float(MiscH), 126.0, 263.0, 10.0, 10.0);
+    C.DrawTile(BaseTex, float(MiscW), float(MiscH), 126.0, 263.0, 10.0, 10.0);
     MiscX = int((C.ClipX * 0.010) + float(MiscW));
     MiscW = int((C.ClipX * 0.480) - float(MiscW * 2));
     C.SetPos(float(MiscX), float(MiscY));
     C.DrawColor = OwnerColor;
-    C.UnresolvedNativeFunction_97(BaseTex, float(MiscW), float(MiscH), 137.0, 263.0, 751.0, 42.0);
+    C.DrawTile(BaseTex, float(MiscW), float(MiscH), 137.0, 263.0, 751.0, 42.0);
     C.SetPos(float(MiscX + MiscW), float(MiscY));
     C.DrawColor = HudClass.default.WhiteColor;
     C.DrawColor.A = 175;
-    C.UnresolvedNativeFunction_97(BaseTex, C.ClipX * 0.00690, float(MiscH), 888.0, 263.0, 10.0, 10.0);
+    C.DrawTile(BaseTex, C.ClipX * 0.00690, float(MiscH), 888.0, 263.0, 10.0, 10.0);
     MiscX = int(float(MiscX) + (C.ClipX * 0.50));
     C.SetPos(float(MiscX), float(MiscY));
     C.DrawColor = ViewedColor;
-    C.UnresolvedNativeFunction_97(BaseTex, float(MiscW), float(MiscH), 137.0, 263.0, 751.0, 42.0);
+    C.DrawTile(BaseTex, float(MiscW), float(MiscH), 137.0, 263.0, 751.0, 42.0);
     C.SetPos(float(MiscX + MiscW), float(MiscY));
     C.DrawColor = HudClass.default.WhiteColor;
     C.DrawColor.A = 175;
-    C.UnresolvedNativeFunction_97(BaseTex, C.ClipX * 0.00690, float(MiscH), 888.0, 263.0, 10.0, 10.0);
+    C.DrawTile(BaseTex, C.ClipX * 0.00690, float(MiscH), 888.0, 263.0, 10.0, 10.0);
     MiscX = int(C.ClipX * 0.010);
     MiscY = MiscY + MiscH;
     MiscH = int(C.ClipY * 0.0050);
     MiscW = int(C.ClipX * 0.480);
     C.SetPos(float(MiscX), float(MiscY));
-    C.UnresolvedNativeFunction_97(BaseTex, float(MiscW), float(MiscH), 126.0, 306.0, 772.0, 4.0);
+    C.DrawTile(BaseTex, float(MiscW), float(MiscH), 126.0, 306.0, 772.0, 4.0);
     MiscX = int(C.ClipX * 0.510);
     C.SetPos(float(MiscX), float(MiscY));
-    C.UnresolvedNativeFunction_97(BaseTex, float(MiscW), float(MiscH), 126.0, 306.0, 772.0, 4.0);
+    C.DrawTile(BaseTex, float(MiscW), float(MiscH), 126.0, 306.0, 772.0, 4.0);
     PlayerBoxY = int(float(MiscY + MiscH) + (C.ClipY * 0.0050));
     MiscX = int(C.ClipX * 0.010);
     MiscY = MiscY + MiscH;
     MiscH = int(C.ClipY * 0.51750);
     C.SetPos(float(MiscX), float(MiscY));
-    C.UnresolvedNativeFunction_97(BaseTex, float(MiscW), float(MiscH), 126.0, 398.0, 772.0, 10.0);
+    C.DrawTile(BaseTex, float(MiscW), float(MiscH), 126.0, 398.0, 772.0, 10.0);
     MiscX = int(C.ClipX * 0.510);
     C.SetPos(float(MiscX), float(MiscY));
-    C.UnresolvedNativeFunction_97(BaseTex, float(MiscW), float(MiscH), 126.0, 398.0, 772.0, 10.0);
+    C.DrawTile(BaseTex, float(MiscW), float(MiscH), 126.0, 398.0, 772.0, 10.0);
     MiscX = int(C.ClipX * 0.010);
     MiscY = MiscY + MiscH;
     MiscH = int(C.ClipY * 0.06330);
     C.SetPos(float(MiscX), float(MiscY));
-    C.UnresolvedNativeFunction_97(BaseTex, float(MiscW), float(MiscH), 126.0, 829.0, 772.0, 68.0);
+    C.DrawTile(BaseTex, float(MiscW), float(MiscH), 126.0, 829.0, 772.0, 68.0);
     MiscX = int(C.ClipX * 0.510);
     C.SetPos(float(MiscX), float(MiscY));
-    C.UnresolvedNativeFunction_97(BaseTex, float(MiscW), float(MiscH), 126.0, 829.0, 772.0, 68.0);
+    C.DrawTile(BaseTex, float(MiscW), float(MiscH), 126.0, 829.0, 772.0, 68.0);
     i = 0;
     J0xD09:
     // End:0x185E [Loop If]
@@ -387,27 +387,27 @@ simulated event DrawScoreboard(Canvas C)
         // End:0xE00
         if(TmpPRI.bOutOfLives)
         {
-            C.DrawColor = UnresolvedNativeFunction_98(HudClass.default.WhiteColor, 0.50);
+            C.DrawColor = HudClass.default.WhiteColor * 0.50;
         }
         // End:0xE25
         else
         {
-            C.DrawColor = UnresolvedNativeFunction_98(HudClass.default.WhiteColor, 0.70);
+            C.DrawColor = HudClass.default.WhiteColor * 0.70;
         }
         C.SetPos(float(BarX) + (C.ClipX * 0.010), float(BarY) + (C.ClipY * 0.0080));
         Name = TmpPRI.PlayerName;
-        C.UnresolvedNativeFunction_97(Name, XL, YL);
+        C.StrLen(Name, XL, YL);
         // End:0xEF4
         if(XL > (C.ClipX * 0.230))
         {
             Name = Left(Name, int(((C.ClipX * 0.230) / XL) * float(Len(Name))));
         }
-        C.UnresolvedNativeFunction_97(Name, true);
+        C.DrawText(Name, true);
         Name = string(int(TmpPRI.Score % float(10000)));
-        C.DrawColor = UnresolvedNativeFunction_98(HudClass.default.WhiteColor, 0.70);
-        C.UnresolvedNativeFunction_97(Name, XL, YL);
+        C.DrawColor = HudClass.default.WhiteColor * 0.70;
+        C.StrLen(Name, XL, YL);
         C.SetPos((float(BarX) + (C.ClipX * 0.270)) - (XL * 0.50), float(BarY) + (C.ClipY * 0.0080));
-        C.UnresolvedNativeFunction_97(Name, true);
+        C.DrawText(Name, true);
         // End:0x1018
         if(!PlayerController(Owner).GameReplicationInfo.bTeamGame)
         {
@@ -418,21 +418,21 @@ simulated event DrawScoreboard(Canvas C)
         {
             Name = string(TmpPRI.Kills);
         }
-        C.UnresolvedNativeFunction_97(Name, XL, YL);
+        C.StrLen(Name, XL, YL);
         C.SetPos((float(BarX) + (C.ClipX * 0.350)) - (XL * 0.50), float(BarY) + (C.ClipY * 0.0080));
-        C.UnresolvedNativeFunction_97(Name, true);
-        C.DrawColor = UnresolvedNativeFunction_98(HudClass.default.CyanColor, 0.50);
+        C.DrawText(Name, true);
+        C.DrawColor = HudClass.default.CyanColor * 0.50;
         C.DrawColor.B = 150;
         C.DrawColor.R = 20;
         Name = string(Min(999, TmpPRI.Ping * 4));
-        C.UnresolvedNativeFunction_97(Name, XL, YL);
+        C.StrLen(Name, XL, YL);
         C.SetPos((float(BarX) + (C.ClipX * 0.420)) - (XL * 0.50), float(BarY) + (C.ClipY * 0.0080));
-        C.UnresolvedNativeFunction_97(Name, true);
+        C.DrawText(Name, true);
         C.Font = PlayerController(Owner).myHUD.GetFontSizeIndex(C, -3);
         Name = string(TmpPRI.PacketLoss);
-        C.UnresolvedNativeFunction_97(Name, XL, YL);
+        C.StrLen(Name, XL, YL);
         C.SetPos((float(BarX) + (C.ClipX * 0.420)) - (XL * 0.50), float(BarY) + (C.ClipY * 0.0350));
-        C.UnresolvedNativeFunction_97(Name, true);
+        C.DrawText(Name, true);
         // End:0x137C
         if(!GRI.bMatchHasBegun)
         {
@@ -457,7 +457,7 @@ simulated event DrawScoreboard(Canvas C)
             // End:0x1379
             else
             {
-                C.DrawColor = UnresolvedNativeFunction_98(HudClass.default.RedColor, 0.70);
+                C.DrawColor = HudClass.default.RedColor * 0.70;
                 C.DrawColor.G = 130;
             }
         }
@@ -467,7 +467,7 @@ simulated event DrawScoreboard(Canvas C)
             // End:0x145A
             if(!TmpPRI.bAdmin && !TmpPRI.bOutOfLives)
             {
-                C.DrawColor = UnresolvedNativeFunction_98(HudClass.default.RedColor, 0.70);
+                C.DrawColor = HudClass.default.RedColor * 0.70;
                 C.DrawColor.G = 130;
                 // End:0x1443
                 if(((TmpPRI.Team != none) && TmpPRI.Team.TeamIndex == OwnerTeam) || TmpPRI == OwnerPRI)
@@ -502,15 +502,15 @@ simulated event DrawScoreboard(Canvas C)
                 }
             }
         }
-        C.UnresolvedNativeFunction_97(Name, XL, YL);
+        C.StrLen(Name, XL, YL);
         // End:0x154C
         if(XL > (C.ClipX * 0.230))
         {
             Name = Left(Name, int(((C.ClipX * 0.230) / XL) * float(Len(Name))));
         }
         C.SetPos(float(BarX) + (C.ClipX * 0.020), float(BarY) + (C.ClipY * 0.0350));
-        C.UnresolvedNativeFunction_97(Name, true);
-        C.DrawColor = UnresolvedNativeFunction_98(HudClass.default.WhiteColor, 0.550);
+        C.DrawText(Name, true);
+        C.DrawColor = HudClass.default.WhiteColor * 0.550;
         // End:0x1614
         if(TmpPRI.PlayedRounds > 0)
         {
@@ -542,16 +542,16 @@ simulated event DrawScoreboard(Canvas C)
             Name = string(int(XL));
             Name = (Name $ ".") $ string(int((XL - float(int(XL))) * float(10)));
         }
-        C.UnresolvedNativeFunction_97(Name, XL, YL);
+        C.StrLen(Name, XL, YL);
         C.SetPos((float(BarX) + (C.ClipX * 0.270)) - (XL * 0.50), float(BarY) + (C.ClipY * 0.0350));
-        C.UnresolvedNativeFunction_97(Name, true);
+        C.DrawText(Name, true);
         C.DrawColor.R = 170;
         C.DrawColor.G = 20;
         C.DrawColor.B = 20;
         Name = string(int(TmpPRI.Deaths));
-        C.UnresolvedNativeFunction_97(Name, XL, YL);
+        C.StrLen(Name, XL, YL);
         C.SetPos((float(BarX) + (C.ClipX * 0.350)) - (XL * 0.50), float(BarY) + (C.ClipY * 0.0350));
-        C.UnresolvedNativeFunction_97(Name, true);
+        C.DrawText(Name, true);
         ++ i;
         // [Loop Continue]
         goto J0xD09;
@@ -566,7 +566,7 @@ simulated event DrawScoreboard(Canvas C)
         {
             TmpPRI = OwnerPRI;
             PlayerBoxX = int(C.ClipX * 0.020);
-            CurrentColor = UnresolvedNativeFunction_98(OwnerColor, 0.350);
+            CurrentColor = OwnerColor * 0.350;
             CurrentColor.A = 75;
         }
         // End:0x190F
@@ -574,14 +574,14 @@ simulated event DrawScoreboard(Canvas C)
         {
             TmpPRI = ViewPRI;
             PlayerBoxX = int(C.ClipX * 0.520);
-            CurrentColor = UnresolvedNativeFunction_98(ViewedColor, 0.350);
+            CurrentColor = ViewedColor * 0.350;
             CurrentColor.A = 75;
         }
         MiscX = int(float(PlayerBoxX) + (float(PlayerBoxW) * 0.70));
         MiscY = PlayerBoxY;
         MiscW = int(float(PlayerBoxW) * 0.2950);
         MiscH = int(C.ClipY * 0.020);
-        C.UnresolvedNativeFunction_97("Test", XL, YL);
+        C.StrLen("Test", XL, YL);
         TextY = int((float(MiscH) * 0.60) - (YL * 0.50));
         Awards = 1;
         // End:0x19CC
@@ -679,8 +679,8 @@ simulated event DrawScoreboard(Canvas C)
         }
         DrawBars(C, Awards, MiscX, MiscY, MiscW, MiscH);
         C.SetPos(float(MiscX + TextX), float(MiscY + TextY));
-        C.DrawColor = UnresolvedNativeFunction_98(HudClass.default.WhiteColor, 0.70);
-        C.UnresolvedNativeFunction_97("Awards", true);
+        C.DrawColor = HudClass.default.WhiteColor * 0.70;
+        C.DrawText("Awards", true);
         // End:0x2399
         if(Awards > 1)
         {
@@ -690,7 +690,7 @@ simulated event DrawScoreboard(Canvas C)
             if(TmpPRI.bFirstBlood)
             {
                 C.SetPos(float(MiscX + TextX), float(MiscY + TextY));
-                C.UnresolvedNativeFunction_97(FirstBloodString);
+                C.DrawText(FirstBloodString);
                 MiscY += MiscH;
             }
             i = 0;
@@ -702,7 +702,7 @@ simulated event DrawScoreboard(Canvas C)
                 if(TmpPRI.Spree[i] > 0)
                 {
                     C.SetPos(float(MiscX + TextX), float(MiscY + TextY));
-                    C.UnresolvedNativeFunction_97(((class'KillingSpreeMessage'.default.SelfSpreeNote[i] $ (MakeColorCode(UnresolvedNativeFunction_98(HudClass.default.GoldColor, 0.70)))) $ "x") $ string(TmpPRI.Spree[i]));
+                    C.DrawText(((class'KillingSpreeMessage'.default.SelfSpreeNote[i] $ (MakeColorCode(HudClass.default.GoldColor * 0.70))) $ "x") $ string(TmpPRI.Spree[i]));
                     MiscY += MiscH;
                 }
                 ++ i;
@@ -718,7 +718,7 @@ simulated event DrawScoreboard(Canvas C)
                 if(TmpPRI.MultiKills[i] > 0)
                 {
                     C.SetPos(float(MiscX + TextX), float(MiscY + TextY));
-                    C.UnresolvedNativeFunction_97(((KillString[i] $ (MakeColorCode(UnresolvedNativeFunction_98(HudClass.default.GoldColor, 0.70)))) $ "x") $ string(TmpPRI.MultiKills[i]));
+                    C.DrawText(((KillString[i] $ (MakeColorCode(HudClass.default.GoldColor * 0.70))) $ "x") $ string(TmpPRI.MultiKills[i]));
                     MiscY += MiscH;
                 }
                 ++ i;
@@ -729,84 +729,84 @@ simulated event DrawScoreboard(Canvas C)
             if(TmpPRI.flakcount > 4)
             {
                 C.SetPos(float(MiscX + TextX), float(MiscY + TextY));
-                C.UnresolvedNativeFunction_97(FlakMonkey);
+                C.DrawText(FlakMonkey);
                 MiscY += MiscH;
             }
             // End:0x1EE9
             if(TmpPRI.ranovercount > 4)
             {
                 C.SetPos(float(MiscX + TextX), float(MiscY + TextY));
-                C.UnresolvedNativeFunction_97("Bukkake!");
+                C.DrawText("Bukkake!");
                 MiscY += MiscH;
             }
             // End:0x1F46
             if(TmpPRI.combocount > 4)
             {
                 C.SetPos(float(MiscX + TextX), float(MiscY + TextY));
-                C.UnresolvedNativeFunction_97(Combowhore);
+                C.DrawText(Combowhore);
                 MiscY += MiscH;
             }
             // End:0x1FA3
             if(TmpPRI.headcount > 2)
             {
                 C.SetPos(float(MiscX + TextX), float(MiscY + TextY));
-                C.UnresolvedNativeFunction_97(Headhunter);
+                C.DrawText(Headhunter);
                 MiscY += MiscH;
             }
             // End:0x203C
             if(TmpPRI.GoalsScored > 0)
             {
                 C.SetPos(float(MiscX + TextX), float(MiscY + TextY));
-                C.UnresolvedNativeFunction_97((("Final Kill!" $ (MakeColorCode(UnresolvedNativeFunction_98(HudClass.default.GoldColor, 0.70)))) $ "x") $ string(TmpPRI.GoalsScored));
+                C.DrawText((("Final Kill!" $ (MakeColorCode(HudClass.default.GoldColor * 0.70))) $ "x") $ string(TmpPRI.GoalsScored));
                 MiscY += MiscH;
             }
             // End:0x2099
             if(TmpPRI.GoalsScored > 2)
             {
                 C.SetPos(float(MiscX + TextX), float(MiscY + TextY));
-                C.UnresolvedNativeFunction_97(HatTrick);
+                C.DrawText(HatTrick);
                 MiscY += MiscH;
             }
             // End:0x2130
             if(TmpPRI.FlawlessCount > 0)
             {
                 C.SetPos(float(MiscX + TextX), float(MiscY + TextY));
-                C.UnresolvedNativeFunction_97((("Flawless!" $ (MakeColorCode(UnresolvedNativeFunction_98(HudClass.default.GoldColor, 0.70)))) $ "x") $ string(TmpPRI.FlawlessCount));
+                C.DrawText((("Flawless!" $ (MakeColorCode(HudClass.default.GoldColor * 0.70))) $ "x") $ string(TmpPRI.FlawlessCount));
                 MiscY += MiscH;
             }
             // End:0x21C7
             if(TmpPRI.OverkillCount > 0)
             {
                 C.SetPos(float(MiscX + TextX), float(MiscY + TextY));
-                C.UnresolvedNativeFunction_97((("Overkill!" $ (MakeColorCode(UnresolvedNativeFunction_98(HudClass.default.GoldColor, 0.70)))) $ "x") $ string(TmpPRI.OverkillCount));
+                C.DrawText((("Overkill!" $ (MakeColorCode(HudClass.default.GoldColor * 0.70))) $ "x") $ string(TmpPRI.OverkillCount));
                 MiscY += MiscH;
             }
             // End:0x2260
             if(TmpPRI.DarkHorseCount > 0)
             {
                 C.SetPos(float(MiscX + TextX), float(MiscY + TextY));
-                C.UnresolvedNativeFunction_97((("Dark Horse!" $ (MakeColorCode(UnresolvedNativeFunction_98(HudClass.default.GoldColor, 0.70)))) $ "x") $ string(TmpPRI.DarkHorseCount));
+                C.DrawText((("Dark Horse!" $ (MakeColorCode(HudClass.default.GoldColor * 0.70))) $ "x") $ string(TmpPRI.DarkHorseCount));
                 MiscY += MiscH;
             }
             // End:0x22C8
             if(TmpPRI.CampCount > 1)
             {
                 C.SetPos(float(MiscX + TextX), float(MiscY + TextY));
-                C.UnresolvedNativeFunction_97("Campy Bastard!", true);
+                C.DrawText("Campy Bastard!", true);
                 MiscY += MiscH;
             }
             // End:0x2327
             if(TmpPRI.Suicides > 2)
             {
                 C.SetPos(float(MiscX + TextX), float(MiscY + TextY));
-                C.UnresolvedNativeFunction_97("Emo!", true);
+                C.DrawText("Emo!", true);
                 MiscY += MiscH;
             }
             // End:0x238D
             if(TmpPRI.RoxCount >= 7)
             {
                 C.SetPos(float(MiscX + TextX), float(MiscY + TextY));
-                C.UnresolvedNativeFunction_97("Rocket Man!", true);
+                C.DrawText("Rocket Man!", true);
                 MiscY += MiscH;
             }
             MiscX -= TextX;
@@ -838,8 +838,8 @@ simulated event DrawScoreboard(Canvas C)
         }
         DrawBars(C, Combos, MiscX, MiscY, MiscW, MiscH);
         C.SetPos(float(MiscX + TextX), float(MiscY + TextY));
-        C.DrawColor = UnresolvedNativeFunction_98(HudClass.default.WhiteColor, 0.70);
-        C.UnresolvedNativeFunction_97("Combos", true);
+        C.DrawColor = HudClass.default.WhiteColor * 0.70;
+        C.DrawText("Combos", true);
         // End:0x258A
         if(Combos > 1)
         {
@@ -854,7 +854,7 @@ simulated event DrawScoreboard(Canvas C)
                 {
                     MiscY += MiscH;
                     C.SetPos(float(MiscX + TextX), float(MiscY + TextY));
-                    C.UnresolvedNativeFunction_97(((ComboNames[i] $ (MakeColorCode(UnresolvedNativeFunction_98(HudClass.default.GoldColor, 0.70)))) $ "x") $ string(TmpPRI.Combos[i]));
+                    C.DrawText(((ComboNames[i] $ (MakeColorCode(HudClass.default.GoldColor * 0.70))) $ "x") $ string(TmpPRI.Combos[i]));
                 }
                 ++ i;
                 // [Loop Continue]
@@ -864,44 +864,44 @@ simulated event DrawScoreboard(Canvas C)
         }
         MiscY += int(float(MiscH) * 1.2750);
         DrawBars(C, 1, MiscX, MiscY, MiscW, MiscH);
-        C.DrawColor = UnresolvedNativeFunction_98(HudClass.default.WhiteColor, 0.70);
+        C.DrawColor = HudClass.default.WhiteColor * 0.70;
         C.SetPos(float(MiscX + TextX), float(MiscY + TextY));
-        C.UnresolvedNativeFunction_97("Efficiency:", true);
+        C.DrawText("Efficiency:", true);
         Name = string(int(GetPercentage(TmpPRI.Deaths + float(TmpPRI.Kills), float(TmpPRI.Kills)))) $ "%";
-        C.UnresolvedNativeFunction_97(Name, XL, YL);
+        C.StrLen(Name, XL, YL);
         C.SetPos(float((MiscX + MiscW) - TextX) - XL, float(MiscY + TextY));
-        C.UnresolvedNativeFunction_97(Name, true);
+        C.DrawText(Name, true);
         // End:0x281F
         if(PlayerController(Owner).GameReplicationInfo.bTeamGame)
         {
             MiscY += int(float(MiscH) * 1.2750);
             DrawBars(C, 1, MiscX, MiscY, MiscW, MiscH);
-            C.DrawColor = UnresolvedNativeFunction_98(HudClass.default.WhiteColor, 0.70);
+            C.DrawColor = HudClass.default.WhiteColor * 0.70;
             C.SetPos(float(MiscX + TextX), float(MiscY + TextY));
-            C.UnresolvedNativeFunction_97("ReverseFF:", true);
+            C.DrawText("ReverseFF:", true);
             Name = string(int(TmpPRI.ReverseFF * float(100))) $ "%";
-            C.UnresolvedNativeFunction_97(Name, XL, YL);
+            C.StrLen(Name, XL, YL);
             C.SetPos(float((MiscX + MiscW) - TextX) - XL, float(MiscY + TextY));
-            C.UnresolvedNativeFunction_97(Name, true);
+            C.DrawText(Name, true);
         }
         MiscX = int(float(PlayerBoxX) + (float(PlayerBoxW) * 0.0050));
         MiscY = PlayerBoxY;
         MiscW = int(float(PlayerBoxW) * 0.690);
         DrawBars(C, 1, MiscX, MiscY, MiscW, MiscH);
         C.SetPos(float(MiscX + TextX), float(MiscY + TextY));
-        C.DrawColor = UnresolvedNativeFunction_98(HudClass.default.WhiteColor, 0.70);
-        C.UnresolvedNativeFunction_97("Weapon", true);
-        C.UnresolvedNativeFunction_97("Kills", XL, YL);
+        C.DrawColor = HudClass.default.WhiteColor * 0.70;
+        C.DrawText("Weapon", true);
+        C.StrLen("Kills", XL, YL);
         C.SetPos(float(MiscX + KillsX) - XL, float(MiscY + TextY));
-        C.UnresolvedNativeFunction_97("Kills", true);
-        C.UnresolvedNativeFunction_97("Fired : Acc", XL, YL);
+        C.DrawText("Kills", true);
+        C.StrLen("Fired : Acc", XL, YL);
         C.SetPos(float(MiscX + AccX) - XL, float(MiscY + TextY));
-        C.UnresolvedNativeFunction_97("Fired : Acc%", true);
-        C.UnresolvedNativeFunction_97("Dam.", XL, YL);
+        C.DrawText("Fired : Acc%", true);
+        C.StrLen("Dam.", XL, YL);
         C.SetPos(float(MiscX + DamageX) - XL, float(MiscY + TextY));
-        C.UnresolvedNativeFunction_97("Dam.", true);
+        C.DrawText("Dam.", true);
         MiscY += int(float(MiscH) * 1.2750);
-        C.UnresolvedNativeFunction_97(" Acc", XL, YL);
+        C.StrLen(" Acc", XL, YL);
         FiredX = int(float(AccX) - XL);
         // End:0x2C1C
         if(TmpPRI.SGDamage > 0)
@@ -911,22 +911,22 @@ simulated event DrawScoreboard(Canvas C)
             // End:0x2ADC
             if(Dam > 0)
             {
-                C.DrawColor = UnresolvedNativeFunction_98(HudClass.default.WhiteColor, 0.70);
+                C.DrawColor = HudClass.default.WhiteColor * 0.70;
             }
             // End:0x2B01
             else
             {
-                C.DrawColor = UnresolvedNativeFunction_98(HudClass.default.WhiteColor, 0.30);
+                C.DrawColor = HudClass.default.WhiteColor * 0.30;
             }
             C.SetPos(float(MiscX + TextX), float(MiscY + TextY));
-            C.UnresolvedNativeFunction_97("Shield", true);
-            C.UnresolvedNativeFunction_97(string(Dam), XL, YL);
+            C.DrawText("Shield", true);
+            C.StrLen(string(Dam), XL, YL);
             C.SetPos(float(MiscX + DamageX) - XL, float(MiscY + TextY));
-            C.UnresolvedNativeFunction_97(string(Dam), true);
+            C.DrawText(string(Dam), true);
             GetStatsFor(class'ShieldGun', TmpPRI, killsw);
-            C.UnresolvedNativeFunction_97(string(killsw), XL, YL);
+            C.StrLen(string(killsw), XL, YL);
             C.SetPos(float(MiscX + KillsX) - XL, float(MiscY + TextY));
-            C.UnresolvedNativeFunction_97(string(killsw), true);
+            C.DrawText(string(killsw), true);
         }
         MiscY += int(float(MiscH) * 1.2750);
         // End:0x2CBB
@@ -993,17 +993,17 @@ simulated event DrawScoreboard(Canvas C)
         }
         MiscY += int(float(MiscH) * 1.2750);
         DrawBars(C, 1, MiscX, MiscY, MiscW, MiscH);
-        C.DrawColor = UnresolvedNativeFunction_98(HudClass.default.WhiteColor, 0.70);
+        C.DrawColor = HudClass.default.WhiteColor * 0.70;
         C.SetPos(float(MiscX + TextX), float(MiscY + TextY));
-        C.UnresolvedNativeFunction_97("Total", true);
+        C.DrawText("Total", true);
         Dam = TmpPRI.EnemyDamage;
-        C.UnresolvedNativeFunction_97(string(Dam), XL, YL);
+        C.StrLen(string(Dam), XL, YL);
         C.SetPos(float(MiscX + DamageX) - XL, float(MiscY + TextY));
-        C.UnresolvedNativeFunction_97(string(Dam), true);
+        C.DrawText(string(Dam), true);
         killsw = TmpPRI.Kills;
-        C.UnresolvedNativeFunction_97(string(killsw), XL, YL);
+        C.StrLen(string(killsw), XL, YL);
         C.SetPos(float(MiscX + KillsX) - XL, float(MiscY + TextY));
-        C.UnresolvedNativeFunction_97(string(killsw), true);
+        C.DrawText(string(killsw), true);
         MiscY += int(float(MiscH) * 1.2750);
         ++ j;
         // [Loop Continue]

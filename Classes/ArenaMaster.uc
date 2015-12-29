@@ -161,33 +161,33 @@ function GetServerDetails(out ServerResponseLine ServerState)
 static function FillPlayInfo(PlayInfo Pi)
 {
     super(DeathMatch).FillPlayInfo(Pi);
-    Pi.UnresolvedNativeFunction_98("3SPN", "StartingHealth", "Starting Health", 0, 100, "Text", "3;0:999");
-    Pi.UnresolvedNativeFunction_98("3SPN", "StartingArmor", "Starting Armor", 0, 101, "Text", "3;0:999");
-    Pi.UnresolvedNativeFunction_98("3SPN", "MaxHealth", "Max Health", 0, 102, "Text", "8;0.0:2.0");
-    Pi.UnresolvedNativeFunction_98("3SPN", "bChallengeMode", "Challenge Mode", 0, 103, "Check");
-    Pi.UnresolvedNativeFunction_98("3SPN", "MinsPerRound", "Minutes per Round", 0, 120, "Text", "3;0:999");
-    Pi.UnresolvedNativeFunction_98("3SPN", "OTDamage", "Overtime Damage", 0, 121, "Text", "3;0:999");
-    Pi.UnresolvedNativeFunction_98("3SPN", "OTInterval", "Overtime Damage Interval", 0, 122, "Text", "3;0:999");
-    Pi.UnresolvedNativeFunction_98("3SPN", "CampThreshold", "Camp Area", 0, 150, "Text", "3;0:999",, true);
-    Pi.UnresolvedNativeFunction_98("3SPN", "bKickExcessiveCampers", "Kick Excessive Campers", 0, 151, "Check",,, true);
-    Pi.UnresolvedNativeFunction_98("3SPN", "bForceRUP", "Force Ready", 0, 175, "Check",,, true);
-    Pi.UnresolvedNativeFunction_98("3SPN", "ForceRUPMinPlayers", "Force Ready Min Players", 0, 176, "Text", "3;0;999",, true);
-    Pi.UnresolvedNativeFunction_98("3SPN", "bRandomPickups", "Random Pickups", 0, 177, "Check");
-    Pi.UnresolvedNativeFunction_98("3SPN", "bDisableSpeed", "Disable Speed", 0, 200, "Check");
-    Pi.UnresolvedNativeFunction_98("3SPN", "bDisableInvis", "Disable Invis", 0, 201, "Check");
-    Pi.UnresolvedNativeFunction_98("3SPN", "bDisableBerserk", "Disable Berserk", 0, 202, "Check");
-    Pi.UnresolvedNativeFunction_98("3SPN", "bDisableBooster", "Disable Booster", 0, 203, "Check");
-    Pi.UnresolvedNativeFunction_98("3SPN", "bModifyShieldGun", "Use Modified Shield Gun", 0, byte(299), "Check",,, true);
-    Pi.UnresolvedNativeFunction_98("3SPN", "AssaultAmmo", "Assault Ammunition", 0, byte(300), "Text", "3;0:999",, true);
-    Pi.UnresolvedNativeFunction_98("3SPN", "AssaultGrenades", "Assault Grenades", 0, byte(301), "Text", "3;0:999",, true);
-    Pi.UnresolvedNativeFunction_98("3SPN", "BioAmmo", "Bio Ammunition", 0, byte(302), "Text", "3;0:999",, true);
-    Pi.UnresolvedNativeFunction_98("3SPN", "ShockAmmo", "Shock Ammunition", 0, byte(303), "Text", "3;0:999",, true);
-    Pi.UnresolvedNativeFunction_98("3SPN", "LinkAmmo", "Link Ammunition", 0, byte(304), "Text", "3;0:999",, true);
-    Pi.UnresolvedNativeFunction_98("3SPN", "MiniAmmo", "Mini Ammunition", 0, byte(305), "Text", "3;0:999",, true);
-    Pi.UnresolvedNativeFunction_98("3SPN", "FlakAmmo", "Flak Ammunition", 0, byte(306), "Text", "3;0:999",, true);
-    Pi.UnresolvedNativeFunction_98("3SPN", "RocketAmmo", "Rocket Ammunition", 0, byte(307), "Text", "3;0:999",, true);
-    Pi.UnresolvedNativeFunction_98("3SPN", "LightningAmmo", "Lightning Ammunition", 0, byte(308), "Text", "3;0:999",, true);
-    Pi.UnresolvedNativeFunction_98("3SPN", "EnableNewNet", "Enable New Net", 0, byte(400), "Check");
+    Pi.AddSetting("3SPN", "StartingHealth", "Starting Health", 0, 100, "Text", "3;0:999");
+    Pi.AddSetting("3SPN", "StartingArmor", "Starting Armor", 0, 101, "Text", "3;0:999");
+    Pi.AddSetting("3SPN", "MaxHealth", "Max Health", 0, 102, "Text", "8;0.0:2.0");
+    Pi.AddSetting("3SPN", "bChallengeMode", "Challenge Mode", 0, 103, "Check");
+    Pi.AddSetting("3SPN", "MinsPerRound", "Minutes per Round", 0, 120, "Text", "3;0:999");
+    Pi.AddSetting("3SPN", "OTDamage", "Overtime Damage", 0, 121, "Text", "3;0:999");
+    Pi.AddSetting("3SPN", "OTInterval", "Overtime Damage Interval", 0, 122, "Text", "3;0:999");
+    Pi.AddSetting("3SPN", "CampThreshold", "Camp Area", 0, 150, "Text", "3;0:999",, true);
+    Pi.AddSetting("3SPN", "bKickExcessiveCampers", "Kick Excessive Campers", 0, 151, "Check",,, true);
+    Pi.AddSetting("3SPN", "bForceRUP", "Force Ready", 0, 175, "Check",,, true);
+    Pi.AddSetting("3SPN", "ForceRUPMinPlayers", "Force Ready Min Players", 0, 176, "Text", "3;0;999",, true);
+    Pi.AddSetting("3SPN", "bRandomPickups", "Random Pickups", 0, 177, "Check");
+    Pi.AddSetting("3SPN", "bDisableSpeed", "Disable Speed", 0, 200, "Check");
+    Pi.AddSetting("3SPN", "bDisableInvis", "Disable Invis", 0, 201, "Check");
+    Pi.AddSetting("3SPN", "bDisableBerserk", "Disable Berserk", 0, 202, "Check");
+    Pi.AddSetting("3SPN", "bDisableBooster", "Disable Booster", 0, 203, "Check");
+    Pi.AddSetting("3SPN", "bModifyShieldGun", "Use Modified Shield Gun", 0, byte(299), "Check",,, true);
+    Pi.AddSetting("3SPN", "AssaultAmmo", "Assault Ammunition", 0, byte(300), "Text", "3;0:999",, true);
+    Pi.AddSetting("3SPN", "AssaultGrenades", "Assault Grenades", 0, byte(301), "Text", "3;0:999",, true);
+    Pi.AddSetting("3SPN", "BioAmmo", "Bio Ammunition", 0, byte(302), "Text", "3;0:999",, true);
+    Pi.AddSetting("3SPN", "ShockAmmo", "Shock Ammunition", 0, byte(303), "Text", "3;0:999",, true);
+    Pi.AddSetting("3SPN", "LinkAmmo", "Link Ammunition", 0, byte(304), "Text", "3;0:999",, true);
+    Pi.AddSetting("3SPN", "MiniAmmo", "Mini Ammunition", 0, byte(305), "Text", "3;0:999",, true);
+    Pi.AddSetting("3SPN", "FlakAmmo", "Flak Ammunition", 0, byte(306), "Text", "3;0:999",, true);
+    Pi.AddSetting("3SPN", "RocketAmmo", "Rocket Ammunition", 0, byte(307), "Text", "3;0:999",, true);
+    Pi.AddSetting("3SPN", "LightningAmmo", "Lightning Ammunition", 0, byte(308), "Text", "3;0:999",, true);
+    Pi.AddSetting("3SPN", "EnableNewNet", "Enable New Net", 0, byte(400), "Check");
     //return;    
 }
 
@@ -474,19 +474,19 @@ function SpawnRandomPickupBases()
     // End:0x2E6
     if(Best[0] != none)
     {
-        Bases[0] = UnresolvedNativeFunction_97(class'Misc_PickupBase',,, Best[0].Location, Best[0].Rotation);
+        Bases[0] = Spawn(class'Misc_PickupBase',,, Best[0].Location, Best[0].Rotation);
         Bases[0].myMarker = InventorySpot(Best[0]);
     }
     // End:0x342
     if(Best[1] != none)
     {
-        Bases[1] = UnresolvedNativeFunction_97(class'Misc_PickupBase',,, Best[1].Location, Best[1].Rotation);
+        Bases[1] = Spawn(class'Misc_PickupBase',,, Best[1].Location, Best[1].Rotation);
         Bases[1].myMarker = InventorySpot(Best[1]);
     }
     // End:0x3A4
     if(Best[2] != none)
     {
-        Bases[2] = UnresolvedNativeFunction_97(class'Misc_PickupBase',,, Best[2].Location, Best[2].Rotation);
+        Bases[2] = Spawn(class'Misc_PickupBase',,, Best[2].Location, Best[2].Rotation);
         Bases[2].myMarker = InventorySpot(Best[2]);
     }
     //return;    
@@ -998,7 +998,7 @@ function bool AddBot(optional string botname)
     // End:0x36
     if(NewBot == none)
     {
-        WarnInternal("Failed to spawn bot.");
+        Warn("Failed to spawn bot.");
         return false;
     }
     BroadcastLocalizedMessage(GameMessageClass, 1, NewBot.PlayerReplicationInfo);
@@ -1467,7 +1467,7 @@ function PunishCamper(Controller C, Misc_Pawn P, Misc_PRI PRI)
         // End:0x2BC
         if(bKickExcessiveCampers && PRI.ConsecutiveCampCount >= 4)
         {
-            LogInternal("Kicking Camper (Possibly Idle): " $ C.PlayerReplicationInfo.PlayerName);
+            Log("Kicking Camper (Possibly Idle): " $ C.PlayerReplicationInfo.PlayerName);
             AccessControl.DefaultKickReason = AccessControl.IdleKickReason;
             AccessControl.KickPlayer(PlayerController(C));
             AccessControl.DefaultKickReason = AccessControl.default.DefaultKickReason;
@@ -2009,7 +2009,7 @@ auto state PendingMatch
             if(P != none)
             {
                 // End:0x1FC
-                if((((P.UnresolvedNativeFunction_97('PlayerController') && P.PlayerReplicationInfo != none) && P.bIsPlayer) && P.PlayerReplicationInfo.bWaitingPlayer) && !P.PlayerReplicationInfo.bReadyToPlay)
+                if((((P.IsA('PlayerController') && P.PlayerReplicationInfo != none) && P.bIsPlayer) && P.PlayerReplicationInfo.bWaitingPlayer) && !P.PlayerReplicationInfo.bReadyToPlay)
                 {
                     bReady = false;
                 }

@@ -35,10 +35,10 @@ delegate OnRender(Canvas C)
     local int i;
     local float X, Y, W, H, iconY;
 
-    X = PageOwner.UnresolvedNativeFunction_99();
-    Y = PageOwner.UnresolvedNativeFunction_99();
-    W = PageOwner.UnresolvedNativeFunction_99();
-    H = PageOwner.UnresolvedNativeFunction_99();
+    X = PageOwner.ActualLeft();
+    Y = PageOwner.ActualTop();
+    W = PageOwner.ActualWidth();
+    H = PageOwner.ActualHeight();
     C.DrawColor.R = byte(255);
     C.DrawColor.G = byte(255);
     C.DrawColor.B = byte(255);
@@ -58,9 +58,9 @@ delegate OnRender(Canvas C)
             goto J0x1D0;
         }
         C.SetPos(0.0, iconY);
-        C.UnresolvedNativeFunction_97(RankTex[i], 64.0, 64.0, 0.0, 0.0, 64.0, 64.0);
+        C.DrawTile(RankTex[i], 64.0, 64.0, 0.0, 0.0, 64.0, 64.0);
         C.SetPos(128.0, iconY);
-        C.UnresolvedNativeFunction_97(RankTitle[i]);
+        C.DrawText(RankTitle[i]);
         iconY += float(64);
         // End:0x1D0
         if(((C.OrgY + iconY) + float(32)) >= C.ClipY)

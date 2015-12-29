@@ -127,7 +127,7 @@ function DoCombo(class<Combo> ComboClass)
         // End:0x25
         if(CurrentCombo == none)
         {
-            CurrentCombo = UnresolvedNativeFunction_97(ComboClass, self);
+            CurrentCombo = Spawn(ComboClass, self);
         }
         // End:0x116
         if(CurrentCombo != none)
@@ -185,7 +185,7 @@ function GiveWeaponClass(class<Weapon> WeaponClass)
     {
         return;
     }
-    newWeapon = UnresolvedNativeFunction_97(WeaponClass);
+    newWeapon = Spawn(WeaponClass);
     // End:0x3C
     if(newWeapon != none)
     {
@@ -312,7 +312,7 @@ function int ShieldAbsorb(int Dam)
         return Dam;
     }
     SetOverlayMaterial(ShieldHitMat, ShieldHitMatTime, false);
-    UnresolvedNativeFunction_97(sound'ArmorHit', 2, 2.0 * TransientSoundVolume,, 400.0);
+    PlaySound(sound'ArmorHit', 2, 2.0 * TransientSoundVolume,, 400.0);
     Shield = ShieldStrength - ((float(Dam) * 0.750) + 0.50);
     Dam *= 0.250;
     // End:0x96
@@ -610,7 +610,7 @@ simulated function Setup(PlayerRecord Rec, optional bool bLoadNow)
     if((PlayerReplicationInfo != none) && ((((((PlayerReplicationInfo.CharacterName ~= "Virus") || PlayerReplicationInfo.CharacterName ~= "Enigma") || PlayerReplicationInfo.CharacterName ~= "Xan") || PlayerReplicationInfo.CharacterName ~= "Cyclops") || PlayerReplicationInfo.CharacterName ~= "Axon") || PlayerReplicationInfo.CharacterName ~= "Matrix") || !CheckValid(PlayerReplicationInfo.CharacterName))
     {
         // End:0x116
-        if((Controller == none) || Controller.UnresolvedNativeFunction_97('Bot'))
+        if((Controller == none) || Controller.IsA('Bot'))
         {
             Rec = class'xUtil'.static.FindPlayerRecord(DefaultSkin);
         }
@@ -698,7 +698,7 @@ simulated function RemoveFlamingEffects()
     if(i < Attached.Length)
     {
         // End:0xFE
-        if(((((Attached[i].UnresolvedNativeFunction_97('xEmitter') && !Attached[i].UnresolvedNativeFunction_97('BloodJet')) && !Attached[i].UnresolvedNativeFunction_97('Emitter_SeeInvis')) && !Attached[i].UnresolvedNativeFunction_97('SpeedTrail')) && !Attached[i].UnresolvedNativeFunction_97('RegenCrosses')) && !Attached[i].UnresolvedNativeFunction_97('OffensiveEffect'))
+        if(((((Attached[i].IsA('xEmitter') && !Attached[i].IsA('BloodJet')) && !Attached[i].IsA('Emitter_SeeInvis')) && !Attached[i].IsA('SpeedTrail')) && !Attached[i].IsA('RegenCrosses')) && !Attached[i].IsA('OffensiveEffect'))
         {
             xEmitter(Attached[i]).mRegen = false;
         }
@@ -734,7 +734,7 @@ simulated function Tick(float DeltaTime)
                 // End:0x96
                 if(InvisEmitter == none)
                 {
-                    InvisEmitter = UnresolvedNativeFunction_97(class'Emitter_SeeInvis', self,, Location, Rotation);
+                    InvisEmitter = Spawn(class'Emitter_SeeInvis', self,, Location, Rotation);
                 }
                 AttachToBone(InvisEmitter, 'spine');
             }

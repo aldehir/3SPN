@@ -32,7 +32,7 @@ function InitComponent(GUIController MyController, GUIComponent MyOwner)
     local bool OldDirty;
 
     super(GUIPanel).InitComponent(MyController, MyOwner);
-    P = Misc_Player(UnresolvedNativeFunction_99());
+    P = Misc_Player(PlayerOwner());
     // End:0x2B
     if(P == none)
     {
@@ -50,17 +50,17 @@ function InitComponent(GUIController MyController, GUIComponent MyOwner)
     GUISlider(Controls[25]).Value = float(class'Misc_Player'.default.Yellow.R);
     GUISlider(Controls[26]).Value = float(class'Misc_Player'.default.Yellow.G);
     GUISlider(Controls[27]).Value = float(class'Misc_Player'.default.Yellow.B);
-    RedSpinnyDude = P.UnresolvedNativeFunction_97(class'SpinnyWeap');
+    RedSpinnyDude = P.Spawn(class'SpinnyWeap');
     RedSpinnyDude.SetDrawType(2);
     RedSpinnyDude.bPlayRandomAnims = true;
     RedSpinnyDude.SetDrawScale(0.20);
     RedSpinnyDude.spinRate = 12000;
-    BlueSpinnyDude = P.UnresolvedNativeFunction_97(class'SpinnyWeap');
+    BlueSpinnyDude = P.Spawn(class'SpinnyWeap');
     BlueSpinnyDude.SetDrawType(2);
     BlueSpinnyDude.bPlayRandomAnims = true;
     BlueSpinnyDude.SetDrawScale(0.20);
     BlueSpinnyDude.spinRate = 12000;
-    YellowSpinnyDude = P.UnresolvedNativeFunction_97(class'SpinnyWeap');
+    YellowSpinnyDude = P.Spawn(class'SpinnyWeap');
     YellowSpinnyDude.SetDrawType(2);
     YellowSpinnyDude.bPlayRandomAnims = true;
     YellowSpinnyDude.SetDrawScale(0.20);
@@ -200,7 +200,7 @@ function UpdateSpinnyDudes()
     BlueCC = new (none) class'ConstantColor';
     YellowC = new (none) class'Combiner';
     YellowCC = new (none) class'ConstantColor';
-    P = Misc_Player(UnresolvedNativeFunction_99());
+    P = Misc_Player(PlayerOwner());
     // End:0x91
     if(class'Misc_Player'.default.bForceRedEnemyModel)
     {
@@ -247,21 +247,21 @@ function UpdateSpinnyDudes()
     // End:0x1B1
     if(RedMesh == none)
     {
-        LogInternal((("Could not load mesh: " $ Rec.MeshName) $ " For player: ") $ Rec.DefaultName);
+        Log((("Could not load mesh: " $ Rec.MeshName) $ " For player: ") $ Rec.DefaultName);
         return;
     }
     RedBodySkin = Material(DynamicLoadObject(Rec.BodySkinName, class'Material'));
     // End:0x229
     if(RedBodySkin == none)
     {
-        LogInternal((("Could not load body material: " $ Rec.BodySkinName) $ " For player: ") $ Rec.DefaultName);
+        Log((("Could not load body material: " $ Rec.BodySkinName) $ " For player: ") $ Rec.DefaultName);
         return;
     }
     RedHeadSkin = Material(DynamicLoadObject(Rec.FaceSkinName, class'Material'));
     // End:0x2A1
     if(RedHeadSkin == none)
     {
-        LogInternal((("Could not load head material: " $ Rec.FaceSkinName) $ " For player: ") $ Rec.DefaultName);
+        Log((("Could not load head material: " $ Rec.FaceSkinName) $ " For player: ") $ Rec.DefaultName);
         return;
     }
     Rec = class'xUtil'.static.FindPlayerRecord(BlueModel);
@@ -269,21 +269,21 @@ function UpdateSpinnyDudes()
     // End:0x32A
     if(BlueMesh == none)
     {
-        LogInternal((("Could not load mesh: " $ Rec.MeshName) $ " For player: ") $ Rec.DefaultName);
+        Log((("Could not load mesh: " $ Rec.MeshName) $ " For player: ") $ Rec.DefaultName);
         return;
     }
     BlueBodySkin = Material(DynamicLoadObject(Rec.BodySkinName, class'Material'));
     // End:0x3A2
     if(BlueBodySkin == none)
     {
-        LogInternal((("Could not load body material: " $ Rec.BodySkinName) $ " For player: ") $ Rec.DefaultName);
+        Log((("Could not load body material: " $ Rec.BodySkinName) $ " For player: ") $ Rec.DefaultName);
         return;
     }
     BlueHeadSkin = Material(DynamicLoadObject(Rec.FaceSkinName, class'Material'));
     // End:0x41A
     if(BlueHeadSkin == none)
     {
-        LogInternal((("Could not load head material: " $ Rec.FaceSkinName) $ " For player: ") $ Rec.DefaultName);
+        Log((("Could not load head material: " $ Rec.FaceSkinName) $ " For player: ") $ Rec.DefaultName);
         return;
     }
     Rec = class'xUtil'.static.FindPlayerRecord(YellowModel);
@@ -291,21 +291,21 @@ function UpdateSpinnyDudes()
     // End:0x4A3
     if(YellowMesh == none)
     {
-        LogInternal((("Could not load mesh: " $ Rec.MeshName) $ " For player: ") $ Rec.DefaultName);
+        Log((("Could not load mesh: " $ Rec.MeshName) $ " For player: ") $ Rec.DefaultName);
         return;
     }
     YellowBodySkin = Material(DynamicLoadObject(Rec.BodySkinName, class'Material'));
     // End:0x51B
     if(YellowBodySkin == none)
     {
-        LogInternal((("Could not load body material: " $ Rec.BodySkinName) $ " For player: ") $ Rec.DefaultName);
+        Log((("Could not load body material: " $ Rec.BodySkinName) $ " For player: ") $ Rec.DefaultName);
         return;
     }
     YellowHeadSkin = Material(DynamicLoadObject(Rec.FaceSkinName, class'Material'));
     // End:0x593
     if(YellowHeadSkin == none)
     {
-        LogInternal((("Could not load head material: " $ Rec.FaceSkinName) $ " For player: ") $ Rec.DefaultName);
+        Log((("Could not load head material: " $ Rec.FaceSkinName) $ " For player: ") $ Rec.DefaultName);
         return;
     }
     RedCC.Color = class'Misc_Player'.default.RedOrEnemy;
@@ -475,7 +475,7 @@ function OnChange(GUIComponent C)
             break;
         // End:0xFFFF
         default:
-            Misc_Player(UnresolvedNativeFunction_99()).ReloadDefaults();
+            Misc_Player(PlayerOwner()).ReloadDefaults();
             class'Misc_Player'.static.StaticSaveConfig();
             class'Menu_Menu3SPN'.default.SettingsDirty = true;
             UpdateSpinnyDudes();
@@ -494,19 +494,19 @@ function bool InternalDraw(Canvas C)
     if(RedSpinnyDude != none)
     {
         RedSpinnyDude.SetLocation(((CamPos + (RedSpinnyOffset.X * X)) + (RedSpinnyOffset.Y * Y)) + (RedSpinnyOffset.Z * Z));
-        C.UnresolvedNativeFunction_97(RedSpinnyDude, false, true, 90.0);
+        C.DrawActor(RedSpinnyDude, false, true, 90.0);
     }
     // End:0x109
     if(BlueSpinnyDude != none)
     {
         BlueSpinnyDude.SetLocation(((CamPos + (BlueSpinnyOffset.X * X)) + (BlueSpinnyOffset.Y * Y)) + (BlueSpinnyOffset.Z * Z));
-        C.UnresolvedNativeFunction_97(BlueSpinnyDude, false, true, 90.0);
+        C.DrawActor(BlueSpinnyDude, false, true, 90.0);
     }
     // End:0x176
     if(YellowSpinnyDude != none)
     {
         YellowSpinnyDude.SetLocation(((CamPos + (YellowSpinnyOffset.X * X)) + (YellowSpinnyOffset.Y * Y)) + (YellowSpinnyOffset.Z * Z));
-        C.UnresolvedNativeFunction_97(YellowSpinnyDude, false, true, 90.0);
+        C.DrawActor(YellowSpinnyDude, false, true, 90.0);
     }
     return false;
     //return;    
@@ -549,7 +549,7 @@ function bool OnClick(GUIComponent C)
         // [Loop Continue]
         goto J0x2DA;
     }
-    Misc_Player(UnresolvedNativeFunction_99()).ReloadDefaults();
+    Misc_Player(PlayerOwner()).ReloadDefaults();
     class'Misc_Player'.static.StaticSaveConfig();
     class'Menu_Menu3SPN'.default.SettingsDirty = true;
     UpdateSpinnyDudes();

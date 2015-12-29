@@ -45,7 +45,7 @@ simulated function ModeTick(float dt)
     // End:0xBB
     if(LinkGun.Links < 0)
     {
-        LogInternal(((("warning:" @ string(Instigator)) @ "linkgun had") @ string(LinkGun.Links)) @ "links");
+        Log(((("warning:" @ string(Instigator)) @ "linkgun had") @ string(LinkGun.Links)) @ "links");
         LinkGun.Links = 0;
     }
     ls = LinkScale[Min(LinkGun.Links, 5)];
@@ -231,7 +231,7 @@ simulated function ModeTick(float dt)
             Other = DoTimeTravelTrace(HitLocation, HitNormal, EndTrace, StartTrace);
         }
         // End:0x9FC
-        if((Other != none) && Other.UnresolvedNativeFunction_97('NewNet_PawnCollisionCopy'))
+        if((Other != none) && Other.IsA('NewNet_PawnCollisionCopy'))
         {
             PawnHitLocation = (HitLocation + NewNet_PawnCollisionCopy(Other).CopiedPawn.Location) - Other.Location;
             Other = NewNet_PawnCollisionCopy(Other).CopiedPawn;
@@ -409,7 +409,7 @@ simulated function ModeTick(float dt)
             // End:0xFE6
             if((Beam == none) && bIsFiring)
             {
-                Beam = Weapon.UnresolvedNativeFunction_97(BeamEffectClass, Instigator);
+                Beam = Weapon.Spawn(BeamEffectClass, Instigator);
                 // End:0xFDB
                 if(SentLinkVolume == default.LinkVolume)
                 {

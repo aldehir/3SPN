@@ -34,7 +34,7 @@ var() automated GUILabel l_SettingsLabel;
 function bool AllowOpen(string MenuClass)
 {
     // End:0x1F
-    if((UnresolvedNativeFunction_99() == none) || UnresolvedNativeFunction_99().PlayerReplicationInfo == none)
+    if((PlayerOwner() == none) || PlayerOwner().PlayerReplicationInfo == none)
     {
         return false;
     }
@@ -75,7 +75,7 @@ function InitComponent(GUIController MyController, GUIComponent MyOwner)
     // End:0x76 [Loop If]
     if(i < class'Misc_Player'.default.ColoredName.Length)
     {
-        co_SavedNames.AddItem(Misc_Player(UnresolvedNativeFunction_99()).FindColoredName(i));
+        co_SavedNames.AddItem(Misc_Player(PlayerOwner()).FindColoredName(i));
         ++ i;
         // [Loop Continue]
         goto J0x2D;
@@ -125,29 +125,29 @@ function InitSliderAndLetters()
     local int i;
 
     // End:0x14
-    if(UnresolvedNativeFunction_99().PlayerReplicationInfo == none)
+    if(PlayerOwner().PlayerReplicationInfo == none)
     {
         return;
     }
     i = 0;
     J0x1B:
     // End:0x1A5 [Loop If]
-    if(i < Len(UnresolvedNativeFunction_99().PlayerReplicationInfo.PlayerName))
+    if(i < Len(PlayerOwner().PlayerReplicationInfo.PlayerName))
     {
         class'Misc_Player'.default.colorname[i].A = byte(255);
         l_ColorNameLetters[i].TextFont = "UT2LargeFont";
         l_ColorNameLetters[i].WinTop = 0.460;
         l_ColorNameLetters[i].WinWidth = 0.0290;
-        l_ColorNameLetters[i].WinLeft = (0.50 - ((0.50 * 0.030) * float(Len(UnresolvedNativeFunction_99().PlayerReplicationInfo.PlayerName)))) + (0.030 * float(i));
+        l_ColorNameLetters[i].WinLeft = (0.50 - ((0.50 * 0.030) * float(Len(PlayerOwner().PlayerReplicationInfo.PlayerName)))) + (0.030 * float(i));
         l_ColorNameLetters[i].StyleName = "TextLabel";
-        l_ColorNameLetters[i].Caption = Right(Left(UnresolvedNativeFunction_99().PlayerReplicationInfo.PlayerName, i + 1), 1);
+        l_ColorNameLetters[i].Caption = Right(Left(PlayerOwner().PlayerReplicationInfo.PlayerName, i + 1), 1);
         l_ColorNameLetters[i].TextColor = class'Misc_Player'.default.colorname[i];
         l_ColorNameLetters[i].TextAlign = 1;
         ++ i;
         // [Loop Continue]
         goto J0x1B;
     }
-    i = Len(UnresolvedNativeFunction_99().PlayerReplicationInfo.PlayerName);
+    i = Len(PlayerOwner().PlayerReplicationInfo.PlayerName);
     J0x1C2:
     // End:0x1EF [Loop If]
     if(i < 20)
@@ -158,9 +158,9 @@ function InitSliderAndLetters()
         goto J0x1C2;
     }
     sl_LetterSelect.MinValue = 1.0;
-    sl_LetterSelect.WinLeft = 0.50 - ((0.50 * 0.030) * float(Len(UnresolvedNativeFunction_99().PlayerReplicationInfo.PlayerName)));
-    sl_LetterSelect.MaxValue = float(Min(Len(UnresolvedNativeFunction_99().PlayerReplicationInfo.PlayerName), 20));
-    sl_LetterSelect.WinWidth = 0.02970 * float(Min(Len(UnresolvedNativeFunction_99().PlayerReplicationInfo.PlayerName), 20));
+    sl_LetterSelect.WinLeft = 0.50 - ((0.50 * 0.030) * float(Len(PlayerOwner().PlayerReplicationInfo.PlayerName)));
+    sl_LetterSelect.MaxValue = float(Min(Len(PlayerOwner().PlayerReplicationInfo.PlayerName), 20));
+    sl_LetterSelect.WinWidth = 0.02970 * float(Min(Len(PlayerOwner().PlayerReplicationInfo.PlayerName), 20));
     sl_LetterSelect.BarStyle = none;
     sl_LetterSelect.FillImage = none;
     //return;    
@@ -199,9 +199,9 @@ function SpecialInitSliderAndLetters(int j)
         goto J0x1C9;
     }
     sl_LetterSelect.MinValue = 1.0;
-    sl_LetterSelect.WinLeft = 0.50 - ((0.50 * 0.030) * float(Len(UnresolvedNativeFunction_99().PlayerReplicationInfo.PlayerName)));
-    sl_LetterSelect.MaxValue = float(Min(Len(UnresolvedNativeFunction_99().PlayerReplicationInfo.PlayerName), 20));
-    sl_LetterSelect.WinWidth = 0.02970 * float(Min(Len(UnresolvedNativeFunction_99().PlayerReplicationInfo.PlayerName), 20));
+    sl_LetterSelect.WinLeft = 0.50 - ((0.50 * 0.030) * float(Len(PlayerOwner().PlayerReplicationInfo.PlayerName)));
+    sl_LetterSelect.MaxValue = float(Min(Len(PlayerOwner().PlayerReplicationInfo.PlayerName), 20));
+    sl_LetterSelect.WinWidth = 0.02970 * float(Min(Len(PlayerOwner().PlayerReplicationInfo.PlayerName), 20));
     sl_LetterSelect.BarStyle = none;
     sl_LetterSelect.FillImage = none;
     //return;    
@@ -258,21 +258,21 @@ function InternalOnChange(GUIComponent C)
         // End:0x1E0
         case sl_RedColor:
             class'Misc_Player'.default.colorname[int(sl_LetterSelect.Value - float(1))].R = byte(sl_RedColor.Value);
-            Misc_Player(UnresolvedNativeFunction_99()).SetColoredNameOldStyle();
+            Misc_Player(PlayerOwner()).SetColoredNameOldStyle();
             l_ColorNameLetters[int(sl_LetterSelect.Value - float(1))].TextColor.R = byte(sl_RedColor.Value);
             // End:0x310
             break;
         // End:0x271
         case sl_BlueColor:
             class'Misc_Player'.default.colorname[int(sl_LetterSelect.Value - float(1))].B = byte(sl_BlueColor.Value);
-            Misc_Player(UnresolvedNativeFunction_99()).SetColoredNameOldStyle();
+            Misc_Player(PlayerOwner()).SetColoredNameOldStyle();
             l_ColorNameLetters[int(sl_LetterSelect.Value - float(1))].TextColor.B = byte(sl_BlueColor.Value);
             // End:0x310
             break;
         // End:0x302
         case sl_GreenColor:
             class'Misc_Player'.default.colorname[int(sl_LetterSelect.Value - float(1))].G = byte(sl_GreenColor.Value);
-            Misc_Player(UnresolvedNativeFunction_99()).SetColoredNameOldStyle();
+            Misc_Player(PlayerOwner()).SetColoredNameOldStyle();
             l_ColorNameLetters[int(sl_LetterSelect.Value - float(1))].TextColor.G = byte(sl_GreenColor.Value);
             // End:0x310
             break;
@@ -282,7 +282,7 @@ function InternalOnChange(GUIComponent C)
             break;
         // End:0xFFFF
         default:
-            Misc_Player(UnresolvedNativeFunction_99()).ReloadDefaults();
+            Misc_Player(PlayerOwner()).ReloadDefaults();
             class'Misc_Player'.static.StaticSaveConfig();
             class'TAM_Scoreboard'.static.StaticSaveConfig();
             class'Misc_DeathMessage'.static.StaticSaveConfig();
@@ -299,9 +299,9 @@ function bool InternalOnClick(GUIComponent Sender)
     {
         // End:0x77
         case bu_SaveName:
-            Misc_Player(UnresolvedNativeFunction_99()).SaveNewColoredName();
+            Misc_Player(PlayerOwner()).SaveNewColoredName();
             co_SavedNames.ReadOnly(false);
-            co_SavedNames.AddItem(Misc_Player(UnresolvedNativeFunction_99()).FindColoredName(class'Misc_Player'.default.ColoredName.Length - 1));
+            co_SavedNames.AddItem(Misc_Player(PlayerOwner()).FindColoredName(class'Misc_Player'.default.ColoredName.Length - 1));
             co_SavedNames.ReadOnly(true);
             // End:0x38B
             break;
@@ -369,7 +369,7 @@ function bool InternalOnClick(GUIComponent Sender)
             // End:0x385
             if((co_SavedNames.GetIndex() < co_SavedNames.ItemCount()) && co_SavedNames.GetIndex() >= 0)
             {
-                Misc_Player(UnresolvedNativeFunction_99()).SetColoredNameOldStyleCustom(, co_SavedNames.GetIndex());
+                Misc_Player(PlayerOwner()).SetColoredNameOldStyleCustom(, co_SavedNames.GetIndex());
                 class'Misc_Player'.default.CurrentSelectedColoredName = co_SavedNames.GetIndex();
                 SpecialInitSliderAndLetters(co_SavedNames.GetIndex());
                 SetColorSliders(byte(sl_LetterSelect.Value - float(1)));
@@ -378,7 +378,7 @@ function bool InternalOnClick(GUIComponent Sender)
             break;
         // End:0xFFFF
         default:
-            Misc_Player(UnresolvedNativeFunction_99()).ReloadDefaults();
+            Misc_Player(PlayerOwner()).ReloadDefaults();
             class'Misc_Player'.static.StaticSaveConfig();
             class'Menu_Menu3SPN'.default.SettingsDirty = true;
             return true;

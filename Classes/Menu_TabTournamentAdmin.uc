@@ -14,7 +14,7 @@ var bool bAdmin;
 function bool AllowOpen(string MenuClass)
 {
     // End:0x1F
-    if((UnresolvedNativeFunction_99() == none) || UnresolvedNativeFunction_99().PlayerReplicationInfo == none)
+    if((PlayerOwner() == none) || PlayerOwner().PlayerReplicationInfo == none)
     {
         return false;
     }
@@ -33,7 +33,7 @@ function InitComponent(GUIController MyController, GUIComponent MyOwner)
     {
         return;
     }
-    GRI = UnresolvedNativeFunction_99().Level.GRI;
+    GRI = PlayerOwner().Level.GRI;
     // End:0xD4
     if(GRI != none)
     {
@@ -51,7 +51,7 @@ function InitComponent(GUIController MyController, GUIComponent MyOwner)
     moCheckBox(Controls[6]).Checked(class'Misc_Player'.default.bAdminVisionInSpec);
     moCheckBox(Controls[7]).Checked(class'Misc_Player'.default.bDrawTargetingLineInSpec);
     moCheckBox(Controls[8]).Checked(class'Misc_Player'.default.bReportNewNetStats);
-    bAdmin = (UnresolvedNativeFunction_99().PlayerReplicationInfo != none) && UnresolvedNativeFunction_99().PlayerReplicationInfo.bAdmin || UnresolvedNativeFunction_99().Level.NetMode == NM_Standalone;
+    bAdmin = (PlayerOwner().PlayerReplicationInfo != none) && PlayerOwner().PlayerReplicationInfo.bAdmin || PlayerOwner().Level.NetMode == NM_Standalone;
     // End:0x1DA
     if(!bAdmin)
     {
@@ -66,7 +66,7 @@ function InitComponent(GUIController MyController, GUIComponent MyOwner)
             goto J0x1AB;
         }
     }
-    UnresolvedNativeFunction_99(1.0, true);
+    SetTimer(1.0, true);
     //return;    
 }
 
@@ -93,7 +93,7 @@ function OnChange(GUIComponent C)
         if(C == Controls[8])
         {
             class'Misc_Player'.default.bReportNewNetStats = B;
-            MP = Misc_Player(UnresolvedNativeFunction_99());
+            MP = Misc_Player(PlayerOwner());
             // End:0xD1
             if(MP != none)
             {
@@ -114,7 +114,7 @@ function bool OnClick(GUIComponent C)
     {
         return false;
     }
-    MP = Misc_Player(UnresolvedNativeFunction_99());
+    MP = Misc_Player(PlayerOwner());
     // End:0x28
     if(MP == none)
     {
@@ -135,7 +135,7 @@ function Timer()
     local int i;
 
     bAdmin = true;
-    bNewAdmin = UnresolvedNativeFunction_99().PlayerReplicationInfo.bAdmin || UnresolvedNativeFunction_99().Level.NetMode == NM_Standalone;
+    bNewAdmin = PlayerOwner().PlayerReplicationInfo.bAdmin || PlayerOwner().Level.NetMode == NM_Standalone;
     // End:0x5A
     if(bNewAdmin == bAdmin)
     {

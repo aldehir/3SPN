@@ -81,7 +81,7 @@ simulated function SpawnLGEffect(class<Actor> tmpHitEmitClass, Vector arcEnd, Ve
 {
     local xEmitter hitEmitter;
 
-    hitEmitter = xEmitter(UnresolvedNativeFunction_97(tmpHitEmitClass,,, arcEnd, rotator(HitNormal)));
+    hitEmitter = xEmitter(Spawn(tmpHitEmitClass,,, arcEnd, rotator(HitNormal)));
     // End:0x40
     if(hitEmitter != none)
     {
@@ -90,7 +90,7 @@ simulated function SpawnLGEffect(class<Actor> tmpHitEmitClass, Vector arcEnd, Ve
     // End:0x8F
     if(Level.NetMode != NM_Client)
     {
-        WarnInternal("Server should never spawn the client lightningbolt");
+        Warn("Server should never spawn the client lightningbolt");
     }
     //return;    
 }
@@ -108,7 +108,7 @@ simulated function ClientStartFire(int Mode)
     {
         FireMode[Mode].bIsFiring = true;
         // End:0x82
-        if(Instigator.Controller.UnresolvedNativeFunction_97('PlayerController'))
+        if(Instigator.Controller.IsA('PlayerController'))
         {
             PlayerController(Instigator.Controller).ToggleZoom();
         }

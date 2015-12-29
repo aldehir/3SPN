@@ -191,7 +191,7 @@ static simulated function string StripColorCodes(string S)
     local int i;
     local string s2;
 
-    UnresolvedNativeFunction_240(S, Chr(27), StringParts);
+    Split(S, Chr(27), StringParts);
     // End:0x29
     if(StringParts.Length >= 1)
     {
@@ -241,7 +241,7 @@ static simulated function DrawTextClipped(Canvas C, string S, float MaxWidth)
 
     oldClipX = C.ClipX;
     C.ClipX = C.CurX + MaxWidth;
-    C.UnresolvedNativeFunction_97(S);
+    C.DrawTextClipped(S);
     C.ClipX = oldClipX;
     //return;    
 }
@@ -323,7 +323,7 @@ static function string SanitizeLoginOptions(string Options)
         // [Loop Continue]
         goto J0x0B;
     }
-    LogInternal(((("Sanitized options string '" $ OrigOptions) $ "' to '") $ Result) $ "'");
+    Log(((("Sanitized options string '" $ OrigOptions) $ "' to '") $ Result) $ "'");
     return Result;
     //return;    
 }

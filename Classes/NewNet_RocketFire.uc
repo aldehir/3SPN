@@ -273,7 +273,7 @@ simulated function Projectile FakeSuperSpawnProjectile(Vector Start, Rotator Dir
     // End:0x2E
     if(ProjectileClass != none)
     {
-        P = Weapon.UnresolvedNativeFunction_97(FakeProjectileClass,,, Start, Dir);
+        P = Weapon.Spawn(FakeProjectileClass,,, Start, Dir);
     }
     // End:0x3B
     if(P == none)

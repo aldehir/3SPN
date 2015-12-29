@@ -274,7 +274,7 @@ simulated function Projectile FakeSuperSpawnProjectile(Vector Start, Rotator Dir
     // End:0x2E
     if(ProjectileClass != none)
     {
-        P = Weapon.UnresolvedNativeFunction_97(FakeProjectileClass,,, Start, Dir);
+        P = Weapon.Spawn(FakeProjectileClass,,, Start, Dir);
     }
     // End:0x3B
     if(P == none)
@@ -450,7 +450,7 @@ function Projectile SpawnProjectile(Vector Start, Rotator Dir)
             }
             UnTimeTravel();
             // End:0x184
-            if((Other != none) && Other.UnresolvedNativeFunction_97('NewNet_PawnCollisionCopy'))
+            if((Other != none) && Other.IsA('NewNet_PawnCollisionCopy'))
             {
                 HitLocation = (HitLocation + NewNet_PawnCollisionCopy(Other).CopiedPawn.Location) - Other.Location;
                 Other = NewNet_PawnCollisionCopy(Other).CopiedPawn;
@@ -458,18 +458,18 @@ function Projectile SpawnProjectile(Vector Start, Rotator Dir)
             // End:0x1B5
             if(Other == none)
             {
-                P = Weapon.UnresolvedNativeFunction_97(ProjectileClass,,, End, Dir);
+                P = Weapon.Spawn(ProjectileClass,,, End, Dir);
             }
             // End:0x1E8
             else
             {
-                P = Weapon.UnresolvedNativeFunction_97(ProjectileClass,,, HitLocation - (vector(Dir) * 20.0), Dir);
+                P = Weapon.Spawn(ProjectileClass,,, HitLocation - (vector(Dir) * 20.0), Dir);
             }
         }
         // End:0x20E
         else
         {
-            P = Weapon.UnresolvedNativeFunction_97(ProjectileClass,,, Start, Dir);
+            P = Weapon.Spawn(ProjectileClass,,, Start, Dir);
         }
     }
     // End:0x21B

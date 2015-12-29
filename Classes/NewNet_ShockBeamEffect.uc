@@ -80,7 +80,7 @@ simulated function SpawnEffects()
             {
                 SetLocation(Instigator.Location);
             }
-            UnresolvedNativeFunction_97(MuzFlashClass,,, Location);
+            Spawn(MuzFlashClass,,, Location);
         }
         // End:0x1B9
         else
@@ -96,7 +96,7 @@ simulated function SpawnEffects()
             {
                 SetLocation((Instigator.Location + (Instigator.EyeHeight * vect(0.0, 0.0, 1.0))) + (Normal(mSpawnVecA - Instigator.Location) * 25.0));
             }
-            UnresolvedNativeFunction_97(MuzFlash3Class);
+            Spawn(MuzFlash3Class);
         }
     }
     // End:0x20D
@@ -107,7 +107,7 @@ simulated function SpawnEffects()
     // End:0x2DD
     if((((!Level.bDropDetail && Level.DetailMode != 0) && VSize(Location - mSpawnVecA) > float(40)) && !Level.GetLocalPlayerController().BeyondViewDistance(Location, 0.0)) || (Instigator != none) && Instigator.IsFirstPerson())
     {
-        Coil = UnresolvedNativeFunction_97(CoilClass, Owner,, Location, Rotation);
+        Coil = Spawn(CoilClass, Owner,, Location, Rotation);
         // End:0x2DD
         if(Coil != none)
         {

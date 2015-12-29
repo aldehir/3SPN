@@ -164,7 +164,7 @@ simulated function DispatchClientEffect(Vector V, Rotator R)
     {
         return;
     }
-    UnresolvedNativeFunction_97(class'LinkProjectile',,, V, R);
+    Spawn(class'LinkProjectile',,, V, R);
     //return;    
 }
 

@@ -28,12 +28,12 @@ function SetPawn(Pawn Other)
     // End:0x46
     if(Level.NetMode == NM_Client)
     {
-        WarnInternal("Client should never have a collision copy");
+        Warn("Client should never have a collision copy");
     }
     // End:0x7C
     if(Other == none)
     {
-        WarnInternal("PawnCopy spawned without proper Other");
+        Warn("PawnCopy spawned without proper Other");
         return;
     }
     CopiedPawn = Other;
@@ -195,7 +195,7 @@ function TimeTravelPawn(float dt)
         else
         {
             // End:0x395
-            if(CopiedPawn.UnresolvedNativeFunction_97('xPawn'))
+            if(CopiedPawn.IsA('xPawn'))
             {
                 SetCollisionSize(default.CollisionRadius, default.CollisionHeight);
             }
@@ -227,7 +227,7 @@ function AddPawnToList(Pawn Other)
     // End:0x30
     if(Next == none)
     {
-        Next = UnresolvedNativeFunction_97(class'NewNet_PawnCollisionCopy');
+        Next = Spawn(class'NewNet_PawnCollisionCopy');
         Next.SetPawn(Other);
     }
     // End:0x44
@@ -267,7 +267,7 @@ function NewNet_PawnCollisionCopy RemoveOldPawns()
 
 event TakeDamage(int Damage, Pawn EventInstigator, Vector HitLocation, Vector Momentum, class<DamageType> DamageType)
 {
-    WarnInternal("Pawn collision copy should never take damage");
+    Warn("Pawn collision copy should never take damage");
     //return;    
 }
 
@@ -276,7 +276,7 @@ event Destroyed()
     // End:0x30
     if(!bNormalDestroy)
     {
-        WarnInternal("DESTROYED WITHOUT SETTING UP LIST");
+        Warn("DESTROYED WITHOUT SETTING UP LIST");
     }
     super.Destroyed();
     //return;    
@@ -287,7 +287,7 @@ function Identify()
     // End:0x1E
     if(CopiedPawn == none)
     {
-        LogInternal("PCC: No pawn");
+        Log("PCC: No pawn");
     }
     // End:0x70
     else
@@ -295,12 +295,12 @@ function Identify()
         // End:0x5B
         if(CopiedPawn.PlayerReplicationInfo != none)
         {
-            LogInternal("PCC: Pawn" @ CopiedPawn.PlayerReplicationInfo.PlayerName);
+            Log("PCC: Pawn" @ CopiedPawn.PlayerReplicationInfo.PlayerName);
         }
         // End:0x70
         else
         {
-            LogInternal("PCC: Unnamed Pawn");
+            Log("PCC: Unnamed Pawn");
         }
     }
     //return;    
@@ -311,7 +311,7 @@ function Tick(float DeltaTime)
     // End:0x46
     if(Level.NetMode == NM_Client)
     {
-        WarnInternal("Client should never have a collision copy");
+        Warn("Client should never have a collision copy");
     }
     // End:0x53
     if(CopiedPawn == none)
@@ -321,7 +321,7 @@ function Tick(float DeltaTime)
     // End:0xB6
     if((bCollideActors || bCollideWorld) || bBlockActors)
     {
-        WarnInternal("COLLISION COPY SHOULD NEVER HAVE COLLISION EXCEPT DURING A TRACE");
+        Warn("COLLISION COPY SHOULD NEVER HAVE COLLISION EXCEPT DURING A TRACE");
     }
     RemoveOutdatedHistory();
     AddHistory();

@@ -24,28 +24,28 @@ function InitComponent(GUIController MyController, GUIComponent MyOwner)
     {
         return;
     }
-    moEditBox(Controls[4]).SetText(string(TAM_GRI(UnresolvedNativeFunction_99().Level.GRI).StartingHealth));
-    moEditBox(Controls[5]).SetText(string(TAM_GRI(UnresolvedNativeFunction_99().Level.GRI).StartingArmor));
-    moCheckBox(Controls[6]).Checked(TAM_GRI(UnresolvedNativeFunction_99().Level.GRI).bChallengeMode);
-    moEditBox(Controls[7]).SetText(string(TAM_GRI(UnresolvedNativeFunction_99().Level.GRI).MaxHealth));
-    moEditBox(Controls[8]).SetText(string(TAM_GRI(UnresolvedNativeFunction_99().Level.GRI).MinsPerRound));
-    moEditBox(Controls[9]).SetText(string(TAM_GRI(UnresolvedNativeFunction_99().Level.GRI).OTDamage));
-    moEditBox(Controls[10]).SetText(string(TAM_GRI(UnresolvedNativeFunction_99().Level.GRI).OTInterval));
-    moCheckBox(Controls[11]).Checked(TAM_GRI(UnresolvedNativeFunction_99().Level.GRI).bDisableSpeed);
-    moCheckBox(Controls[12]).Checked(TAM_GRI(UnresolvedNativeFunction_99().Level.GRI).bDisableInvis);
-    moCheckBox(Controls[13]).Checked(TAM_GRI(UnresolvedNativeFunction_99().Level.GRI).bDisableBerserk);
-    moCheckBox(Controls[14]).Checked(TAM_GRI(UnresolvedNativeFunction_99().Level.GRI).bDisableBooster);
-    moCheckBox(Controls[15]).Checked(TAM_GRI(UnresolvedNativeFunction_99().Level.GRI).bKickExcessiveCampers);
-    moEditBox(Controls[16]).SetText(string(TAM_GRI(UnresolvedNativeFunction_99().Level.GRI).CampThreshold));
-    moCheckBox(Controls[17]).Checked(TAM_GRI(UnresolvedNativeFunction_99().Level.GRI).bForceRUP);
-    moCheckBox(Controls[18]).Checked(TAM_GRI(UnresolvedNativeFunction_99().Level.GRI).bRandomPickups);
-    MapName = Left(string(UnresolvedNativeFunction_99().Level), InStr(string(UnresolvedNativeFunction_99().Level), "."));
+    moEditBox(Controls[4]).SetText(string(TAM_GRI(PlayerOwner().Level.GRI).StartingHealth));
+    moEditBox(Controls[5]).SetText(string(TAM_GRI(PlayerOwner().Level.GRI).StartingArmor));
+    moCheckBox(Controls[6]).Checked(TAM_GRI(PlayerOwner().Level.GRI).bChallengeMode);
+    moEditBox(Controls[7]).SetText(string(TAM_GRI(PlayerOwner().Level.GRI).MaxHealth));
+    moEditBox(Controls[8]).SetText(string(TAM_GRI(PlayerOwner().Level.GRI).MinsPerRound));
+    moEditBox(Controls[9]).SetText(string(TAM_GRI(PlayerOwner().Level.GRI).OTDamage));
+    moEditBox(Controls[10]).SetText(string(TAM_GRI(PlayerOwner().Level.GRI).OTInterval));
+    moCheckBox(Controls[11]).Checked(TAM_GRI(PlayerOwner().Level.GRI).bDisableSpeed);
+    moCheckBox(Controls[12]).Checked(TAM_GRI(PlayerOwner().Level.GRI).bDisableInvis);
+    moCheckBox(Controls[13]).Checked(TAM_GRI(PlayerOwner().Level.GRI).bDisableBerserk);
+    moCheckBox(Controls[14]).Checked(TAM_GRI(PlayerOwner().Level.GRI).bDisableBooster);
+    moCheckBox(Controls[15]).Checked(TAM_GRI(PlayerOwner().Level.GRI).bKickExcessiveCampers);
+    moEditBox(Controls[16]).SetText(string(TAM_GRI(PlayerOwner().Level.GRI).CampThreshold));
+    moCheckBox(Controls[17]).Checked(TAM_GRI(PlayerOwner().Level.GRI).bForceRUP);
+    moCheckBox(Controls[18]).Checked(TAM_GRI(PlayerOwner().Level.GRI).bRandomPickups);
+    MapName = Left(string(PlayerOwner().Level), InStr(string(PlayerOwner().Level), "."));
     MapList = moComboBox(Controls[3]);
     MapList.AddItem(MapName);
     MapList.SilentSetIndex(MapList.FindIndex(MapName));
-    xPlayer(UnresolvedNativeFunction_99()).__ProcessMapName__Delegate = ProcessMapName;
-    xPlayer(UnresolvedNativeFunction_99()).ServerRequestMapList();
-    bAdmin = (UnresolvedNativeFunction_99().PlayerReplicationInfo != none) && UnresolvedNativeFunction_99().PlayerReplicationInfo.bAdmin || UnresolvedNativeFunction_99().Level.NetMode == NM_Standalone;
+    xPlayer(PlayerOwner()).__ProcessMapName__Delegate = ProcessMapName;
+    xPlayer(PlayerOwner()).ServerRequestMapList();
+    bAdmin = (PlayerOwner().PlayerReplicationInfo != none) && PlayerOwner().PlayerReplicationInfo.bAdmin || PlayerOwner().Level.NetMode == NM_Standalone;
     // End:0x4CA
     if(!bAdmin)
     {
@@ -60,7 +60,7 @@ function InitComponent(GUIController MyController, GUIComponent MyOwner)
             goto J0x49B;
         }
     }
-    UnresolvedNativeFunction_99(1.0, true);
+    SetTimer(1.0, true);
     //return;    
 }
 
@@ -119,10 +119,10 @@ function bool OnClick(GUIComponent C)
         S = (S $ "?ForceRUP=") $ string(moCheckBox(Controls[17]).IsChecked());
         S = (S $ "?RandomPickups=") $ string(moCheckBox(Controls[18]).IsChecked());
         // End:0x3A6
-        if(Misc_Player(UnresolvedNativeFunction_99()) != none)
+        if(Misc_Player(PlayerOwner()) != none)
         {
-            Misc_Player(UnresolvedNativeFunction_99()).ClientMessage("Sent settings to server");
-            Misc_Player(UnresolvedNativeFunction_99()).ServerSetMapString(S);
+            Misc_Player(PlayerOwner()).ClientMessage("Sent settings to server");
+            Misc_Player(PlayerOwner()).ServerSetMapString(S);
         }
     }
     // End:0x434
@@ -130,14 +130,14 @@ function bool OnClick(GUIComponent C)
     {
         S = MapList.GetText();
         // End:0x419
-        if(UnresolvedNativeFunction_99().Level.NetMode != NM_Standalone)
+        if(PlayerOwner().Level.NetMode != NM_Standalone)
         {
-            UnresolvedNativeFunction_99().ConsoleCommand("admin servertravel" @ S);
+            PlayerOwner().ConsoleCommand("admin servertravel" @ S);
         }
         // End:0x434
         else
         {
-            UnresolvedNativeFunction_99().ConsoleCommand("open" @ S);
+            PlayerOwner().ConsoleCommand("open" @ S);
         }
     }
     return true;
@@ -149,7 +149,7 @@ function Timer()
     local bool bNewAdmin;
     local int i;
 
-    bNewAdmin = UnresolvedNativeFunction_99().PlayerReplicationInfo.bAdmin || UnresolvedNativeFunction_99().Level.NetMode == NM_Standalone;
+    bNewAdmin = PlayerOwner().PlayerReplicationInfo.bAdmin || PlayerOwner().Level.NetMode == NM_Standalone;
     // End:0x52
     if(bNewAdmin == bAdmin)
     {

@@ -41,10 +41,10 @@ function GetServerDetails(out ServerResponseLine ServerState)
 static function FillPlayInfo(PlayInfo Pi)
 {
     super.FillPlayInfo(Pi);
-    Pi.UnresolvedNativeFunction_98("3SPN", "bChallengeMode", "Challenge Mode", 0, 110, "Check");
-    Pi.UnresolvedNativeFunction_98("3SPN", "bRandomPickups", "Random Pickups", 0, 176, "Check");
-    Pi.UnresolvedNativeFunction_98("3SPN", "bDisableTeamCombos", "No Team Combos", 0, 199, "Check");
-    Pi.UnresolvedNativeFunction_98("3SPN", "bPureRFF", "2.57 style RFF", 0, byte(300), "Check");
+    Pi.AddSetting("3SPN", "bChallengeMode", "Challenge Mode", 0, 110, "Check");
+    Pi.AddSetting("3SPN", "bRandomPickups", "Random Pickups", 0, 176, "Check");
+    Pi.AddSetting("3SPN", "bDisableTeamCombos", "No Team Combos", 0, 199, "Check");
+    Pi.AddSetting("3SPN", "bPureRFF", "2.57 style RFF", 0, byte(300), "Check");
     //return;    
 }
 
@@ -211,19 +211,19 @@ function SpawnRandomPickupBases()
     // End:0x24C
     if(Best[0] != none)
     {
-        Bases[0] = UnresolvedNativeFunction_97(class'Misc_PickupBase',,, Best[0].Location, Best[0].Rotation);
+        Bases[0] = Spawn(class'Misc_PickupBase',,, Best[0].Location, Best[0].Rotation);
         Bases[0].myMarker = InventorySpot(Best[0]);
     }
     // End:0x2A8
     if(Best[1] != none)
     {
-        Bases[1] = UnresolvedNativeFunction_97(class'Misc_PickupBase',,, Best[1].Location, Best[1].Rotation);
+        Bases[1] = Spawn(class'Misc_PickupBase',,, Best[1].Location, Best[1].Rotation);
         Bases[1].myMarker = InventorySpot(Best[1]);
     }
     // End:0x30A
     if(Best[2] != none)
     {
-        Bases[2] = UnresolvedNativeFunction_97(class'Misc_PickupBase',,, Best[2].Location, Best[2].Rotation);
+        Bases[2] = Spawn(class'Misc_PickupBase',,, Best[2].Location, Best[2].Rotation);
         Bases[2].myMarker = InventorySpot(Best[2]);
     }
     //return;    
@@ -245,7 +245,7 @@ event InitGame(string Options, out string Error)
         if(mut != none)
         {
             // End:0x56
-            if(mut.UnresolvedNativeFunction_97('MutNoAdrenaline'))
+            if(mut.IsA('MutNoAdrenaline'))
             {
                 bNoAdren = true;
                 // [Explicit Break]

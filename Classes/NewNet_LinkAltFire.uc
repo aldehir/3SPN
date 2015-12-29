@@ -69,7 +69,7 @@ function Projectile SpawnProjectile(Vector Start, Rotator Dir)
         }
         UnTimeTravel();
         // End:0x1E3
-        if((Other != none) && Other.UnresolvedNativeFunction_97('NewNet_PawnCollisionCopy'))
+        if((Other != none) && Other.IsA('NewNet_PawnCollisionCopy'))
         {
             HitLocation = (HitLocation + NewNet_PawnCollisionCopy(Other).CopiedPawn.Location) - Other.Location;
             Other = NewNet_PawnCollisionCopy(Other).CopiedPawn;
@@ -77,19 +77,19 @@ function Projectile SpawnProjectile(Vector Start, Rotator Dir)
         // End:0x214
         if(Other == none)
         {
-            proj = Weapon.UnresolvedNativeFunction_97(class'NewNet_LinkProjectile',,, End, Dir);
+            proj = Weapon.Spawn(class'NewNet_LinkProjectile',,, End, Dir);
         }
         // End:0x275
         else
         {
-            proj = Weapon.UnresolvedNativeFunction_97(class'NewNet_LinkProjectile',,, HitLocation - (vector(Dir) * 20.0), Dir);
+            proj = Weapon.Spawn(class'NewNet_LinkProjectile',,, HitLocation - (vector(Dir) * 20.0), Dir);
             NewNet_LinkGun(Weapon).DispatchClientEffect(HitLocation - (vector(Dir) * 20.0), Dir);
         }
     }
     // End:0x29B
     else
     {
-        proj = Weapon.UnresolvedNativeFunction_97(class'NewNet_LinkProjectile',,, Start, Dir);
+        proj = Weapon.Spawn(class'NewNet_LinkProjectile',,, Start, Dir);
     }
     // End:0x2D7
     if(proj != none)

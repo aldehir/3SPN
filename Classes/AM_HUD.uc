@@ -67,7 +67,7 @@ function Draw2DLocationDot(Canvas C, Vector loc, float OffsetX, float OffsetY, f
     C.Style = 5;
     C.SetPos((OffsetX * C.ClipX) + ((ScaleX * C.ClipX) * Sin(Angle)), (OffsetY * C.ClipY) - ((ScaleY * C.ClipY) * Cos(Angle)));
     Scaling = ((24.0 * C.ClipX) * (0.450 * HudScale)) / float(1600);
-    C.UnresolvedNativeFunction_97(LocationDot, Scaling, Scaling, 340.0, 432.0, 78.0, 78.0);
+    C.DrawTile(LocationDot, Scaling, Scaling, 340.0, 432.0, 78.0, 78.0);
     //return;    
 }
 
@@ -96,7 +96,7 @@ simulated function UpdateRankAndSpread(Canvas C)
     NameX = int((C.ClipX * 0.0250) * Scale);
     MaxNamePos = 0.990 * float(Width - NameX);
     C.Font = GetFontSizeIndex(C, -3 + int(Scale * 1.250));
-    C.UnresolvedNativeFunction_97("Test", XL, YL);
+    C.StrLen("Test", XL, YL);
     NameY = int(float(int(float(Height) * 0.60)) - (YL * 0.50));
     PosX = int(C.ClipX * 0.990);
     i = 0;
@@ -121,10 +121,10 @@ simulated function UpdateRankAndSpread(Canvas C)
         C.SetPos(float(PosX - Width), float(PosY));
         C.DrawColor = default.BlackColor;
         C.DrawColor.A = 128;
-        C.UnresolvedNativeFunction_97(TeamTex, float(Width), float(Height), 168.0, 211.0, 166.0, 44.0);
+        C.DrawTile(TeamTex, float(Width), float(Height), 168.0, 211.0, 166.0, 44.0);
         C.SetPos(float(PosX) - ((C.ClipX * 0.01950) * Scale), float(PosY));
         C.DrawColor = default.WhiteColor;
-        C.UnresolvedNativeFunction_97(TeamTex, (C.ClipX * 0.01950) * Scale, (C.ClipY * 0.0260) * Scale, 119.0, 258.0, 54.0, 55.0);
+        C.DrawTile(TeamTex, (C.ClipX * 0.01950) * Scale, (C.ClipY * 0.0260) * Scale, 119.0, 258.0, 54.0, 55.0);
         // End:0x3B5
         if(class'TAM_Scoreboard'.default.bEnableColoredNamesOnHUD)
         {
@@ -135,15 +135,15 @@ simulated function UpdateRankAndSpread(Canvas C)
         {
             Name = PRI.PlayerName;
         }
-        C.UnresolvedNativeFunction_97(Name, XL, YL);
+        C.TextSize(Name, XL, YL);
         XL = float(Min(int(XL), int(MaxNamePos)));
         C.DrawColor = WhiteColor;
         C.SetPos((float(PosX) - XL) - float(NameX), float(PosY + NameY));
         class'Misc_Util'.static.DrawTextClipped(C, Name, MaxNamePos);
-        C.DrawColor = UnresolvedNativeFunction_98(class'Misc_Player'.default.RedOrEnemy, 2.50);
+        C.DrawColor = class'Misc_Player'.default.RedOrEnemy * 2.50;
         C.DrawColor.A = byte(255);
         C.SetPos(float(PosX) - ((0.01650 * Scale) * C.ClipX), float(PosY) + ((0.00350 * Scale) * C.ClipY));
-        C.UnresolvedNativeFunction_97(TeamTex, (C.ClipX * 0.01650) * Scale, (C.ClipY * 0.01850) * Scale, 340.0, 432.0, 78.0, 78.0);
+        C.DrawTile(TeamTex, (C.ClipX * 0.01650) * Scale, (C.ClipY * 0.01850) * Scale, 340.0, 432.0, 78.0, 78.0);
         ++ Enemies;
         J0x55C:
         ++ i;

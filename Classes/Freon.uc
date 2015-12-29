@@ -52,13 +52,13 @@ function StartNewRound()
 static function FillPlayInfo(PlayInfo Pi)
 {
     super.FillPlayInfo(Pi);
-    Pi.UnresolvedNativeFunction_98("3SPN", "bSpawnProtectionOnThaw", "Enable Spawn Protection After Thawing", 0, byte(500), "Check");
-    Pi.UnresolvedNativeFunction_98("3SPN", "TeleportOnThaw", "Teleport After Thawing", 0, byte(501), "Check");
-    Pi.UnresolvedNativeFunction_98("3SPN", "AutoThawTime", "Automatic Thawing Time", 0, byte(502), "Text", "3;0:999");
-    Pi.UnresolvedNativeFunction_98("3SPN", "ThawSpeed", "Touch Thawing Time", 0, byte(503), "Text", "3;0:999");
-    Pi.UnresolvedNativeFunction_98("3SPN", "MinHealthOnThaw", "Minimum Health After Thawing", 0, byte(504), "Text", "3;0:999");
-    Pi.UnresolvedNativeFunction_98("3SPN", "KillGitters", "Kill Gitters", 0, byte(505), "Check");
-    Pi.UnresolvedNativeFunction_98("3SPN", "MaxGitsAllowed", "Max Gits Allowed", 0, byte(506), "Text", "3;0:999");
+    Pi.AddSetting("3SPN", "bSpawnProtectionOnThaw", "Enable Spawn Protection After Thawing", 0, byte(500), "Check");
+    Pi.AddSetting("3SPN", "TeleportOnThaw", "Teleport After Thawing", 0, byte(501), "Check");
+    Pi.AddSetting("3SPN", "AutoThawTime", "Automatic Thawing Time", 0, byte(502), "Text", "3;0:999");
+    Pi.AddSetting("3SPN", "ThawSpeed", "Touch Thawing Time", 0, byte(503), "Text", "3;0:999");
+    Pi.AddSetting("3SPN", "MinHealthOnThaw", "Minimum Health After Thawing", 0, byte(504), "Text", "3;0:999");
+    Pi.AddSetting("3SPN", "KillGitters", "Kill Gitters", 0, byte(505), "Check");
+    Pi.AddSetting("3SPN", "MaxGitsAllowed", "Max Gits Allowed", 0, byte(506), "Text", "3;0:999");
     //return;    
 }
 
@@ -217,7 +217,7 @@ function RestartFrozenPlayer(Controller aPlayer, Vector loc, Rotator Rot, Naviga
         return;
     }
     // End:0x16D
-    if(aPlayer.UnresolvedNativeFunction_97('Bot') && TooManyBots(aPlayer))
+    if(aPlayer.IsA('Bot') && TooManyBots(aPlayer))
     {
         aPlayer.Destroy();
         return;
@@ -245,18 +245,18 @@ function RestartFrozenPlayer(Controller aPlayer, Vector loc, Rotator Rot, Naviga
     // End:0x29D
     if(aPlayer.PawnClass != none)
     {
-        aPlayer.Pawn = UnresolvedNativeFunction_97(aPlayer.PawnClass,,, loc, Rot);
+        aPlayer.Pawn = Spawn(aPlayer.PawnClass,,, loc, Rot);
     }
     // End:0x2E5
     if(aPlayer.Pawn == none)
     {
         DefaultPlayerClass = GetDefaultPlayerClass(aPlayer);
-        aPlayer.Pawn = UnresolvedNativeFunction_97(DefaultPlayerClass,,, loc, Rot);
+        aPlayer.Pawn = Spawn(DefaultPlayerClass,,, loc, Rot);
     }
     // End:0x37E
     if(aPlayer.Pawn == none)
     {
-        LogInternal((("Couldn't spawn player of type " $ string(aPlayer.PawnClass)) $ " at ") $ string(Location));
+        Log((("Couldn't spawn player of type " $ string(aPlayer.PawnClass)) $ " at ") $ string(Location));
         aPlayer.GotoState('Dead');
         // End:0x37C
         if(PlayerController(aPlayer) != none)
@@ -386,7 +386,7 @@ function PlayerThawed(Freon_Pawn Thawed, optional float Health, optional float S
         pos = StartSpot.Location;
         Rot = StartSpot.Rotation;
         Vel = vect(0.0, 0.0, 0.0);
-        Thawed.UnresolvedNativeFunction_97(TeleportSound, 0, 300.0);
+        Thawed.PlaySound(TeleportSound, 0, 300.0);
         Thawed.PlayTeleportEffect(true, false);
     }
     // End:0x217

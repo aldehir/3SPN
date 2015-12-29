@@ -20,13 +20,13 @@ function InitComponent(GUIController MyController, GUIComponent MyOwner)
     local string Content;
 
     super(GUIPanel).InitComponent(MyController, MyOwner);
-    MP = Misc_Player(UnresolvedNativeFunction_99());
+    MP = Misc_Player(PlayerOwner());
     // End:0x2B
     if(MP == none)
     {
         return;
     }
-    GRI = TAM_GRI(UnresolvedNativeFunction_99().Level.GRI);
+    GRI = TAM_GRI(PlayerOwner().Level.GRI);
     SectionBackg.ManageComponent(TextBox);
     TextBox.MyScrollText.bNeverFocus = true;
     Content = JoinArray(InfoText, TextBox.Separator, true);

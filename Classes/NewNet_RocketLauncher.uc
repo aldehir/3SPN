@@ -129,7 +129,7 @@ simulated event NewNet_ClientStartFire(int Mode)
             // End:0x121
             if(bDebugging)
             {
-                LogInternal((("No RL reg fire because other firing " $ string(FireMode[OtherMode].bIsFiring)) $ " next fire ") $ string(FireMode[OtherMode].NextFireTime - Level.TimeSeconds));
+                Log((("No RL reg fire because other firing " $ string(FireMode[OtherMode].bIsFiring)) $ " next fire ") $ string(FireMode[OtherMode].NextFireTime - Level.TimeSeconds));
             }
             return;
         }
@@ -366,7 +366,7 @@ function Projectile SpawnProjectile(Vector Start, Rotator Dir)
             }
             UnTimeTravel();
             // End:0x2D9
-            if((Other != none) && Other.UnresolvedNativeFunction_97('NewNet_PawnCollisionCopy'))
+            if((Other != none) && Other.IsA('NewNet_PawnCollisionCopy'))
             {
                 HitLocation = (HitLocation + NewNet_PawnCollisionCopy(Other).CopiedPawn.Location) - Other.Location;
                 Other = NewNet_PawnCollisionCopy(Other).CopiedPawn;
@@ -374,18 +374,18 @@ function Projectile SpawnProjectile(Vector Start, Rotator Dir)
             // End:0x301
             if(Other == none)
             {
-                SeekingRocket = UnresolvedNativeFunction_97(class'NewNet_SeekingRocketProj',,, End, Dir);
+                SeekingRocket = Spawn(class'NewNet_SeekingRocketProj',,, End, Dir);
             }
             // End:0x32B
             else
             {
-                SeekingRocket = UnresolvedNativeFunction_97(class'NewNet_SeekingRocketProj',,, HitLocation - (vector(Dir) * 20.0), Dir);
+                SeekingRocket = Spawn(class'NewNet_SeekingRocketProj',,, HitLocation - (vector(Dir) * 20.0), Dir);
             }
         }
         // End:0x350
         if(SeekingRocket == none)
         {
-            SeekingRocket = UnresolvedNativeFunction_97(class'NewNet_SeekingRocketProj',,, Start, Dir);
+            SeekingRocket = Spawn(class'NewNet_SeekingRocketProj',,, Start, Dir);
         }
         SeekingRocket.Seeking = SeekTarget;
         // End:0x37E
@@ -426,7 +426,7 @@ function Projectile SpawnProjectile(Vector Start, Rotator Dir)
             }
             UnTimeTravel();
             // End:0x4DB
-            if((Other != none) && Other.UnresolvedNativeFunction_97('NewNet_PawnCollisionCopy'))
+            if((Other != none) && Other.IsA('NewNet_PawnCollisionCopy'))
             {
                 HitLocation = (HitLocation + NewNet_PawnCollisionCopy(Other).CopiedPawn.Location) - Other.Location;
                 Other = NewNet_PawnCollisionCopy(Other).CopiedPawn;
@@ -434,18 +434,18 @@ function Projectile SpawnProjectile(Vector Start, Rotator Dir)
             // End:0x503
             if(Other == none)
             {
-                Rocket = UnresolvedNativeFunction_97(class'NewNet_RocketProj',,, End, Dir);
+                Rocket = Spawn(class'NewNet_RocketProj',,, End, Dir);
             }
             // End:0x52D
             else
             {
-                Rocket = UnresolvedNativeFunction_97(class'NewNet_RocketProj',,, HitLocation - (vector(Dir) * 20.0), Dir);
+                Rocket = Spawn(class'NewNet_RocketProj',,, HitLocation - (vector(Dir) * 20.0), Dir);
             }
         }
         // End:0x54A
         else
         {
-            Rocket = UnresolvedNativeFunction_97(class'NewNet_RocketProj',,, Start, Dir);
+            Rocket = Spawn(class'NewNet_RocketProj',,, Start, Dir);
         }
         return Rocket;
     }

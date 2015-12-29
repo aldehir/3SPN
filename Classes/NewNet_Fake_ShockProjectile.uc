@@ -21,7 +21,7 @@ simulated function Destroyed()
 simulated function ProcessTouch(Actor Other, Vector HitLocation)
 {
     // End:0x16
-    if(Other.UnresolvedNativeFunction_97('NewNet_ShockProjectile'))
+    if(Other.IsA('NewNet_ShockProjectile'))
     {
         return;
     }

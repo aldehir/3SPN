@@ -15,13 +15,13 @@ function InitComponent(GUIController MyController, GUIComponent MyOwner)
     local TAM_GRI GRI;
 
     super(GUIPanel).InitComponent(MyController, MyOwner);
-    MP = Misc_Player(UnresolvedNativeFunction_99());
+    MP = Misc_Player(PlayerOwner());
     // End:0x2B
     if(MP == none)
     {
         return;
     }
-    GRI = TAM_GRI(UnresolvedNativeFunction_99().Level.GRI);
+    GRI = TAM_GRI(PlayerOwner().Level.GRI);
     moCheckBox(Controls[1]).Checked(class'Misc_Player'.default.bDisableSpeed);
     moCheckBox(Controls[2]).Checked(class'Misc_Player'.default.bDisableBooster);
     moCheckBox(Controls[3]).Checked(class'Misc_Player'.default.bDisableBerserk);
@@ -42,7 +42,7 @@ function InitComponent(GUIController MyController, GUIComponent MyOwner)
     if(GRI != none)
     {
         // End:0x303
-        if((GRI.TimeOuts == 0) && !UnresolvedNativeFunction_99().PlayerReplicationInfo.bAdmin)
+        if((GRI.TimeOuts == 0) && !PlayerOwner().PlayerReplicationInfo.bAdmin)
         {
             GUIButton(Controls[20]).DisableMe();
         }
@@ -140,10 +140,10 @@ function OnChange(GUIComponent C)
                                             class'Misc_Pawn'.default.bPlayOwnFootsteps = !B;
                                             class'Misc_Pawn'.static.StaticSaveConfig();
                                             // End:0x242
-                                            if(xPawn(UnresolvedNativeFunction_99().Pawn) != none)
+                                            if(xPawn(PlayerOwner().Pawn) != none)
                                             {
-                                                xPawn(UnresolvedNativeFunction_99().Pawn).bPlayOwnFootsteps = !B;
-                                                xPawn(UnresolvedNativeFunction_99().Pawn).SaveConfig();
+                                                xPawn(PlayerOwner().Pawn).bPlayOwnFootsteps = !B;
+                                                xPawn(PlayerOwner().Pawn).SaveConfig();
                                             }
                                             return;
                                         }
@@ -183,7 +183,7 @@ function OnChange(GUIComponent C)
                                                         // End:0x31E
                                                         if(!B)
                                                         {
-                                                            Misc_Player(UnresolvedNativeFunction_99()).SetNetCodeDisabled();
+                                                            Misc_Player(PlayerOwner()).SetNetCodeDisabled();
                                                         }
                                                     }
                                                     // End:0x374
@@ -238,8 +238,8 @@ function OnChange(GUIComponent C)
                 default:
                 }
             }
-            Misc_Player(UnresolvedNativeFunction_99()).SetupCombos();
-            Misc_Player(UnresolvedNativeFunction_99()).ReloadDefaults();
+            Misc_Player(PlayerOwner()).SetupCombos();
+            Misc_Player(PlayerOwner()).ReloadDefaults();
             class'Misc_Player'.static.StaticSaveConfig();
             class'Menu_Menu3SPN'.default.SettingsDirty = true;
             //return;            
@@ -250,7 +250,7 @@ function bool OnClick(GUIComponent C)
     // End:0x36
     if(C == Controls[20])
     {
-        Misc_Player(UnresolvedNativeFunction_99()).CallTimeout();
+        Misc_Player(PlayerOwner()).CallTimeout();
         Controller.CloseMenu();
     }
     // End:0x9F
@@ -259,7 +259,7 @@ function bool OnClick(GUIComponent C)
         // End:0x6C
         if(C == Controls[23])
         {
-            Misc_Player(UnresolvedNativeFunction_99()).LoadSettings();
+            Misc_Player(PlayerOwner()).LoadSettings();
             Controller.CloseMenu();
         }
         // End:0x9F
@@ -268,7 +268,7 @@ function bool OnClick(GUIComponent C)
             // End:0x9F
             if(C == Controls[24])
             {
-                Misc_Player(UnresolvedNativeFunction_99()).SaveSettings();
+                Misc_Player(PlayerOwner()).SaveSettings();
                 Controller.CloseMenu();
             }
         }

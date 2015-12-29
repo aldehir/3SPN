@@ -68,7 +68,7 @@ simulated function ClientStartFire(int Mode)
     {
         FireMode[Mode].bIsFiring = true;
         // End:0x5C
-        if(Instigator.Controller.UnresolvedNativeFunction_97('PlayerController'))
+        if(Instigator.Controller.IsA('PlayerController'))
         {
             PlayerController(Instigator.Controller).ToggleZoom();
         }

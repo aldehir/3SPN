@@ -80,7 +80,7 @@ function DrawCustomBeacon(Canvas C, Pawn P, float ScreenLocX, float ScreenLocY)
     // End:0x208
     else
     {
-        C.DrawColor = UnresolvedNativeFunction_98(class'Freon_PRI'.default.FrozenColor, 0.750);
+        C.DrawColor = class'Freon_PRI'.default.FrozenColor * 0.750;
     }
     C.Style = 1;
     // End:0x4A2
@@ -98,16 +98,16 @@ function DrawCustomBeacon(Canvas C, Pawn P, float ScreenLocX, float ScreenLocY)
             Name = P.PlayerReplicationInfo.PlayerName;
         }
         Info = ((Name $ " (") $ string(P.Health)) $ "%)";
-        C.UnresolvedNativeFunction_97(Info, XL, YL);
+        C.TextSize(Info, XL, YL);
         C.SetPos(ScreenLoc.X - (0.1250 * float(FrozenBeacon.USize)), (ScreenLoc.Y - (0.1250 * float(FrozenBeacon.VSize))) - YL);
-        C.UnresolvedNativeFunction_97(Info, false);
+        C.DrawTextClipped(Info, false);
         C.SetPos(ScreenLoc.X + ((1.250 * float(FrozenBeacon.USize)) * Scale), ScreenLoc.Y + ((0.10 * float(FrozenBeacon.VSize)) * Scale));
         C.DrawTileStretched(ThawBackMat, ThawBarWidth, (float(FrozenBeacon.VSize) * Scale) * 0.50);
         C.SetPos(ScreenLoc.X + ((1.250 * float(FrozenBeacon.USize)) * Scale), ScreenLoc.Y + ((0.10 * float(FrozenBeacon.VSize)) * Scale));
         C.DrawTileStretched(ThawBarMat, ThawBarWidth * (float(P.Health) / 100.0), (float(FrozenBeacon.VSize) * Scale) * 0.50);
     }
     C.SetPos(ScreenLoc.X - ((0.1250 * float(FrozenBeacon.USize)) * Scale), ScreenLoc.Y - ((0.1250 * float(FrozenBeacon.VSize)) * Scale));
-    C.UnresolvedNativeFunction_97(FrozenBeacon, float(FrozenBeacon.USize) * Scale, float(FrozenBeacon.VSize) * Scale, 0.0, 0.0, float(FrozenBeacon.USize), float(FrozenBeacon.VSize));
+    C.DrawTile(FrozenBeacon, float(FrozenBeacon.USize) * Scale, float(FrozenBeacon.VSize) * Scale, 0.0, 0.0, float(FrozenBeacon.USize), float(FrozenBeacon.VSize));
     //return;    
 }
 
@@ -167,7 +167,7 @@ simulated function DrawPlayers(Canvas C)
     NameX = int((C.ClipX * 0.0250) * Scale);
     MaxNamePos = 0.990 * float(Width - NameX);
     C.Font = GetFontSizeIndex(C, -3 + int(Scale * 1.250));
-    C.UnresolvedNativeFunction_97("Test", XL, YL);
+    C.StrLen("Test", XL, YL);
     NameY = int(float(int(float(Height) * 0.60)) - (YL * 0.50));
     i = 0;
     J0x201:
@@ -202,7 +202,7 @@ simulated function DrawPlayers(Canvas C)
             // End:0x362
             if((Freon_PawnReplicationInfo(PRI.PawnReplicationInfo) != none) && Freon_PawnReplicationInfo(PRI.PawnReplicationInfo).bFrozen)
             {
-                C.DrawColor = UnresolvedNativeFunction_98(class'Freon_PRI'.default.FrozenColor, 0.60);
+                C.DrawColor = class'Freon_PRI'.default.FrozenColor * 0.60;
             }
             // End:0x376
             else
@@ -210,10 +210,10 @@ simulated function DrawPlayers(Canvas C)
                 C.DrawColor = default.BlackColor;
             }
             C.DrawColor.A = 100;
-            C.UnresolvedNativeFunction_97(TeamTex, float(Width), float(Height), 168.0, 211.0, 166.0, 44.0);
+            C.DrawTile(TeamTex, float(Width), float(Height), 168.0, 211.0, 166.0, 44.0);
             C.SetPos(float(PosX), float(PosY));
             C.DrawColor = default.WhiteColor;
-            C.UnresolvedNativeFunction_97(TeamTex, (C.ClipX * 0.01950) * Scale, (C.ClipY * 0.0260) * Scale, 119.0, 258.0, 54.0, 55.0);
+            C.DrawTile(TeamTex, (C.ClipX * 0.01950) * Scale, (C.ClipY * 0.0260) * Scale, 119.0, 258.0, 54.0, 55.0);
             // End:0x477
             if(class'TAM_Scoreboard'.default.bEnableColoredNamesOnHUD)
             {
@@ -231,7 +231,7 @@ simulated function DrawPlayers(Canvas C)
             if((Freon_PawnReplicationInfo(PRI.PawnReplicationInfo) != none) && Freon_PawnReplicationInfo(PRI.PawnReplicationInfo).bFrozen)
             {
                 Health = PRI.PawnReplicationInfo.Health;
-                C.DrawColor = UnresolvedNativeFunction_98(class'Freon_PRI'.default.FrozenColor, 0.50 + (float(Health) * 0.0050));
+                C.DrawColor = class'Freon_PRI'.default.FrozenColor * (0.50 + (float(Health) * 0.0050));
             }
             // End:0x75A
             else
@@ -288,7 +288,7 @@ simulated function DrawPlayers(Canvas C)
                 }
             }
             C.SetPos(float(PosX) + ((0.00220 * Scale) * C.ClipX), float(PosY) + ((0.00350 * Scale) * C.ClipY));
-            C.UnresolvedNativeFunction_97(TeamTex, (C.ClipX * 0.01650) * Scale, (C.ClipY * 0.01850) * Scale, 340.0, 432.0, 78.0, 78.0);
+            C.DrawTile(TeamTex, (C.ClipX * 0.01650) * Scale, (C.ClipY * 0.01850) * Scale, 340.0, 432.0, 78.0, 78.0);
             C.DrawColor = WhiteColor;
             Draw2DLocationDot(C, PRI.PawnReplicationInfo.Position, (float(PosX) / C.ClipX) + (0.0060 * Scale), (float(PosY) / C.ClipY) + (0.0080 * Scale), 0.0080 * Scale, 0.010 * Scale);
             ++ allies;
@@ -307,7 +307,7 @@ simulated function DrawPlayers(Canvas C)
         // End:0x985
         if((Freon_PawnReplicationInfo(PRI.PawnReplicationInfo) != none) && Freon_PawnReplicationInfo(PRI.PawnReplicationInfo).bFrozen)
         {
-            C.DrawColor = UnresolvedNativeFunction_98(class'Freon_PRI'.default.FrozenColor, 0.60);
+            C.DrawColor = class'Freon_PRI'.default.FrozenColor * 0.60;
         }
         // End:0x999
         else
@@ -315,10 +315,10 @@ simulated function DrawPlayers(Canvas C)
             C.DrawColor = default.BlackColor;
         }
         C.DrawColor.A = 100;
-        C.UnresolvedNativeFunction_97(TeamTex, float(Width), float(Height), 168.0, 211.0, 166.0, 44.0);
+        C.DrawTile(TeamTex, float(Width), float(Height), 168.0, 211.0, 166.0, 44.0);
         C.SetPos(float(PosX) - ((C.ClipX * 0.01950) * Scale), float(PosY));
         C.DrawColor = default.WhiteColor;
-        C.UnresolvedNativeFunction_97(TeamTex, (C.ClipX * 0.01950) * Scale, (C.ClipY * 0.0260) * Scale, 119.0, 258.0, 54.0, 55.0);
+        C.DrawTile(TeamTex, (C.ClipX * 0.01950) * Scale, (C.ClipY * 0.0260) * Scale, 119.0, 258.0, 54.0, 55.0);
         // End:0xAB8
         if(class'TAM_Scoreboard'.default.bEnableColoredNamesOnHUD)
         {
@@ -329,7 +329,7 @@ simulated function DrawPlayers(Canvas C)
         {
             Name = PRI.PlayerName;
         }
-        C.UnresolvedNativeFunction_97(Name, XL, YL);
+        C.TextSize(Name, XL, YL);
         XL = float(Min(int(XL), int(MaxNamePos)));
         C.DrawColor = NameColor;
         C.SetPos((float(PosX) - XL) - float(NameX), float(PosY + NameY));
@@ -345,7 +345,7 @@ simulated function DrawPlayers(Canvas C)
             C.DrawColor = HudColorTeam[PRI.Team.TeamIndex];
         }
         C.SetPos(float(PosX) - ((0.01650 * Scale) * C.ClipX), float(PosY) + ((0.00350 * Scale) * C.ClipY));
-        C.UnresolvedNativeFunction_97(TeamTex, (C.ClipX * 0.01650) * Scale, (C.ClipY * 0.01850) * Scale, 340.0, 432.0, 78.0, 78.0);
+        C.DrawTile(TeamTex, (C.ClipX * 0.01650) * Scale, (C.ClipY * 0.01850) * Scale, 340.0, 432.0, 78.0, 78.0);
         ++ Enemies;
         J0xCA9:
         ++ i;
@@ -393,7 +393,7 @@ simulated function DrawPlayersExtended(Canvas C)
     Space = int(float(Height) + (0.00750 * C.ClipY));
     NameX = int(C.ClipX * 0.020);
     C.Font = GetFontSizeIndex(C, -3);
-    C.UnresolvedNativeFunction_97("Test", XL, YL);
+    C.StrLen("Test", XL, YL);
     NameY = int(float(int(float(Height) * 0.60)) - (YL * 0.50));
     i = 0;
     J0x19F:
@@ -431,7 +431,7 @@ simulated function DrawPlayersExtended(Canvas C)
             // End:0x35E
             if((Freon_PawnReplicationInfo(PRI.PawnReplicationInfo) != none) && Freon_PawnReplicationInfo(PRI.PawnReplicationInfo).bFrozen)
             {
-                C.DrawColor = UnresolvedNativeFunction_98(class'Freon_PRI'.default.FrozenColor, 0.60);
+                C.DrawColor = class'Freon_PRI'.default.FrozenColor * 0.60;
             }
             // End:0x372
             else
@@ -439,12 +439,12 @@ simulated function DrawPlayersExtended(Canvas C)
                 C.DrawColor = default.BlackColor;
             }
             C.DrawColor.A = 100;
-            C.UnresolvedNativeFunction_97(TeamTex, float(Width + PosX), float(Height), 168.0, 211.0, 166.0, 44.0);
+            C.DrawTile(TeamTex, float(Width + PosX), float(Height), 168.0, 211.0, 166.0, 44.0);
             C.SetPos(float(PosX * 2), float(PosY) + (float(Height) * 1.10));
-            C.UnresolvedNativeFunction_97(TeamTex, float(Width), float(Height), 168.0, 211.0, 166.0, 44.0);
+            C.DrawTile(TeamTex, float(Width), float(Height), 168.0, 211.0, 166.0, 44.0);
             C.SetPos(float(PosX), float(PosY));
             C.DrawColor = default.WhiteColor;
-            C.UnresolvedNativeFunction_97(TeamTex, (C.ClipX * 0.01950) * Scale, (C.ClipY * 0.0260) * Scale, 119.0, 258.0, 54.0, 55.0);
+            C.DrawTile(TeamTex, (C.ClipX * 0.01950) * Scale, (C.ClipY * 0.0260) * Scale, 119.0, 258.0, 54.0, 55.0);
             // End:0x4DE
             if(class'TAM_Scoreboard'.default.bEnableColoredNamesOnHUD)
             {
@@ -460,7 +460,7 @@ simulated function DrawPlayersExtended(Canvas C)
             class'Misc_Util'.static.DrawTextClipped(C, Name, MaxNamePos);
             MaxNamePos = 0.80 * float(Width - NameX);
             Name = PRI.GetLocationName();
-            C.UnresolvedNativeFunction_97(Name, XL, YL);
+            C.StrLen(Name, XL, YL);
             // End:0x5CF
             if(XL > MaxNamePos)
             {
@@ -477,12 +477,12 @@ simulated function DrawPlayersExtended(Canvas C)
             {
                 C.DrawColor = LocationColor;
             }
-            C.UnresolvedNativeFunction_97(Name);
+            C.DrawText(Name);
             // End:0x71E
             if((Freon_PawnReplicationInfo(PRI.PawnReplicationInfo) != none) && Freon_PawnReplicationInfo(PRI.PawnReplicationInfo).bFrozen)
             {
                 Health = PRI.PawnReplicationInfo.Health;
-                C.DrawColor = UnresolvedNativeFunction_98(class'Freon_PRI'.default.FrozenColor, 0.50 + (float(Health) * 0.0050));
+                C.DrawColor = class'Freon_PRI'.default.FrozenColor * (0.50 + (float(Health) * 0.0050));
             }
             // End:0x8FC
             else
@@ -539,13 +539,13 @@ simulated function DrawPlayersExtended(Canvas C)
                 }
             }
             C.SetPos(float(PosX) + ((0.00220 * Scale) * C.ClipX), float(PosY) + ((0.00350 * Scale) * C.ClipY));
-            C.UnresolvedNativeFunction_97(TeamTex, (C.ClipX * 0.01650) * Scale, (C.ClipY * 0.01850) * Scale, 340.0, 432.0, 78.0, 78.0);
+            C.DrawTile(TeamTex, (C.ClipX * 0.01650) * Scale, (C.ClipY * 0.01850) * Scale, 340.0, 432.0, 78.0, 78.0);
             Name = string(Health);
-            C.UnresolvedNativeFunction_97(Name, XL, YL);
+            C.StrLen(Name, XL, YL);
             C.SetPos(((float(PosX) * 1.50) + float(Width)) - XL, float(PosY + NameY));
-            C.UnresolvedNativeFunction_97(Name);
+            C.DrawText(Name);
             Name = string(PRI.PawnReplicationInfo.Adrenaline);
-            C.UnresolvedNativeFunction_97(Name, XL, YL);
+            C.StrLen(Name, XL, YL);
             C.SetPos(((float(PosX) * 1.50) + float(Width)) - XL, (float(PosY) + (float(Height) * 1.10)) + float(NameY));
             // End:0xAE4
             if(PRI.PawnReplicationInfo.Adrenaline < 100)
@@ -557,7 +557,7 @@ simulated function DrawPlayersExtended(Canvas C)
             {
                 C.DrawColor = HighYellowColor;
             }
-            C.UnresolvedNativeFunction_97(Name);
+            C.DrawText(Name);
             C.DrawColor = WhiteColor;
             Draw2DLocationDot(C, PRI.PawnReplicationInfo.Position, (float(PosX) / C.ClipX) + (0.0060 * Scale), (float(PosY) / C.ClipY) + (0.0080 * Scale), 0.0080 * Scale, 0.010 * Scale);
             ++ allies;
@@ -579,7 +579,7 @@ simulated function DrawPlayersExtended(Canvas C)
         // End:0xCD3
         if((Freon_PawnReplicationInfo(PRI.PawnReplicationInfo) != none) && Freon_PawnReplicationInfo(PRI.PawnReplicationInfo).bFrozen)
         {
-            C.DrawColor = UnresolvedNativeFunction_98(class'Freon_PRI'.default.FrozenColor, 0.60);
+            C.DrawColor = class'Freon_PRI'.default.FrozenColor * 0.60;
         }
         // End:0xCE7
         else
@@ -587,10 +587,10 @@ simulated function DrawPlayersExtended(Canvas C)
             C.DrawColor = default.BlackColor;
         }
         C.DrawColor.A = 100;
-        C.UnresolvedNativeFunction_97(TeamTex, float(Width), float(Height), 168.0, 211.0, 166.0, 44.0);
+        C.DrawTile(TeamTex, float(Width), float(Height), 168.0, 211.0, 166.0, 44.0);
         C.SetPos(float(PosX) - ((C.ClipX * 0.01950) * Scale), float(PosY));
         C.DrawColor = default.WhiteColor;
-        C.UnresolvedNativeFunction_97(TeamTex, (C.ClipX * 0.01950) * Scale, (C.ClipY * 0.0260) * Scale, 119.0, 258.0, 54.0, 55.0);
+        C.DrawTile(TeamTex, (C.ClipX * 0.01950) * Scale, (C.ClipY * 0.0260) * Scale, 119.0, 258.0, 54.0, 55.0);
         // End:0xE06
         if(class'TAM_Scoreboard'.default.bEnableColoredNamesOnHUD)
         {
@@ -601,7 +601,7 @@ simulated function DrawPlayersExtended(Canvas C)
         {
             Name = PRI.PlayerName;
         }
-        C.UnresolvedNativeFunction_97(Name, XL, YL);
+        C.TextSize(Name, XL, YL);
         XL = float(Min(int(XL), int(MaxNamePos)));
         C.DrawColor = NameColor;
         C.SetPos((float(PosX) - XL) - float(NameX), float(PosY + NameY));
@@ -617,7 +617,7 @@ simulated function DrawPlayersExtended(Canvas C)
             C.DrawColor = HudColorTeam[PRI.Team.TeamIndex];
         }
         C.SetPos(float(PosX) - ((0.0160 * Scale) * C.ClipX), float(PosY) + ((0.00350 * Scale) * C.ClipY));
-        C.UnresolvedNativeFunction_97(TeamTex, (C.ClipX * 0.01650) * Scale, (C.ClipY * 0.01850) * Scale, 340.0, 432.0, 78.0, 78.0);
+        C.DrawTile(TeamTex, (C.ClipX * 0.01650) * Scale, (C.ClipY * 0.01850) * Scale, 340.0, 432.0, 78.0, 78.0);
         ++ Enemies;
         J0xFF7:
         ++ i;

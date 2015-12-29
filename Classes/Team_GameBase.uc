@@ -254,54 +254,54 @@ function GetServerPlayers(out ServerResponseLine ServerState)
 static function FillPlayInfo(PlayInfo Pi)
 {
     super.FillPlayInfo(Pi);
-    Pi.UnresolvedNativeFunction_98("3SPN", "StartingHealth", "Starting Health", 0, 100, "Text", "3;0:999");
-    Pi.UnresolvedNativeFunction_98("3SPN", "StartingArmor", "Starting Armor", 0, 101, "Text", "3;0:999");
-    Pi.UnresolvedNativeFunction_98("3SPN", "MaxHealth", "Max Health", 0, 102, "Text", "8;1.0:2.0");
-    Pi.UnresolvedNativeFunction_98("3SPN", "MinsPerRound", "Minutes per Round", 0, 120, "Text", "3;0:999");
-    Pi.UnresolvedNativeFunction_98("3SPN", "OTDamage", "Overtime Damage", 0, 121, "Text", "3;0:999");
-    Pi.UnresolvedNativeFunction_98("3SPN", "OTInterval", "Overtime Damage Interval", 0, 122, "Text", "3;0:999");
-    Pi.UnresolvedNativeFunction_98("3SPN", "CampThreshold", "Camp Area", 0, 150, "Text", "3;0:999",, true);
-    Pi.UnresolvedNativeFunction_98("3SPN", "bKickExcessiveCampers", "Kick Excessive Campers", 0, 151, "Check",,, true);
-    Pi.UnresolvedNativeFunction_98("3SPN", "bForceRUP", "Force Ready", 0, 175, "Check",,, true);
-    Pi.UnresolvedNativeFunction_98("3SPN", "ForceRUPMinPlayers", "Force Ready Min Players", 0, 176, "Text", "3;0;999",, true);
-    Pi.UnresolvedNativeFunction_98("3SPN", "ForceSeconds", "Force Time", 0, 177, "Text", "3;0:999",, true);
-    Pi.UnresolvedNativeFunction_98("3SPN", "bDisableSpeed", "Disable Speed", 0, 200, "Check");
-    Pi.UnresolvedNativeFunction_98("3SPN", "bDisableInvis", "Disable Invis", 0, 201, "Check");
-    Pi.UnresolvedNativeFunction_98("3SPN", "bDisableBerserk", "Disable Berserk", 0, 202, "Check");
-    Pi.UnresolvedNativeFunction_98("3SPN", "bDisableBooster", "Disable Booster", 0, 203, "Check");
-    Pi.UnresolvedNativeFunction_98("3SPN", "Timeouts", "TimeOuts Per Team", 0, 220, "Text", "3;0:999",, true);
-    Pi.UnresolvedNativeFunction_98("3SPN", "bModifyShieldGun", "Use Modified Shield Gun", 0, byte(299), "Check",,, true);
-    Pi.UnresolvedNativeFunction_98("3SPN", "AssaultAmmo", "Assault Ammunition", 0, byte(300), "Text", "3;0:999",, true);
-    Pi.UnresolvedNativeFunction_98("3SPN", "AssaultGrenades", "Assault Grenades", 0, byte(301), "Text", "3;0:999",, true);
-    Pi.UnresolvedNativeFunction_98("3SPN", "BioAmmo", "Bio Ammunition", 0, byte(302), "Text", "3;0:999",, true);
-    Pi.UnresolvedNativeFunction_98("3SPN", "ShockAmmo", "Shock Ammunition", 0, byte(303), "Text", "3;0:999",, true);
-    Pi.UnresolvedNativeFunction_98("3SPN", "LinkAmmo", "Link Ammunition", 0, byte(304), "Text", "3;0:999",, true);
-    Pi.UnresolvedNativeFunction_98("3SPN", "MiniAmmo", "Mini Ammunition", 0, byte(305), "Text", "3;0:999",, true);
-    Pi.UnresolvedNativeFunction_98("3SPN", "FlakAmmo", "Flak Ammunition", 0, byte(306), "Text", "3;0:999",, true);
-    Pi.UnresolvedNativeFunction_98("3SPN", "RocketAmmo", "Rocket Ammunition", 0, byte(307), "Text", "3;0:999",, true);
-    Pi.UnresolvedNativeFunction_98("3SPN", "LightningAmmo", "Lightning Ammunition", 0, byte(308), "Text", "3;0:999",, true);
-    Pi.UnresolvedNativeFunction_98("3SPN", "EnableNewNet", "Enable New Net", 0, byte(400), "Check");
-    Pi.UnresolvedNativeFunction_98("3SPN", "EndCeremonyEnabled", "Enable End Ceremony", 0, byte(401), "Check");
-    Pi.UnresolvedNativeFunction_98("3SPN", "AllowPersistentStatsWithBots", "Allow Persistent Stats With Bots", 0, byte(403), "Check");
-    Pi.UnresolvedNativeFunction_98("3SPN", "RoundCanTie", "Rounds Can Tie", 0, byte(404), "Check");
-    Pi.UnresolvedNativeFunction_98("3SPN", "bSpawnProtectionOnRez", "Enable Spawn Protection After Resurrection", 0, byte(405), "Check");
-    Pi.UnresolvedNativeFunction_98("3SPN", "AutoBalanceTeams", "Automatically Balance Teams At Match Start", 0, byte(406), "Check");
-    Pi.UnresolvedNativeFunction_98("3SPN", "AutoBalanceOnJoins", "Auto Balance Teams When New Players Join", 0, byte(407), "Check");
-    Pi.UnresolvedNativeFunction_98("3SPN", "AllowForceAutoBalance", "Allow Forcing Auto Balance By Writing 'Teams' Into Chat", 0, byte(408), "Check");
-    Pi.UnresolvedNativeFunction_98("3SPN", "ForceAutoBalanceCooldown", "Force Auto Balance Cooldown Timer In Seconds", 0, byte(409), "Text", "3;0:100",, true);
-    Pi.UnresolvedNativeFunction_98("3SPN", "AutoBalanceRandomization", "Randomization Percentage Used For Automatic Balancing", 0, byte(410), "Text", "3;0:100",, true);
-    Pi.UnresolvedNativeFunction_98("3SPN", "AutoBalanceAvgPPRWeight", "Auto Balance Avg VS Current PPR Weight (Percent)", 0, byte(411), "Text", "3;0:100",, true);
-    Pi.UnresolvedNativeFunction_98("3SPN", "AutoBalanceSeconds", "Auto Balance Teams Time", 0, byte(412), "Text", "3;0:100",, true);
-    Pi.UnresolvedNativeFunction_98("3SPN", "TimeOutDuration", "Time Out Duration", 0, byte(413), "Text", "3;0:999",, true);
-    Pi.UnresolvedNativeFunction_98("3SPN", "EnforceMaxPlayers", "Enforce Maximum Number Of Players (Tournament)", 0, byte(414), "Check");
-    Pi.UnresolvedNativeFunction_98("3SPN", "ServerLinkEnabled", "ServerLink Enabled", 0, byte(500), "Check");
-    Pi.UnresolvedNativeFunction_98("3SPN", "ServerLinkAddress", "ServerLink IP", 0, byte(501), "Text", "60",, true);
-    Pi.UnresolvedNativeFunction_98("3SPN", "ServerLinkPort", "ServerLink Port", 0, byte(502), "Text", "60",, true);
-    Pi.UnresolvedNativeFunction_98("3SPN", "ServerLinkAccount", "ServerLink Account", 0, byte(503), "Text", "60",, true);
-    Pi.UnresolvedNativeFunction_98("3SPN", "ServerLinkPassword", "ServerLink Password", 0, byte(504), "Text", "60",, true);
-    Pi.UnresolvedNativeFunction_98("3SPN", "EndCeremonyStatsEnabled", "Enable End Ceremony Stats List (ServerLink)", 0, byte(505), "Check");
-    Pi.UnresolvedNativeFunction_98("3SPN", "AllowServerSaveSettings", "Allow Caching Player's 3SPN Settings On The Server", 0, byte(600), "Check");
-    Pi.UnresolvedNativeFunction_98("3SPN", "AlwaysRestartServerWhenEmpty", "Always Restart Server When The Last Player Leaves", 0, byte(601), "Check");
+    Pi.AddSetting("3SPN", "StartingHealth", "Starting Health", 0, 100, "Text", "3;0:999");
+    Pi.AddSetting("3SPN", "StartingArmor", "Starting Armor", 0, 101, "Text", "3;0:999");
+    Pi.AddSetting("3SPN", "MaxHealth", "Max Health", 0, 102, "Text", "8;1.0:2.0");
+    Pi.AddSetting("3SPN", "MinsPerRound", "Minutes per Round", 0, 120, "Text", "3;0:999");
+    Pi.AddSetting("3SPN", "OTDamage", "Overtime Damage", 0, 121, "Text", "3;0:999");
+    Pi.AddSetting("3SPN", "OTInterval", "Overtime Damage Interval", 0, 122, "Text", "3;0:999");
+    Pi.AddSetting("3SPN", "CampThreshold", "Camp Area", 0, 150, "Text", "3;0:999",, true);
+    Pi.AddSetting("3SPN", "bKickExcessiveCampers", "Kick Excessive Campers", 0, 151, "Check",,, true);
+    Pi.AddSetting("3SPN", "bForceRUP", "Force Ready", 0, 175, "Check",,, true);
+    Pi.AddSetting("3SPN", "ForceRUPMinPlayers", "Force Ready Min Players", 0, 176, "Text", "3;0;999",, true);
+    Pi.AddSetting("3SPN", "ForceSeconds", "Force Time", 0, 177, "Text", "3;0:999",, true);
+    Pi.AddSetting("3SPN", "bDisableSpeed", "Disable Speed", 0, 200, "Check");
+    Pi.AddSetting("3SPN", "bDisableInvis", "Disable Invis", 0, 201, "Check");
+    Pi.AddSetting("3SPN", "bDisableBerserk", "Disable Berserk", 0, 202, "Check");
+    Pi.AddSetting("3SPN", "bDisableBooster", "Disable Booster", 0, 203, "Check");
+    Pi.AddSetting("3SPN", "Timeouts", "TimeOuts Per Team", 0, 220, "Text", "3;0:999",, true);
+    Pi.AddSetting("3SPN", "bModifyShieldGun", "Use Modified Shield Gun", 0, byte(299), "Check",,, true);
+    Pi.AddSetting("3SPN", "AssaultAmmo", "Assault Ammunition", 0, byte(300), "Text", "3;0:999",, true);
+    Pi.AddSetting("3SPN", "AssaultGrenades", "Assault Grenades", 0, byte(301), "Text", "3;0:999",, true);
+    Pi.AddSetting("3SPN", "BioAmmo", "Bio Ammunition", 0, byte(302), "Text", "3;0:999",, true);
+    Pi.AddSetting("3SPN", "ShockAmmo", "Shock Ammunition", 0, byte(303), "Text", "3;0:999",, true);
+    Pi.AddSetting("3SPN", "LinkAmmo", "Link Ammunition", 0, byte(304), "Text", "3;0:999",, true);
+    Pi.AddSetting("3SPN", "MiniAmmo", "Mini Ammunition", 0, byte(305), "Text", "3;0:999",, true);
+    Pi.AddSetting("3SPN", "FlakAmmo", "Flak Ammunition", 0, byte(306), "Text", "3;0:999",, true);
+    Pi.AddSetting("3SPN", "RocketAmmo", "Rocket Ammunition", 0, byte(307), "Text", "3;0:999",, true);
+    Pi.AddSetting("3SPN", "LightningAmmo", "Lightning Ammunition", 0, byte(308), "Text", "3;0:999",, true);
+    Pi.AddSetting("3SPN", "EnableNewNet", "Enable New Net", 0, byte(400), "Check");
+    Pi.AddSetting("3SPN", "EndCeremonyEnabled", "Enable End Ceremony", 0, byte(401), "Check");
+    Pi.AddSetting("3SPN", "AllowPersistentStatsWithBots", "Allow Persistent Stats With Bots", 0, byte(403), "Check");
+    Pi.AddSetting("3SPN", "RoundCanTie", "Rounds Can Tie", 0, byte(404), "Check");
+    Pi.AddSetting("3SPN", "bSpawnProtectionOnRez", "Enable Spawn Protection After Resurrection", 0, byte(405), "Check");
+    Pi.AddSetting("3SPN", "AutoBalanceTeams", "Automatically Balance Teams At Match Start", 0, byte(406), "Check");
+    Pi.AddSetting("3SPN", "AutoBalanceOnJoins", "Auto Balance Teams When New Players Join", 0, byte(407), "Check");
+    Pi.AddSetting("3SPN", "AllowForceAutoBalance", "Allow Forcing Auto Balance By Writing 'Teams' Into Chat", 0, byte(408), "Check");
+    Pi.AddSetting("3SPN", "ForceAutoBalanceCooldown", "Force Auto Balance Cooldown Timer In Seconds", 0, byte(409), "Text", "3;0:100",, true);
+    Pi.AddSetting("3SPN", "AutoBalanceRandomization", "Randomization Percentage Used For Automatic Balancing", 0, byte(410), "Text", "3;0:100",, true);
+    Pi.AddSetting("3SPN", "AutoBalanceAvgPPRWeight", "Auto Balance Avg VS Current PPR Weight (Percent)", 0, byte(411), "Text", "3;0:100",, true);
+    Pi.AddSetting("3SPN", "AutoBalanceSeconds", "Auto Balance Teams Time", 0, byte(412), "Text", "3;0:100",, true);
+    Pi.AddSetting("3SPN", "TimeOutDuration", "Time Out Duration", 0, byte(413), "Text", "3;0:999",, true);
+    Pi.AddSetting("3SPN", "EnforceMaxPlayers", "Enforce Maximum Number Of Players (Tournament)", 0, byte(414), "Check");
+    Pi.AddSetting("3SPN", "ServerLinkEnabled", "ServerLink Enabled", 0, byte(500), "Check");
+    Pi.AddSetting("3SPN", "ServerLinkAddress", "ServerLink IP", 0, byte(501), "Text", "60",, true);
+    Pi.AddSetting("3SPN", "ServerLinkPort", "ServerLink Port", 0, byte(502), "Text", "60",, true);
+    Pi.AddSetting("3SPN", "ServerLinkAccount", "ServerLink Account", 0, byte(503), "Text", "60",, true);
+    Pi.AddSetting("3SPN", "ServerLinkPassword", "ServerLink Password", 0, byte(504), "Text", "60",, true);
+    Pi.AddSetting("3SPN", "EndCeremonyStatsEnabled", "Enable End Ceremony Stats List (ServerLink)", 0, byte(505), "Check");
+    Pi.AddSetting("3SPN", "AllowServerSaveSettings", "Allow Caching Player's 3SPN Settings On The Server", 0, byte(600), "Check");
+    Pi.AddSetting("3SPN", "AlwaysRestartServerWhenEmpty", "Always Restart Server When The Last Player Leaves", 0, byte(601), "Check");
     //return;    
 }
 
@@ -575,7 +575,7 @@ event InitGame(string Options, out string Error)
         // End:0x6C
         if(TMClass != none)
         {
-            TournamentModule = UnresolvedNativeFunction_97(TMClass);
+            TournamentModule = Spawn(TMClass);
         }
     }
     // End:0x90
@@ -634,7 +634,7 @@ event InitGame(string Options, out string Error)
     // End:0x2D2
     if(ServerLinkEnabled)
     {
-        PlayerDataManager_ServerLink = UnresolvedNativeFunction_97(class'Misc_PlayerDataManager_ServerLink');
+        PlayerDataManager_ServerLink = Spawn(class'Misc_PlayerDataManager_ServerLink');
         // End:0x2D2
         if(PlayerDataManager_ServerLink != none)
         {
@@ -675,7 +675,7 @@ function ChangeName(Controller Other, string S, bool bNameChange)
 
     OldName = Other.PlayerReplicationInfo.PlayerName;
     super(DeathMatch).ChangeName(Other, S, bNameChange);
-    LogInternal("Changed name to " $ S);
+    Log("Changed name to " $ S);
     // End:0x5B
     if(!bNameChange)
     {
@@ -799,7 +799,7 @@ function CallTimeout(PlayerController Caller)
                     if(C != none)
                     {
                         // End:0x205
-                        if((C != none) && C.UnresolvedNativeFunction_97('PlayerController'))
+                        if((C != none) && C.IsA('PlayerController'))
                         {
                             // End:0x1D1
                             if(Caller.PlayerReplicationInfo.Team.TeamIndex == 0)
@@ -854,7 +854,7 @@ function CallTimeout(PlayerController Caller)
             if(C != none)
             {
                 // End:0x34E
-                if((C != none) && C.UnresolvedNativeFunction_97('PlayerController'))
+                if((C != none) && C.IsA('PlayerController'))
                 {
                     PlayerController(C).ClientMessage("Admin canceled the Timeout");
                 }
@@ -874,7 +874,7 @@ function CallTimeout(PlayerController Caller)
             if(C != none)
             {
                 // End:0x3E7
-                if((C != none) && C.UnresolvedNativeFunction_97('PlayerController'))
+                if((C != none) && C.IsA('PlayerController'))
                 {
                     PlayerController(C).ClientMessage("Admin called a Timeout");
                 }
@@ -895,7 +895,7 @@ function CallTimeout(PlayerController Caller)
         if(C != none)
         {
             // End:0x4E3
-            if((C != none) && C.UnresolvedNativeFunction_97('PlayerController'))
+            if((C != none) && C.IsA('PlayerController'))
             {
                 // End:0x4B3
                 if(TimeOutTeam == 0)
@@ -1330,7 +1330,7 @@ function NavigationPoint FindPlayerStart(Controller Player, optional byte InTeam
     if(N != none)
     {
         // End:0x209
-        if((N.UnresolvedNativeFunction_97('PathNode') || N.UnresolvedNativeFunction_97('PlayerStart')) || N.UnresolvedNativeFunction_97('JumpSpot'))
+        if((N.IsA('PathNode') || N.IsA('PlayerStart')) || N.IsA('JumpSpot'))
         {
             NewRating = RatePlayerStart(N, Team, Player);
         }
@@ -1352,7 +1352,7 @@ function NavigationPoint FindPlayerStart(Controller Player, optional byte InTeam
     // End:0x325
     if(BestStart == none)
     {
-        LogInternal("Warning - PATHS NOT DEFINED or NO PLAYERSTART with positive rating");
+        Log("Warning - PATHS NOT DEFINED or NO PLAYERSTART with positive rating");
         BestRating = -100000000.0;
         // End:0x324
         foreach AllActors(class'NavigationPoint', N)
@@ -1779,7 +1779,7 @@ function bool AddBot(optional string botname)
     // End:0x36
     if(NewBot == none)
     {
-        WarnInternal("Failed to spawn bot.");
+        Warn("Failed to spawn bot.");
         return false;
     }
     BroadcastLocalizedMessage(GameMessageClass, 1, NewBot.PlayerReplicationInfo);
@@ -4069,7 +4069,7 @@ auto state PendingMatch
             if(P != none)
             {
                 // End:0x1FC
-                if((((P.UnresolvedNativeFunction_97('PlayerController') && P.PlayerReplicationInfo != none) && P.bIsPlayer) && P.PlayerReplicationInfo.bWaitingPlayer) && !P.PlayerReplicationInfo.bReadyToPlay)
+                if((((P.IsA('PlayerController') && P.PlayerReplicationInfo != none) && P.bIsPlayer) && P.PlayerReplicationInfo.bWaitingPlayer) && !P.PlayerReplicationInfo.bReadyToPlay)
                 {
                     bReady = false;
                 }
@@ -4531,7 +4531,7 @@ state MatchOver
             }
         }
         // End:0x96
-        if(Other.UnresolvedNativeFunction_97('PlayerController') && Other.PlayerReplicationInfo.bOnlySpectator)
+        if(Other.IsA('PlayerController') && Other.PlayerReplicationInfo.bOnlySpectator)
         {
             Other.PlayerReplicationInfo.Team = none;
             return true;

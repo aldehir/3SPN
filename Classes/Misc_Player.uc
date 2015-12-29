@@ -401,10 +401,10 @@ function StorePlayerData()
     // End:0x46
     if(PlayerData == none)
     {
-        LogInternal("No player data was being tracked for " $ PlayerReplicationInfo.PlayerName);
+        Log("No player data was being tracked for " $ PlayerReplicationInfo.PlayerName);
         return;
     }
-    LogInternal("Storing player data for " $ PlayerReplicationInfo.PlayerName);
+    Log("Storing player data for " $ PlayerReplicationInfo.PlayerName);
     PlayerData.Current.Score = PlayerReplicationInfo.Score;
     PlayerData.Current.Kills = PlayerReplicationInfo.Kills;
     PlayerData.Current.Deaths = int(PlayerReplicationInfo.Deaths);
@@ -523,12 +523,12 @@ event PlayerTick(float DeltaTime)
     // End:0x11C
     if(hitdamage < LastDamage)
     {
-        Pawn.UnresolvedNativeFunction_97(SoundHitFriendly,, SoundHitVolume,,, 48.0 / float(LastDamage - hitdamage), false);
+        Pawn.PlaySound(SoundHitFriendly,, SoundHitVolume,,, 48.0 / float(LastDamage - hitdamage), false);
     }
     // End:0x14B
     else
     {
-        Pawn.UnresolvedNativeFunction_97(SoundHit,, SoundHitVolume,,, 48.0 / float(hitdamage - LastDamage), false);
+        Pawn.PlaySound(SoundHit,, SoundHitVolume,,, 48.0 / float(hitdamage - LastDamage), false);
     }
     LastDamage = hitdamage;
     //return;    
@@ -574,7 +574,7 @@ simulated function ClientStartCeremony(int PlayerCount, int WinningTeamIndex, st
     // End:0x20B [Loop If]
     if(i < PlayerCount)
     {
-        P = UnresolvedNativeFunction_97(class'Misc_Pawn',,, EndCeremonyInfo[i].SpawnPos, EndCeremonyInfo[i].SpawnRot);
+        P = Spawn(class'Misc_Pawn',,, EndCeremonyInfo[i].SpawnPos, EndCeremonyInfo[i].SpawnRot);
         // End:0x201
         if(P != none)
         {
@@ -662,7 +662,7 @@ simulated function UpdateEndCeremony(float DeltaTime)
             // End:0xD6
             if(P != none)
             {
-                P.UnresolvedNativeFunction_97(EndCeremonyAnimNames[i], 0.50, 0.0);
+                P.PlayAnim(EndCeremonyAnimNames[i], 0.50, 0.0);
                 P.bWaitForAnim = true;
                 ClientSetViewTarget(P);
                 SetViewTarget(P);
@@ -828,7 +828,7 @@ function ClientKillBases()
     foreach AllActors(class'xPickUpBase', P)
     {
         // End:0x28
-        if(P.UnresolvedNativeFunction_97('Misc_PickupBase'))
+        if(P.IsA('Misc_PickupBase'))
         {
             continue;            
         }
@@ -1080,7 +1080,7 @@ function SetupCombos()
         // End:0x1FB
         if(ComboList[i] == none)
         {
-            LogInternal("Could not find combo:" @ ComboName, '3SPN');
+            Log("Could not find combo:" @ ComboName, '3SPN');
         }
         J0x1FB:
         ++ i;
@@ -1409,7 +1409,7 @@ function ServerDoCombo(class<Combo> ComboClass)
                 // End:0x228
                 else
                 {
-                    LogInternal("Could not get TeamInfo for player:" @ PlayerReplicationInfo.PlayerName, '3SPN');
+                    Log("Could not get TeamInfo for player:" @ PlayerReplicationInfo.PlayerName, '3SPN');
                 }
             }
         }
@@ -1602,7 +1602,7 @@ function ServerSpectate()
 
 function ClientSetWeapon(class<Weapon> WeaponClass)
 {
-    LogInternal("ClientSetWeapon " $ string(WeaponClass.Name));
+    Log("ClientSetWeapon " $ string(WeaponClass.Name));
     super(Controller).ClientSetWeapon(WeaponClass);
     //return;    
 }
@@ -2368,7 +2368,7 @@ function ServerLoadSettings()
     // End:0x7A
     if(!TeamGame.AllowServerSaveSettings)
     {
-        LogInternal("Loading settings disabled for player " $ PlayerReplicationInfo.PlayerName);
+        Log("Loading settings disabled for player " $ PlayerReplicationInfo.PlayerName);
         ClientSettingsResult(6, PlayerReplicationInfo.PlayerName);
         return;
     }
@@ -2376,13 +2376,13 @@ function ServerLoadSettings()
     // End:0x123
     if((PlayerSettings != none) && PlayerSettings.Existing == true)
     {
-        LogInternal("Loading settings for player " $ PlayerReplicationInfo.PlayerName);
+        Log("Loading settings for player " $ PlayerReplicationInfo.PlayerName);
         ClientLoadSettings(PlayerReplicationInfo.PlayerName, PlayerSettings.BrightSkins, PlayerSettings.ColoredNames, PlayerSettings.Misc);
     }
     // End:0x16F
     else
     {
-        LogInternal("Unable to load settings for player " $ PlayerReplicationInfo.PlayerName);
+        Log("Unable to load settings for player " $ PlayerReplicationInfo.PlayerName);
         ClientSettingsResult(0, PlayerReplicationInfo.PlayerName);
     }
     //return;    
@@ -2402,7 +2402,7 @@ function ServerSaveSettings(BrightSkinsSettings BrightSkins, ColoredNamesSetting
     // End:0x7A
     if(!TeamGame.AllowServerSaveSettings)
     {
-        LogInternal("Loading settings disabled for player " $ PlayerReplicationInfo.PlayerName);
+        Log("Loading settings disabled for player " $ PlayerReplicationInfo.PlayerName);
         ClientSettingsResult(6, PlayerReplicationInfo.PlayerName);
         return;
     }
@@ -2410,7 +2410,7 @@ function ServerSaveSettings(BrightSkinsSettings BrightSkins, ColoredNamesSetting
     // End:0x133
     if(PlayerSettings != none)
     {
-        LogInternal("Saving settings for player " $ PlayerReplicationInfo.PlayerName);
+        Log("Saving settings for player " $ PlayerReplicationInfo.PlayerName);
         PlayerSettings.BrightSkins = BrightSkins;
         PlayerSettings.ColoredNames = ColoredNames;
         PlayerSettings.Misc = Misc;
@@ -2420,7 +2420,7 @@ function ServerSaveSettings(BrightSkinsSettings BrightSkins, ColoredNamesSetting
     // End:0x17F
     else
     {
-        LogInternal("Unable to save settings for player " $ PlayerReplicationInfo.PlayerName);
+        Log("Unable to save settings for player " $ PlayerReplicationInfo.PlayerName);
         ClientSettingsResult(1, PlayerReplicationInfo.PlayerName);
     }
     //return;    

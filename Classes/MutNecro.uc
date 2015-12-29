@@ -158,13 +158,13 @@ function GetServerDetails(out ServerResponseLine ServerState)
 static function FillPlayInfo(PlayInfo PlayInfo)
 {
     super(Info).FillPlayInfo(PlayInfo);
-    PlayInfo.UnresolvedNativeFunction_98("Necro Combo v3", "bBotsCanNecro", default.PropsDisplayText[0], 0, 10, "Check");
-    PlayInfo.UnresolvedNativeFunction_98("Necro Combo v3", "bShowSpawnMessage", default.PropsDisplayText[1], 0, 10, "Check");
+    PlayInfo.AddSetting("Necro Combo v3", "bBotsCanNecro", default.PropsDisplayText[0], 0, 10, "Check");
+    PlayInfo.AddSetting("Necro Combo v3", "bShowSpawnMessage", default.PropsDisplayText[1], 0, 10, "Check");
     // End:0xB4
     if(default.NecroComboClass != none)
     {
         default.NecroComboClass.static.FillPlayInfo(PlayInfo);
-        PlayInfo.UnresolvedNativeFunction_98();
+        PlayInfo.PopClass();
     }
     //return;    
 }

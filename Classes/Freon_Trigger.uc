@@ -139,7 +139,7 @@ function bool TellBotToThaw(Bot B)
         }
     }
     // End:0xBF
-    if(B.ActorReachable(PawnOwner))
+    if(B.actorReachable(PawnOwner))
     {
         B.MoveTarget = PawnOwner;
         B.GoalString = "Trying to thaw";
@@ -225,7 +225,7 @@ state PawnFrozen
         {
             Toucher.Length = Toucher.Length + 1;
             Toucher[Toucher.Length - 1] = Touch;
-            PawnOwner.UnresolvedNativeFunction_97(TouchSound);
+            PawnOwner.PlaySound(TouchSound);
         }
         //return;        
     }
@@ -317,7 +317,7 @@ state PawnFrozen
             {
                 PlayerController(PawnOwner.Controller).ClientPlaySound(ThawSound);
             }
-            PawnOwner.UnresolvedNativeFunction_97(ThawSound, 3, PawnOwner.TransientSoundVolume * 1.50,, PawnOwner.TransientSoundRadius * 1.50);
+            PawnOwner.PlaySound(ThawSound, 3, PawnOwner.TransientSoundVolume * 1.50,, PawnOwner.TransientSoundRadius * 1.50);
             // End:0x352
             if(Toucher.Length > 0)
             {

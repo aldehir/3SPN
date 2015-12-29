@@ -105,7 +105,7 @@ function DoClientTrace(Vector Start, Rotator Dir)
         if((Other != none) && (Other != Instigator) || ReflectNum > 0)
         {
             // End:0x2C0
-            if((bReflective && Other.UnresolvedNativeFunction_97('xPawn')) && xPawn(Other).CheckReflect(HitLocation, RefNormal, int(float(DamageMin) * 0.250)))
+            if((bReflective && Other.IsA('xPawn')) && xPawn(Other).CheckReflect(HitLocation, RefNormal, int(float(DamageMin) * 0.250)))
             {
                 bDoReflect = true;
             }
@@ -330,7 +330,7 @@ function DoTrace(Vector Start, Rotator Dir)
             Other = DoTimeTravelTrace(HitLocation, HitNormal, End, Start);
         }
         // End:0x30A
-        if((Other != none) && Other.UnresolvedNativeFunction_97('NewNet_PawnCollisionCopy'))
+        if((Other != none) && Other.IsA('NewNet_PawnCollisionCopy'))
         {
             PawnHitLocation = (HitLocation + NewNet_PawnCollisionCopy(Other).CopiedPawn.Location) - Other.Location;
             Other = NewNet_PawnCollisionCopy(Other).CopiedPawn;
@@ -344,7 +344,7 @@ function DoTrace(Vector Start, Rotator Dir)
         if((Other != none) && (Other != Instigator) || ReflectNum > 0)
         {
             // End:0x39B
-            if((bReflective && Other.UnresolvedNativeFunction_97('xPawn')) && xPawn(Other).CheckReflect(PawnHitLocation, RefNormal, int(float(DamageMin) * 0.250)))
+            if((bReflective && Other.IsA('xPawn')) && xPawn(Other).CheckReflect(PawnHitLocation, RefNormal, int(float(DamageMin) * 0.250)))
             {
                 bDoReflect = true;
             }
@@ -407,7 +407,7 @@ function DoTrace(Vector Start, Rotator Dir)
         {
             return;
         }
-        hitEmitter = xEmitter(Weapon.UnresolvedNativeFunction_97(tmpHitEmitClass,,, arcEnd, rotator(HitNormal)));
+        hitEmitter = xEmitter(Weapon.Spawn(tmpHitEmitClass,,, arcEnd, rotator(HitNormal)));
         // End:0x5C9
         if(hitEmitter != none)
         {
