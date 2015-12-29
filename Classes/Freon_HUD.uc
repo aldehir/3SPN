@@ -1,6 +1,6 @@
 class Freon_HUD extends TAM_HUD;
 
-#exec TEXTURE IMPORT NAME=Flake FILE=Textures\flake5.tga GROUP=Textures MIPS=On ALPHA=1 DXT=5
+#exec TEXTURE IMPORT NAME=Flake FILE=Textures\Flake.dds GROUP=Textures MIPS=On ALPHA=1 DXT=5
 
 var Texture FrozenBeacon;
 

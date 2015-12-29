@@ -1,7 +1,7 @@
 class Team_HUDBase extends HudCTeamDeathmatch
     abstract;
 
-#exec TEXTURE IMPORT NAME=CHair FILE=Textures\CHair.tga     GROUP=Textures MIPS=On ALPHA=1 DXT=5
+#exec TEXTURE IMPORT NAME=CHair FILE=Textures\CHair.dds     GROUP=Textures MIPS=On ALPHA=1 DXT=5
 
 var Texture TeamTex;
 var Material TrackedPlayer;
