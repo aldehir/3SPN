@@ -1,6 +1,6 @@
 class TAM_HUD extends Team_HUDBase;
 
-#exec TEXTURE IMPORT NAME=Icons FILE=Textures\Icons.tga GROUP=Textures MIPS=On ALPHA=1 DXT=5
+#exec TEXTURE IMPORT NAME=Icons FILE=Textures\Icons.dds GROUP=Textures MIPS=On ALPHA=1 DXT=5
 
 /* combo related */
 var bool bDrawCombos;

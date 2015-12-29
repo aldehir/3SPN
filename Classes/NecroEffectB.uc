@@ -1,6 +1,6 @@
 class NecroEffectB extends xEmitter;
 
-#exec TEXTURE IMPORT NAME=SmokeTex FILE=Textures\Smoke.tga GROUP=Textures MIPS=On ALPHA=1 DXT=5
+#exec TEXTURE IMPORT NAME=SmokeTex FILE=Textures\SmokeTex.dds GROUP=Textures MIPS=On ALPHA=1 DXT=5
 
 defaultproperties
 {
