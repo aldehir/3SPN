@@ -25,7 +25,7 @@ function destroyed()
 simulated event tick(float deltatime)
 {
    Super.tick(deltatime);
-   NewTimeStamp += deltatime;
+   timestamp+= deltatime;
    DT=deltatime;
 }
 
