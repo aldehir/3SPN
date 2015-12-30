@@ -77,6 +77,6 @@ simulated function Timer()
 
 defaultproperties
 {
-     Version="3.210CW"
+     Version="3.300CW"
      EnableNewNet=True
 }

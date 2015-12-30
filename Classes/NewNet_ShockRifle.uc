@@ -241,9 +241,13 @@ function NewNet_ServerStartFire(byte Mode, byte ClientTimeStamp, float dt, Repli
   {
       Misc_Player(Instigator.Controller).NotifyServerStartFire(ClientTimeStamp, M.ClientTimeStamp, M.AverDT);
   }
+
   NewNet_ShockBeamFire(FireMode[Mode]).PingDT = M.ClientTimeStamp - M.GetStamp(ClientTimeStamp)-DT + 0.5*M.AverDT;
   NewNet_ShockBeamFire(FireMode[Mode]).bUseEnhancedNetCode = true;
   NewNet_ShockBeamFire(FireMode[Mode]).AverDT = M.AverDT;
+
+  Log("ClientTS: "$ClientTimeStamp$" ServerTS: "$M.GetStamp(ClientTimeStamp)$" AverDT: "$M.AverDT$" PingDT: "$NewNet_ShockBeamFire(FireMode[Mode]).PingDT$" BelieveHit? "$bBelievesHit);
+
   if(bBelievesHit)
   {
       NewNet_ShockBeamFire(FireMode[Mode]).bBelievesHit=true;
@@ -297,6 +301,10 @@ function bool IsReasonable(Vector V)
 
     LocDiff = V - (Pawn(Owner).Location + Pawn(Owner).EyePosition());
     clErr = (LocDiff dot LocDiff);
+
+    // FIXME: Remove logging
+    Log("clErr: "$clErr);
+
     return clErr < 1250.0;
 }
 

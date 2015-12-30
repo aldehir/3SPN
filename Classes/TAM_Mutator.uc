@@ -71,20 +71,23 @@ replication
     super.PreBeginPlay();
 }*/
 
-/*function PostBeginPlay()
+function PostBeginPlay()
 {
 	Super.PostBeginPlay();
 
 	if(EnableNewNet)
 	{
+        StampInfo = Spawn(class'NewNet_TimeStamp');
+        /*
 		for(M=Level.Game.BaseMutator; M!=None; M=M.NextMutator)
 		{
 			if(string(M.Class)~="SpawnGrenades.MutSN")
 				return;
 		}
 		class'GrenadeAmmo'.default.InitialAmount = NumGrenadesOnSpawn;
+        */
 	}
-}*/
+}
 
 static function bool IsPredicted(actor A)
 {

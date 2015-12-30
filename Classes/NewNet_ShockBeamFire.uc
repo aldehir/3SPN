@@ -126,7 +126,8 @@ function DoTrace(Vector Start, Rotator Dir)
 
                         if(altOther == BelievedHitACtor)
                         {
-                        //   Log("Fixed At"@f@"with max"@(0.04 + 2.0*AverDT));
+                           // FIXME: Remove logging
+                           Log("Fixed At"@f@"with max"@(0.04 + 2.0*AverDT));
                            Other=altOther;
                            PawnHitLocation=AltPawnHitLocation;
                            HitLocation=AltHitLocation;
@@ -137,8 +138,9 @@ function DoTrace(Vector Start, Rotator Dir)
                         else
                             f = -1.0*f+0.02;
                     }
-                  //  if(abs(f)<9.0)
-                    //   log("Failed to fix");
+                    // FIXME: Remove logging
+                    if(abs(f)<9.0)
+                        Log("Failed to fix");
                 }
             }
             else if(bFirstGo && !bBelievesHit && Other!=None && (Other.IsA('xpawn') || Other.IsA('Vehicle')))
@@ -165,7 +167,8 @@ function DoTrace(Vector Start, Rotator Dir)
 
                         if(altOther == None || !(altOther.IsA('xpawn') || altOther.IsA('Vehicle')))
                         {
-                         //  Log("Reverse Fixed At"@f);
+                           // FIXME: Remove logging
+                           Log("Reverse Fixed At"@f);
                            Other=altOther;
                            PawnHitLocation=AltPawnHitLocation;
                            HitLocation=altHitLocation;
@@ -176,8 +179,10 @@ function DoTrace(Vector Start, Rotator Dir)
                         else
                             f = -1.0*f+0.02;
                     }
-                    //if(abs(f)<9.0)
-                    //   log("Failed to reverse fix");
+                    
+                    // FIXME: Remove logging
+                    if(abs(f)<9.0)
+                       log("Failed to reverse fix");
                 }
             }
             bFirstGo=false;
@@ -218,7 +223,8 @@ function DoTrace(Vector Start, Rotator Dir)
 
             if (bDoReflect && ++ReflectNum < 4)
             {
-                //Log("reflecting off"@Other@Start@HitLocation);
+                // FIXME: Remove logging
+                Log("reflecting off"@Other@Start@HitLocation);
                 Start = HitLocation;
                 Dir = Rotator(RefNormal); //Rotator( X - 2.0*RefNormal*(X dot RefNormal) );
             }
@@ -394,7 +400,8 @@ simulated function DoClientTrace(Vector Start, Rotator Dir)
 
         if (bDoReflect && ++ReflectNum < 4)
         {
-            //Log("reflecting off"@Other@Start@HitLocation);
+            // FIXME: Remove logging
+            Log("reflecting off"@Other@Start@HitLocation);
             Start = HitLocation;
             Dir = Rotator(RefNormal); //Rotator( X - 2.0*RefNormal*(X dot RefNormal) );
         }
