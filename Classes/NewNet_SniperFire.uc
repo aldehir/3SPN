@@ -277,17 +277,17 @@ function DoTrace(Vector Start, Rotator Dir)
         else
             Other = DoTimeTravelTrace(HitLocation, HitNormal, End, Start);
 
-        if(Other!=None && Other.IsA('PawnCollisionCopy'))
+        if(Other!=None && Other.IsA('NewNet_PawnCollisionCopy'))
         {
             //Maintain the same ray, but move to the real pawn
             //ToDo: handle crouching differences
-            PawnHitLocation = HitLocation + PawnCollisionCopy(Other).CopiedPawn.Location - Other.Location;
+            PawnHitLocation = HitLocation + NewNet_PawnCollisionCopy(Other).CopiedPawn.Location - Other.Location;
     /*        if(ArcsRemaining == NumArcs && bCount && bBelievesHit)
             {
                  PlayerController(Pawn(Weapon.Owner).Controller).ClientMessage(BelievedHLDelta - Other.Location);
                  bCount=false;
             }    */
-            Other=PawnCollisionCopy(Other).CopiedPawn;
+            Other=NewNet_PawnCollisionCopy(Other).CopiedPawn;
 
         }
         else
@@ -309,10 +309,10 @@ function DoTrace(Vector Start, Rotator Dir)
                     else
                           AltOther = DoTimeTravelTrace(AltHitLocation, AltHitNormal, End, Start);
 
-                    if(AltOther!=None && AltOther.IsA('PawnCollisionCopy'))
+                    if(AltOther!=None && AltOther.IsA('NewNet_PawnCollisionCopy'))
                     {
-                         AltPawnHitLocation = AltHitLocation + PawnCollisionCopy(AltOther).CopiedPawn.Location - AltOther.Location;
-                         AltOther=PawnCollisionCopy(AltOther).CopiedPawn;
+                         AltPawnHitLocation = AltHitLocation + NewNet_PawnCollisionCopy(AltOther).CopiedPawn.Location - AltOther.Location;
+                         AltOther=NewNet_PawnCollisionCopy(AltOther).CopiedPawn;
                     }
                     else
                     {
@@ -350,10 +350,10 @@ function DoTrace(Vector Start, Rotator Dir)
                     else
                           AltOther = DoTimeTravelTrace(AltHitLocation, AltHitNormal, End, Start);
 
-                    if(AltOther!=None && AltOther.IsA('PawnCollisionCopy'))
+                    if(AltOther!=None && AltOther.IsA('NewNet_PawnCollisionCopy'))
                     {
-                         AltPawnHitLocation = AltHitLocation + PawnCollisionCopy(AltOther).CopiedPawn.Location - AltOther.Location;
-                         AltOther=PawnCollisionCopy(AltOther).CopiedPawn;
+                         AltPawnHitLocation = AltHitLocation + NewNet_PawnCollisionCopy(AltOther).CopiedPawn.Location - AltOther.Location;
+                         AltOther=NewNet_PawnCollisionCopy(AltOther).CopiedPawn;
                     }
                     else
                     {
@@ -394,12 +394,12 @@ function DoTrace(Vector Start, Rotator Dir)
                {
                   TimeTravel(f);
                   Other = DoTimeTravelTrace(HitLocation, HitNormal, End, Start);
-                  if(Other!=None && Other.IsA('PawnCollisionCopy'))
+                  if(Other!=None && Other.IsA('NewNet_PawnCollisionCopy'))
                   {
                         //Maintain the same ray, but move to the real pawn
                         //ToDo: handle crouching differences
-                         PawnHitLocation = HitLocation + PawnCollisionCopy(Other).CopiedPawn.Location - Other.Location;
-                         Other=PawnCollisionCopy(Other).CopiedPawn;
+                         PawnHitLocation = HitLocation + NewNet_PawnCollisionCopy(Other).CopiedPawn.Location - Other.Location;
+                         Other=NewNet_PawnCollisionCopy(Other).CopiedPawn;
                   }
                   if((bBelievesHit && Other.IsA('Xpawn')) || (!bBelievesHit && (Other==None || !Other.IsA('xPawn'))) )
                   {

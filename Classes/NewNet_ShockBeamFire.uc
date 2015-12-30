@@ -65,6 +65,9 @@ function DoTrace(Vector Start, Rotator Dir)
     local bool bDoReflect;
     local int ReflectNum;
     local vector PawnHitLocation;
+    local actor AltOther;
+    local vector AltHitlocation,altHitNormal,altPawnHitLocation;
+    local float f;
 
     if(!bUseEnhancedNetCode)
     {
@@ -88,10 +91,10 @@ function DoTrace(Vector Start, Rotator Dir)
             else
                 Other = DoTimeTravelTrace(HitLocation, HitNormal, End, Start);
 
-            if(Other!=None && Other.IsA('PawnCollisionCopy'))
+            if(Other!=None && Other.IsA('NewNet_PawnCollisionCopy'))
             {
-                 PawnHitLocation = HitLocation + PawnCollisionCopy(Other).CopiedPawn.Location - Other.Location;
-                 Other=PawnCollisionCopy(Other).CopiedPawn;
+                 PawnHitLocation = HitLocation + NewNet_PawnCollisionCopy(Other).CopiedPawn.Location - Other.Location;
+                 Other=NewNet_PawnCollisionCopy(Other).CopiedPawn;
             }
             else
             {
@@ -113,10 +116,10 @@ function DoTrace(Vector Start, Rotator Dir)
                         else
                               AltOther = DoTimeTravelTrace(AltHitLocation, AltHitNormal, End, Start);
 
-                        if(AltOther!=None && AltOther.IsA('PawnCollisionCopy'))
+                        if(AltOther!=None && AltOther.IsA('NewNet_PawnCollisionCopy'))
                         {
-                             AltPawnHitLocation = AltHitLocation + PawnCollisionCopy(AltOther).CopiedPawn.Location - AltOther.Location;
-                             AltOther=PawnCollisionCopy(AltOther).CopiedPawn;
+                             AltPawnHitLocation = AltHitLocation + NewNet_PawnCollisionCopy(AltOther).CopiedPawn.Location - AltOther.Location;
+                             AltOther=NewNet_PawnCollisionCopy(AltOther).CopiedPawn;
                         }
                         else
                              AltPawnHitLocation=AltHitLocation;
@@ -152,10 +155,10 @@ function DoTrace(Vector Start, Rotator Dir)
                         else
                               AltOther = DoTimeTravelTrace(AltHitLocation, AltHitNormal, End, Start);
 
-                        if(AltOther!=None && AltOther.IsA('PawnCollisionCopy'))
+                        if(AltOther!=None && AltOther.IsA('NewNet_PawnCollisionCopy'))
                         {
-                             AltPawnHitLocation = AltHitLocation + PawnCollisionCopy(AltOther).CopiedPawn.Location - AltOther.Location;
-                             AltOther=PawnCollisionCopy(AltOther).CopiedPawn;
+                             AltPawnHitLocation = AltHitLocation + NewNet_PawnCollisionCopy(AltOther).CopiedPawn.Location - AltOther.Location;
+                             AltOther=NewNet_PawnCollisionCopy(AltOther).CopiedPawn;
                         }
                         else
                              AltPawnHitLocation=AltHitLocation;
