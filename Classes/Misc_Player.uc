@@ -604,7 +604,7 @@ simulated function InitInputSystem()
 	C = Level.GetLocalPlayerController();
 	if(C != None)
 	{
-		C.Player.InteractionMaster.AddInteraction("3SPNv3210CW.Menu_Interaction", C.Player);
+		C.Player.InteractionMaster.AddInteraction("3SPNv3300CW.Menu_Interaction", C.Player);
 	}
 }
 
@@ -1032,9 +1032,9 @@ function bool CanDoCombo(class<Combo> ComboClass)
 function ServerDoCombo(class<Combo> ComboClass)
 {
     if(class<ComboBerserk>(ComboClass) != None)
-        ComboClass = class<Combo>(DynamicLoadObject("3SPNv3210CW.Misc_ComboBerserk", class'Class'));
+        ComboClass = class<Combo>(DynamicLoadObject("3SPNv3300CW.Misc_ComboBerserk", class'Class'));
     else if(class<ComboSpeed>(ComboClass) != None && class<Misc_ComboSpeed>(ComboClass) == None)
-        ComboClass = class<Combo>(DynamicLoadObject("3SPNv3210CW.Misc_ComboSpeed", class'Class'));
+        ComboClass = class<Combo>(DynamicLoadObject("3SPNv3300CW.Misc_ComboSpeed", class'Class'));
 
     if(Adrenaline < ComboClass.default.AdrenalineCost)
         return;
@@ -1297,7 +1297,7 @@ exec function Menu3SPN()
 	r.Pitch = 0;
 	SetRotation(r);
 
-	ClientOpenMenu("3SPNv3210CW.Menu_Menu3SPN");
+	ClientOpenMenu("3SPNv3300CW.Menu_Menu3SPN");
 }
 
 exec function ToggleTeamInfo()
@@ -1973,13 +1973,13 @@ defaultproperties
      BlueAllyModel="Tamika"
      bAnnounceOverkill=True
      bUseHitSounds=True
-     SoundHit=Sound'3SPNv3210CW.Sounds.HitSound'
+     SoundHit=Sound'3SPNv3300CW.Sounds.HitSound'
      SoundHitFriendly=Sound'MenuSounds.denied1'
      SoundHitVolume=0.600000
-     SoundAlone=Sound'3SPNv3210CW.Sounds.alone'
+     SoundAlone=Sound'3SPNv3300CW.Sounds.alone'
      SoundAloneVolume=1.000000
      SoundUnlock=Sound'NewWeaponSounds.Newclickgrenade'
-     SoundSpawnProtection=Sound'3SPNv3210CW.Sounds.Bleep'
+     SoundSpawnProtection=Sound'3SPNv3300CW.Sounds.Bleep'
      bEnableEnhancedNetCode=True
      ShowInitialMenu=2
      Menu3SPNKey=IK_F7
@@ -2039,6 +2039,6 @@ defaultproperties
      AutoSyncSettings=True
      LastSettingsLoadTimeSeconds=-100.000000
      LastSettingsSaveTimeSeconds=-100.000000
-     PlayerReplicationInfoClass=Class'3SPNv3210CW.Misc_PRI'
+     PlayerReplicationInfoClass=Class'3SPNv3300CW.Misc_PRI'
      Adrenaline=0.100000
 }

@@ -35,7 +35,7 @@ static simulated function ClientReceive(
 
 defaultproperties
 {
-     GitSound=Sound'3SPNv3210CW.Sounds.Git'
+     GitSound=Sound'3SPNv3300CW.Sounds.Git'
      YouAreGit="YOU GIT!"
      PlayerIsGit="IS A GIT!"
      bIsUnique=True

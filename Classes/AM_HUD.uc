@@ -271,5 +271,5 @@ simulated function DrawTimer(Canvas C)
 defaultproperties
 {
      TeamTex=Texture'HUDContent.Generic.HUD'
-     TrackedPlayer=Texture'3SPNv3210CW.textures.chair'
+     TrackedPlayer=Texture'3SPNv3300CW.textures.chair'
 }

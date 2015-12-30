@@ -127,6 +127,6 @@ simulated function DispatchClientEffect(Vector V, rotator R)
 
 defaultproperties
 {
-     FireModeClass(0)=Class'3SPNv3210CW.NewNet_AssaultFire'
-     FireModeClass(1)=Class'3SPNv3210CW.NewNet_AssaultGrenade'
+     FireModeClass(0)=Class'3SPNv3300CW.NewNet_AssaultFire'
+     FireModeClass(1)=Class'3SPNv3300CW.NewNet_AssaultGrenade'
 }

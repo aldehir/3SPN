@@ -8,5 +8,5 @@ event ModeDoFire()
 
 defaultproperties
 {
-     ProjectileClass=Class'3SPNv3210CW.WeaponFire_ShockCombo'
+     ProjectileClass=Class'3SPNv3300CW.WeaponFire_ShockCombo'
 }

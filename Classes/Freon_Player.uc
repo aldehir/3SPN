@@ -86,7 +86,7 @@ function BecomeSpectator()
 function ServerDoCombo(class<Combo> ComboClass)
 {
     if(class<ComboSpeed>(ComboClass) != None)
-        ComboClass = class<Combo>(DynamicLoadObject("3SPNv3210CW.Freon_ComboSpeed", class'Class'));
+        ComboClass = class<Combo>(DynamicLoadObject("3SPNv3300CW.Freon_ComboSpeed", class'Class'));
 
     Super.ServerDoCombo(ComboClass);
 }
@@ -228,5 +228,5 @@ defaultproperties
      colorname(17)=(B=255,G=255,R=255,A=255)
      colorname(18)=(B=255,G=255,R=255,A=255)
      colorname(19)=(B=255,G=255,R=255,A=255)
-     PlayerReplicationInfoClass=Class'3SPNv3210CW.Freon_PRI'
+     PlayerReplicationInfoClass=Class'3SPNv3300CW.Freon_PRI'
 }

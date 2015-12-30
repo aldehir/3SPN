@@ -902,9 +902,9 @@ function bool AddBot(optional string botName)
 function string SwapDefaultCombo(string ComboName)
 {
     if(ComboName ~= "xGame.ComboSpeed")
-        return "3SPNv3210CW.Misc_ComboSpeed";
+        return "3SPNv3300CW.Misc_ComboSpeed";
     else if(ComboName ~= "xGame.ComboBerserk")
-        return "3SPNv3210CW.Misc_ComboBerserk";
+        return "3SPNv3300CW.Misc_ComboBerserk";
 
     return ComboName;
 }
@@ -1700,21 +1700,21 @@ defaultproperties
      ShowServerName=True
      FlagTextureEnabled=True
      FlagTextureShowAcronym=True
-     OvertimeSound=Sound'3SPNv3210CW.Sounds.overtime'
+     OvertimeSound=Sound'3SPNv3300CW.Sounds.overtime'
      ADR_MinorError=-5.000000
-     LoginMenuClass="3SPNv3210CW.Menu_TAMLoginMenu"
-     LocalStatsScreenClass=Class'3SPNv3210CW.Misc_StatBoard'
-     DefaultPlayerClassName="3SPNv3210CW.Misc_Pawn"
-     ScoreBoardType="3SPNv3210CW.AM_Scoreboard"
-     HUDType="3SPNv3210CW.AM_HUD"
-     MapListType="3SPNv3210CW.MapListArenaMaster"
+     LoginMenuClass="3SPNv3300CW.Menu_TAMLoginMenu"
+     LocalStatsScreenClass=Class'3SPNv3300CW.Misc_StatBoard'
+     DefaultPlayerClassName="3SPNv3300CW.Misc_Pawn"
+     ScoreBoardType="3SPNv3300CW.AM_Scoreboard"
+     HUDType="3SPNv3300CW.AM_HUD"
+     MapListType="3SPNv3300CW.MapListArenaMaster"
      GoalScore=5
      MaxLives=1
      TimeLimit=0
-     DeathMessageClass=Class'3SPNv3210CW.Misc_DeathMessage'
-     MutatorClass="3SPNv3210CW.TAM_Mutator"
-     PlayerControllerClassName="3SPNv3210CW.Misc_Player"
-     GameReplicationInfoClass=Class'3SPNv3210CW.TAM_GRI'
+     DeathMessageClass=Class'3SPNv3300CW.Misc_DeathMessage'
+     MutatorClass="3SPNv3300CW.TAM_Mutator"
+     PlayerControllerClassName="3SPNv3300CW.Misc_Player"
+     GameReplicationInfoClass=Class'3SPNv3300CW.TAM_GRI'
      GameName="ArenaMaster v3"
      Description="One life per round. Don't waste it"
      Acronym="AM"

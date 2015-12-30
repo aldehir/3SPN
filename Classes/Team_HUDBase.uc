@@ -786,7 +786,7 @@ function DrawStatsList(Canvas C, int Index, float xPos)
 defaultproperties
 {
      TeamTex=Texture'HUDContent.Generic.HUD'
-     TrackedPlayer=Texture'3SPNv3210CW.textures.chair'
+     TrackedPlayer=Texture'3SPNv3300CW.textures.chair'
      FullHealthColor=(B=200,G=100,A=255)
      NameColor=(B=200,G=200,R=200,A=255)
      LocationColor=(G=130,R=175,A=255)

@@ -330,6 +330,6 @@ simulated function FindFPM()
 
 defaultproperties
 {
-     FakeProjectileClass=Class'3SPNv3210CW.NewNet_Fake_BioGlob'
-     ProjectileClass=Class'3SPNv3210CW.NewNet_BioGlob'
+     FakeProjectileClass=Class'3SPNv3300CW.NewNet_Fake_BioGlob'
+     ProjectileClass=Class'3SPNv3300CW.NewNet_BioGlob'
 }

@@ -8,5 +8,5 @@ event ModeDoFire()
 
 defaultproperties
 {
-     DamageTypeHeadShot=Class'3SPNv3210CW.DamType_Headshot'
+     DamageTypeHeadShot=Class'3SPNv3300CW.DamType_Headshot'
 }

@@ -126,6 +126,6 @@ function NewNet_ServerStartFire(byte Mode, float ClientTimeStamp, float dt)
 
 defaultproperties
 {
-     FireModeClass(0)=Class'3SPNv3210CW.NewNet_BioFire'
-     FireModeClass(1)=Class'3SPNv3210CW.NewNet_BioChargedFire'
+     FireModeClass(0)=Class'3SPNv3300CW.NewNet_BioFire'
+     FireModeClass(1)=Class'3SPNv3300CW.NewNet_BioChargedFire'
 }

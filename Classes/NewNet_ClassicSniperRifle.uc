@@ -122,5 +122,5 @@ function NewNet_ServerStartFire(byte Mode, float ClientTimeStamp)
 
 defaultproperties
 {
-     FireModeClass(0)=Class'3SPNv3210CW.NewNet_ClassicSniperFire'
+     FireModeClass(0)=Class'3SPNv3300CW.NewNet_ClassicSniperFire'
 }

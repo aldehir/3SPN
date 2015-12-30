@@ -414,6 +414,6 @@ simulated function FindFPM()
 
 defaultproperties
 {
-     FakeProjectileClass=Class'3SPNv3210CW.NewNet_Fake_FlakShell'
-     ProjectileClass=Class'3SPNv3210CW.NewNet_FlakShell'
+     FakeProjectileClass=Class'3SPNv3300CW.NewNet_Fake_FlakShell'
+     ProjectileClass=Class'3SPNv3300CW.NewNet_FlakShell'
 }

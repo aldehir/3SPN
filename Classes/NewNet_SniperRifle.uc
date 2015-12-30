@@ -291,5 +291,5 @@ simulated function bool StartFire(int Mode)
 
 defaultproperties
 {
-     FireModeClass(0)=Class'3SPNv3210CW.NewNet_SniperFire'
+     FireModeClass(0)=Class'3SPNv3300CW.NewNet_SniperFire'
 }
