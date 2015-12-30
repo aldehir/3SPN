@@ -1,7 +1,7 @@
 //-----------------------------------------------------------
 //
 //-----------------------------------------------------------
-class TimeStamp_Controller extends Controller;
+class NewNet_TimeStamp_Controller extends Controller;
 
 var int timestamp;
 var bool odd;

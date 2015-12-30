@@ -25,6 +25,7 @@ class NewNet_ShockRifle extends ShockRifle
 
 var NewNet_TimeStamp_Pawn T;
 var TAM_Mutator M;
+var float lastDT;
 
 struct ReplicatedRotator
 {
@@ -218,7 +219,7 @@ simulated function bool StartFire(int Mode)
     return true;
 }
 
-function NewNet_ServerStartFire(byte Mode, byte ClientTimeStamp, float dt, ReplicatedRotator R, ReplicatedVector V)
+function NewNet_ServerStartFire(byte Mode, byte ClientTimeStamp, float dt, ReplicatedRotator R, ReplicatedVector V, bool bBelievesHit, optional actor A)
 {
 	if ( (Instigator != None) && (Instigator.Weapon != self) )
 	{
@@ -230,42 +231,43 @@ function NewNet_ServerStartFire(byte Mode, byte ClientTimeStamp, float dt, Repli
 	}
 
 	if(M==None)
-        foreach DynamicActors(class'TAM_Mutator', M)
-        {
-            break;
-        }
-    }
-    if((Team_GameBase(Level.Game) != none) && Misc_Player(Instigator.Controller) != none)
-    {
-        Misc_Player(Instigator.Controller).NotifyServerStartFire(ClientTimeStamp, M.ClientTimeStamp, M.AverDT);
-    }
-    NewNet_ShockBeamFire(FireMode[Mode]).PingDT = M.ClientTimeStamp - M.GetStamp(ClientTimeStamp)-DT + 0.5*M.AverDT;
-    NewNet_ShockBeamFire(FireMode[Mode]).bUseEnhancedNetCode = true;
-    NewNet_ShockBeamFire(FireMode[Mode]).AverDT = M.AverDT;
-    if(bBelievesHit)
-    {
-        NewNet_ShockBeamFire(FireMode[Mode]).bBelievesHit=true;
-        NewNet_ShockBeamFire(FireMode[Mode]).BelievedHitActor=A;
-    }
-    else
-    {
-        NewNet_ShockBeamFire(FireMode[Mode]).bBelievesHit=false;
-    }
+  {
+      foreach DynamicActors(class'TAM_Mutator', M)
+      {
+          break;
+      }
+  }
+  if((Team_GameBase(Level.Game) != none) && Misc_Player(Instigator.Controller) != none)
+  {
+      Misc_Player(Instigator.Controller).NotifyServerStartFire(ClientTimeStamp, M.ClientTimeStamp, M.AverDT);
+  }
+  NewNet_ShockBeamFire(FireMode[Mode]).PingDT = M.ClientTimeStamp - M.GetStamp(ClientTimeStamp)-DT + 0.5*M.AverDT;
+  NewNet_ShockBeamFire(FireMode[Mode]).bUseEnhancedNetCode = true;
+  NewNet_ShockBeamFire(FireMode[Mode]).AverDT = M.AverDT;
+  if(bBelievesHit)
+  {
+      NewNet_ShockBeamFire(FireMode[Mode]).bBelievesHit=true;
+      NewNet_ShockBeamFire(FireMode[Mode]).BelievedHitActor=A;
+  }
+  else
+  {
+      NewNet_ShockBeamFire(FireMode[Mode]).bBelievesHit=false;
+  }
 
-    if((FireMode[Mode].NextFireTime <= (Level.TimeSeconds + FireMode[Mode].PreFireTime)) && StartFire(Mode))
-    {
-        FireMode[Mode].ServerStartFireTime = Level.TimeSeconds;
-        FireMode[Mode].bServerDelayStartFire = false;
-        NewNet_ShockBeamFire(FireMode[Mode]).SavedVec.X = V.X;
-        NewNet_ShockBeamFire(FireMode[Mode]).SavedVec.Y = V.Y;
-        NewNet_ShockBeamFire(FireMode[Mode]).SavedVec.Z = V.Z;
-        NewNet_ShockBeamFire(FireMode[Mode]).SavedRot.Yaw = R.Yaw;
-        NewNet_ShockBeamFire(FireMode[Mode]).SavedRot.Pitch = R.Pitch;
-        NewNet_ShockBeamFire(FireMode[Mode]).bUseReplicatedInfo=IsReasonable(NewNet_ShockBeamFire(FireMode[Mode]).SavedVec);
-    }
-    else if ( FireMode[Mode].AllowFire() )
-    {
-        FireMode[Mode].bServerDelayStartFire = true;
+  if((FireMode[Mode].NextFireTime <= (Level.TimeSeconds + FireMode[Mode].PreFireTime)) && StartFire(Mode))
+  {
+      FireMode[Mode].ServerStartFireTime = Level.TimeSeconds;
+      FireMode[Mode].bServerDelayStartFire = false;
+      NewNet_ShockBeamFire(FireMode[Mode]).SavedVec.X = V.X;
+      NewNet_ShockBeamFire(FireMode[Mode]).SavedVec.Y = V.Y;
+      NewNet_ShockBeamFire(FireMode[Mode]).SavedVec.Z = V.Z;
+      NewNet_ShockBeamFire(FireMode[Mode]).SavedRot.Yaw = R.Yaw;
+      NewNet_ShockBeamFire(FireMode[Mode]).SavedRot.Pitch = R.Pitch;
+      NewNet_ShockBeamFire(FireMode[Mode]).bUseReplicatedInfo=IsReasonable(NewNet_ShockBeamFire(FireMode[Mode]).SavedVec);
+  }
+  else if ( FireMode[Mode].AllowFire() )
+  {
+      FireMode[Mode].bServerDelayStartFire = true;
 	}
 	else
 		ClientForceAmmoUpdate(Mode, AmmoAmount(Mode));
@@ -274,6 +276,7 @@ function NewNet_ServerStartFire(byte Mode, byte ClientTimeStamp, float dt, Repli
 function NewNet_OldServerStartFire(byte Mode, float ClientTimeStamp, float dt)
 {
     if(M==None)
+    {
         foreach DynamicActors(class'TAM_Mutator', M)
         {
             break;

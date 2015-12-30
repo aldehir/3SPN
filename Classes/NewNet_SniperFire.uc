@@ -27,6 +27,7 @@ var vector savedVec;
 
 var float PingDT;
 var bool bSkipNextEffect;
+var bool bUseEnhancedNetCode;
 var bool bBelievesHit;
 var Actor BelievedHitActor;
 var vector BelievedHitLocation;
@@ -218,9 +219,13 @@ function DoTrace(Vector Start, Rotator Dir)
     local float tmpTraceRange;
     local vector arcEnd, mainArcHit;
     local Pawn HeadShotPawn;
-	local vector EffectOffset;
-	local vector PawnHitLocation;
+    local vector EffectOffset;
+    local vector PawnHitLocation;
 //	local float f;
+
+    local actor AltOther;
+    local vector AltHitlocation,altHitNormal,altpawnhitlocation;
+    local float f;
 
 	if(!bUseEnhancedNetCode)
 	{

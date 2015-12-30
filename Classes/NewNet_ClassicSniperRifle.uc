@@ -23,7 +23,7 @@ class NewNet_ClassicSniperRifle extends ClassicSniperRifle
     HideDropDown
 	CacheExempt;
 
-var NewNet_TimeStamp T;
+var NewNet_TimeStamp_Pawn T;
 var TAM_Mutator M;
 
 replication
@@ -90,10 +90,10 @@ simulated event NewNet_ClientStartFire(int Mode)
         if (StartFire(Mode))
         {
             if(T==None)
-                foreach DynamicActors(Class'NewNet_TimeStamp', T)
+                foreach DynamicActors(Class'NewNet_TimeStamp_Pawn', T)
                      break;
 
-            NewNet_ServerStartFire(mode, T.ClientTimeStamp);
+            NewNet_ServerStartFire(mode, T.TimeStamp);
         }
     }
     else

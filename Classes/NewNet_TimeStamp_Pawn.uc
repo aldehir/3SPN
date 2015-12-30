@@ -1,7 +1,7 @@
 //-----------------------------------------------------------
 //
 //-----------------------------------------------------------
-class TimeStamp_Pawn extends Pawn;
+class NewNet_TimeStamp_Pawn extends Pawn;
 
 var int timestamp;
 var int NewTimeStamp;

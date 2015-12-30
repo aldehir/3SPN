@@ -197,6 +197,7 @@ simulated function bool AltReadyToFire(int Mode)
 function NewNet_ServerStartFire(byte Mode, byte ClientTimeStamp, float dt, ReplicatedRotator R, ReplicatedVector V)
 {
     if(M==None)
+    {
         foreach DynamicActors(class'TAM_Mutator', M)
         {
             break;
@@ -249,9 +250,9 @@ function NewNet_ServerStartFire(byte Mode, byte ClientTimeStamp, float dt, Repli
     else if ( FireMode[Mode].AllowFire() )
     {
         FireMode[Mode].bServerDelayStartFire = true;
-	}
-	else
-		ClientForceAmmoUpdate(Mode, AmmoAmount(Mode));
+    }
+    else
+      ClientForceAmmoUpdate(Mode, AmmoAmount(Mode));
 }
 //// client & server ////
 simulated function bool StartFire(int Mode)
