@@ -4,7 +4,6 @@
 class NewNet_TimeStamp_Pawn extends Pawn;
 
 var int timestamp;
-var int NewTimeStamp;
 var float dt;
 
 function prebeginplay()
@@ -26,13 +25,8 @@ function destroyed()
 simulated event tick(float deltatime)
 {
    Super.tick(deltatime);
-   NewTimeStamp = (Rotation.Yaw+Rotation.Pitch*256)/256;
-   DT+=deltatime;
-   if(NewTimeStamp > timestamp || timestamp-NewTimeStamp > 5000)
-   {
-       timestamp=NewTimeStamp;
-       DT=0.00;
-   }
+   NewTimeStamp += deltatime;
+   DT=deltatime;
 }
 
 DefaultProperties
